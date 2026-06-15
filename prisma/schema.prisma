@@ -1,0 +1,661 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────
+
+enum Role {
+  VISITOR
+  COLLECTOR
+  PRESTIGE
+  ADVISOR
+  ADMIN
+}
+
+enum Availability {
+  AVAILABLE
+  RESERVED
+  SOLD
+  ON_AUCTION
+}
+
+enum ReservationStatus {
+  ACTIVE
+  EXPIRED
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum ConsultationType {
+  ACQUISITION_ADVICE
+  INVESTMENT_ADVICE
+  COLLECTION_REVIEW
+}
+
+enum ConsultationStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum PORStatus {
+  PENDING
+  RESPONDED
+  CLOSED
+}
+
+enum AuctionStatus {
+  UPCOMING
+  LIVE
+  ENDED
+}
+
+enum InquiryStatus {
+  RECEIVED
+  IN_DISCUSSION
+  OFFER_PRESENTED
+  COMPLETED
+  ARCHIVED
+}
+
+enum LogisticsStatus {
+  ORIGIN_HUB
+  CUSTOMS_CLEARANCE
+  INTERNATIONAL_TRANSIT
+  LOCAL_DELIVERY
+  DELIVERED
+}
+
+enum EscrowStatus {
+  HELD
+  RELEASED
+  DISPUTED
+  REFUNDED
+}
+
+enum AMLStatus {
+  VERIFIED
+  PENDING
+  UNVERIFIED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ─── Models ───────────────────────────────────────────────────────────
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  name            String
+  role            Role      @default(COLLECTOR)
+  avatar          String?
+  institution     String?
+  country         String?
+  tier            String?   @default("Standard")
+  twoFactorEnabled Boolean  @default(false)
+  emailVerified   Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  favorites       Favorite[]
+  reservations    Reservation[]
+  orders          Order[]
+  consultations   Consultation[]
+  certificates    Certificate[]
+  auditLogs       AuditLog[]
+  priceRequests   PriceRequest[]
+  notifications   Notification[]
+  chatMessages    ChatMessage[]
+  supportTickets  SupportTicket[]
+  advisorClients  AdvisorClient[]   @relation("AdvisorClients")
+  advisorPlacements AdvisorPlacement[]
+}
+
+model Artist {
+  id          Int       @id @default(autoincrement())
+  name        String
+  biography   String?
+  nationality String?
+  birthDate   DateTime?
+  deathDate   DateTime?
+  photo       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  artworks    Artwork[]
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  artworks    Artwork[]
+}
+
+model Artwork {
+  id              Int          @id @default(autoincrement())
+  title           String
+  description     String
+  origin          String
+  region          String?
+  tribe           String?
+  era             String?
+  historicalPeriod String?
+  material        String
+  dimensions      String
+  weight          String?
+  condition       String
+  availability    Availability @default(AVAILABLE)
+  price           Decimal?
+  isPOR           Boolean      @default(false)
+
+  // Frontend-specific fields
+  imageUrl        String?    @db.Text
+  blurDataURL     String?    @db.Text
+  scarcityIndex   Int?
+  preservationStatus String?
+  appreciationRate String?
+  isHero          Boolean      @default(false)
+  historicalStory String?    @db.Text
+  investmentThesis String?   @db.Text
+  estimatedValue  Decimal?
+  historicalCagr  Decimal?
+  yieldIndex      Decimal?
+  tier            String?      @default("Standard")
+  artworkStatus   String?      @default("Live")
+  provenanceHash  String?
+  acquiredYear    Int?
+  acquiredMethod  String?
+
+  artistId        Int
+  artist          Artist       @relation(fields: [artistId], references: [id])
+  categoryId      Int
+  category        Category     @relation(fields: [categoryId], references: [id])
+
+  images          ArtworkImage[]
+  provenance      ProvenanceRecord[]
+  provenanceChain ProvenanceChain[]
+  certificates    Certificate[]
+  favorites       Favorite[]
+  reservations    Reservation[]
+  orderItems      OrderItem[]
+  auctionLots     AuctionLot[]
+  priceRequests   PriceRequest[]
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model ArtworkImage {
+  id         Int      @id @default(autoincrement())
+  filename   String
+  path       String
+  isPrimary  Boolean  @default(false)
+  order      Int      @default(0)
+
+  artworkId  Int
+  artwork    Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+}
+
+model ProvenanceRecord {
+  id              Int       @id @default(autoincrement())
+  previousOwner   String
+  acquisitionDate DateTime?
+  transferDate    DateTime?
+  notes           String?
+
+  artworkId       Int
+  artwork         Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime  @default(now())
+}
+
+model ProvenanceChain {
+  id        Int      @id @default(autoincrement())
+  artworkId Int
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  entry     String
+
+  createdAt DateTime @default(now())
+}
+
+model Certificate {
+  id                Int      @id @default(autoincrement())
+  certificateNumber String   @unique
+  title             String
+  filename          String
+  path              String
+  issuedDate        DateTime @default(now())
+  expiryDate        DateTime?
+  isValid           Boolean  @default(true)
+  blockchainHash    String?
+  status            String?  @default("VALID")
+  authenticationLevel String?
+  lastVerified      DateTime?
+  certifyingBody    String?
+
+  artworkId         Int
+  artwork           Artwork  @relation(fields: [artworkId], references: [id])
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id])
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  artworkId Int
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, artworkId])
+}
+
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  artworkId Int
+  artwork   Artwork  @relation(fields: [artworkId], references: [id])
+  status    ReservationStatus @default(ACTIVE)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Decimal
+  notes       String?
+
+  items       OrderItem[]
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  artworkId Int
+  artwork   Artwork @relation(fields: [artworkId], references: [id])
+  price     Decimal
+
+  createdAt DateTime @default(now())
+}
+
+model Consultation {
+  id        Int                @id @default(autoincrement())
+  userId    Int
+  user      User               @relation(fields: [userId], references: [id])
+  advisorId Int?
+  expertName String?
+  expertTitle String?
+  expertAvatar String?
+  type      ConsultationType
+  status    ConsultationStatus @default(PENDING)
+  date      DateTime
+  timeSlot  String?
+  topic     String?
+  notes     String?
+
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+model PriceRequest {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  artworkId Int
+  artwork   Artwork   @relation(fields: [artworkId], references: [id])
+  message   String?
+  status    PORStatus @default(PENDING)
+  response  String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String
+  resource   String
+  resourceId Int?
+  metadata   Json?
+  txHash     String?
+  signed     Boolean  @default(false)
+  timestamp  DateTime @default(now())
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  type      String?
+
+  createdAt DateTime @default(now())
+}
+
+model AuctionLot {
+  id            Int      @id @default(autoincrement())
+  artworkId     Int
+  artwork       Artwork  @relation(fields: [artworkId], references: [id])
+  startingPrice Decimal
+  currentPrice  Decimal?
+  reservePrice  Decimal?
+  estimateMin   Decimal?
+  estimateMax   Decimal?
+  startTime     DateTime
+  endTime       DateTime
+  status        AuctionStatus @default(UPCOMING)
+  watchers      Int      @default(0)
+  featured      Boolean  @default(false)
+
+  bids          Bid[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Bid {
+  id        Int      @id @default(autoincrement())
+  lotId     Int
+  lot       AuctionLot @relation(fields: [lotId], references: [id])
+  userId    Int
+  amount    Decimal
+  timestamp DateTime @default(now())
+
+  createdAt DateTime @default(now())
+}
+
+// ─── Frontend Dashboard Models ────────────────────────────────────────
+
+model Acquisition {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  title           String
+  era             String?
+  culture         String?
+  acquisitionDate DateTime?
+  status          String   @default("Certified")
+  imageUrl        String?  @db.Text
+  estimatedValueEur Decimal?
+  description     String?
+
+  provenanceChain AcquisitionProvenance[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model AcquisitionProvenance {
+  id            Int         @id @default(autoincrement())
+  acquisitionId Int
+  acquisition   Acquisition @relation(fields: [acquisitionId], references: [id], onDelete: Cascade)
+  entry         String
+
+  createdAt     DateTime    @default(now())
+}
+
+model Inquiry {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  artworkTitle  String
+  artworkYear   String?
+  imageUrl      String?  @db.Text
+  status        String   @default("Received")
+  date          String?
+
+  messages      InquiryMessage[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model InquiryMessage {
+  id        Int      @id @default(autoincrement())
+  inquiryId Int
+  inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  sender    String
+  text      String
+  timestamp String?
+
+  createdAt DateTime @default(now())
+}
+
+model LogisticsShipment {
+  id                    Int      @id @default(autoincrement())
+  userId                Int
+  artworkTitle          String
+  carrier               String?
+  status                String   @default("Origin Hub")
+  estimatedDeliveryDate String?
+  securityTier          String?
+  insuranceCoverage     String?
+
+  updates               ShipmentUpdate[]
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model ShipmentUpdate {
+  id           Int                @id @default(autoincrement())
+  shipmentId   Int
+  shipment     LogisticsShipment  @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  date         String?
+  status       String?
+  location     String?
+  description  String?
+
+  createdAt    DateTime           @default(now())
+}
+
+model SecurityRecord {
+  id                    Int      @id @default(autoincrement())
+  userId                Int
+  artworkTitle          String
+  vaultLocation         String?
+  fingerprintId         String?
+  smartContractAddress  String?
+  lastInspectionDate    String?
+  temperatureHumidity   String?
+  insurancePolicyNumber String?
+
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// ─── Admin Models ─────────────────────────────────────────────────────
+
+model EscrowTransaction {
+  id            Int         @id @default(autoincrement())
+  artworkTitle  String
+  buyerName     String?
+  sellerName    String?
+  amount        Decimal
+  status        EscrowStatus @default(HELD)
+  notes         String?
+  createdDate   DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+// ─── Advisor Models ───────────────────────────────────────────────────
+
+model AdvisorClient {
+  id                Int      @id @default(autoincrement())
+  advisorId         Int
+  advisor           User     @relation("AdvisorClients", fields: [advisorId], references: [id])
+  name              String
+  email             String?
+  country           String?
+  tier              String?
+  avatarColor       String?
+  totalSpent        Decimal?
+  acquisitionsCount Int      @default(0)
+  satisfactionScore Decimal?
+  lastContact       String?
+  interests         String?
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AdvisorPlacement {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  user            User     @relation(fields: [userId], references: [id])
+  artworkTitle    String?
+  artworkCulture  String?
+  artworkEra      String?
+  imageUrl        String?  @db.Text
+  valuation       Decimal?
+  commission      Decimal?
+  clientName      String?
+  status          String   @default("Proposed")
+  notes           String?
+  proposedDate    DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model AdvisorActivity {
+  id          Int      @id @default(autoincrement())
+  type        String?
+  title       String?
+  description String?
+  timestamp   String?
+  icon        String?
+
+  createdAt   DateTime @default(now())
+}
+
+// ─── Chat/Support Models ─────────────────────────────────────────────
+
+model ChatThread {
+  id              Int      @id @default(autoincrement())
+  clientName      String?
+  clientRole      String?
+  advisorName     String?
+  subject         String?
+  status          String   @default("active")
+  lastMessage     String?
+  lastMessageTime String?
+  unreadCount     Int      @default(0)
+
+  messages        ChatMessage[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ChatMessage {
+  id          Int      @id @default(autoincrement())
+  threadId    Int
+  thread      ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
+  senderId    String?
+  senderName  String?
+  senderRole  String?
+  text        String?
+  timestamp   String?
+  read        Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+}
+
+model SupportTicket {
+  id              Int      @id @default(autoincrement())
+  userId          Int?
+  user            User?    @relation(fields: [userId], references: [id])
+  clientName      String?
+  clientRole      String?
+  subject         String?
+  description     String?
+  status          String   @default("Open")
+  priority        String   @default("Medium")
+  createdDate     String?
+  lastUpdate      String?
+  assignedTo      String?
+
+  responses       TicketResponse[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model TicketResponse {
+  id         Int      @id @default(autoincrement())
+  ticketId   Int
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author     String?
+  text       String?
+  timestamp  String?
+
+  createdAt  DateTime @default(now())
+}
+
+// ─── Member Applications ─────────────────────────────────────────────
+
+model MemberApplication {
+  id              Int      @id @default(autoincrement())
+  fullName        String?
+  email           String?
+  organization    String?
+  collectorProfile String?
+  message         String?
+  status          String   @default("Pending Review")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

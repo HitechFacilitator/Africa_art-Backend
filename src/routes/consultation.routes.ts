@@ -1,0 +1,16 @@
+import { Router } from "express";
+import * as consultationController from "../controllers/consultation.controller";
+import { authenticate } from "../middlewares/auth";
+import { authorize } from "../middlewares/role";
+import { Role } from "../generated/prisma/client";
+
+const router = Router();
+
+router.get("/", authenticate, authorize(Role.ADMIN), consultationController.getAll);
+router.get("/my", authenticate, consultationController.getByUser);
+router.post("/", authenticate, consultationController.create);
+router.patch("/:id/confirm", authenticate, authorize(Role.ADMIN), consultationController.confirm);
+router.patch("/:id/complete", authenticate, consultationController.complete);
+router.patch("/:id/cancel", authenticate, consultationController.cancel);
+
+export default router;
