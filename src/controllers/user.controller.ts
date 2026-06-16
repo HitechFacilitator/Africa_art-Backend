@@ -32,3 +32,10 @@ export const updateRole = catchAsync(async (req: Request, res: Response) => {
   const user = await userService.updateRole(Number(req.params.id), req.body.role);
   res.json({ success: true, data: user });
 });
+
+export const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user!.userId;
+  const { currentPassword, newPassword } = req.body;
+  await userService.changePassword(userId, currentPassword, newPassword);
+  res.json({ success: true, message: "Password changed successfully" });
+});

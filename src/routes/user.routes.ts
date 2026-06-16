@@ -11,5 +11,6 @@ router.get("/:id", authenticate, userController.getById);
 router.patch("/:id", authenticate, userController.update);
 router.delete("/:id", authenticate, authorize(Role.ADMIN), userController.deleteOne);
 router.patch("/:id/role", authenticate, authorize(Role.ADMIN), userController.updateRole);
+router.post("/change-password", authenticate, userController.changePassword);
 
 export default router;

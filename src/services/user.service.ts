@@ -1,6 +1,7 @@
 import prisma from "../config/db";
 import { AppError } from "../utils/AppError";
 import { Role } from "../generated/prisma/client";
+import bcrypt from "bcrypt";
 
 function toUserSession(user: { id: number; email: string; name: string; role: Role; avatar?: string | null; institution?: string | null }) {
   return {
@@ -109,4 +110,24 @@ export async function updateRole(id: number, role: Role) {
     data: { role },
     select: { id: true, email: true, name: true, role: true },
   });
+}
+
+export async function changePassword(id: number, currentPassword: string, newPassword: string) {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  const isValid = await bcrypt.compare(currentPassword, user.password);
+  if (!isValid) {
+    throw new AppError("Current password is incorrect", 401);
+  }
+
+  const hashed = await bcrypt.hash(newPassword, 12);
+  await prisma.user.update({
+    where: { id },
+    data: { password: hashed },
+  });
+
+  return { success: true };
 }
