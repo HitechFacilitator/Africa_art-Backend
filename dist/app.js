@@ -29,6 +29,8 @@ const logistics_routes_1 = __importDefault(require("./routes/logistics.routes"))
 const security_routes_1 = __importDefault(require("./routes/security.routes"));
 const escrow_routes_1 = __importDefault(require("./routes/escrow.routes"));
 const adminAudit_routes_1 = __importDefault(require("./routes/adminAudit.routes"));
+const adminArtworks_routes_1 = __importDefault(require("./routes/adminArtworks.routes"));
+const adminCollectors_routes_1 = __importDefault(require("./routes/adminCollectors.routes"));
 const advisor_routes_1 = __importDefault(require("./routes/advisor.routes"));
 const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
 const app = (0, express_1.default)();
@@ -74,6 +76,8 @@ app.use("/api/v1/dashboard/inquiries", inquiry_routes_1.default);
 app.use("/api/v1/dashboard/logistics", logistics_routes_1.default);
 app.use("/api/v1/dashboard/security", security_routes_1.default);
 // Admin routes
+app.use("/api/v1/admin/artworks", adminArtworks_routes_1.default);
+app.use("/api/v1/admin/collectors", adminCollectors_routes_1.default);
 app.use("/api/v1/admin/escrow", escrow_routes_1.default);
 app.use("/api/v1/admin/audit-logs", adminAudit_routes_1.default);
 // Advisor routes

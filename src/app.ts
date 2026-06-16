@@ -25,6 +25,10 @@ import logisticsRoutes from "./routes/logistics.routes";
 import securityRoutes from "./routes/security.routes";
 import escrowRoutes from "./routes/escrow.routes";
 import adminAuditRoutes from "./routes/adminAudit.routes";
+import adminArtworksRoutes from "./routes/adminArtworks.routes";
+import adminCollectorsRoutes from "./routes/adminCollectors.routes";
+import adminUsersRoutes from "./routes/adminUsers.routes";
+import adminCertificatesRoutes from "./routes/adminCertificates.routes";
 import advisorRoutes from "./routes/advisor.routes";
 import chatRoutes from "./routes/chat.routes";
 
@@ -81,6 +85,10 @@ app.use("/api/v1/dashboard/logistics", logisticsRoutes);
 app.use("/api/v1/dashboard/security", securityRoutes);
 
 // Admin routes
+app.use("/api/v1/admin/artworks", adminArtworksRoutes);
+app.use("/api/v1/admin/users", adminUsersRoutes);
+app.use("/api/v1/admin/collectors", adminCollectorsRoutes);
+app.use("/api/v1/admin/certificates", adminCertificatesRoutes);
 app.use("/api/v1/admin/escrow", escrowRoutes);
 app.use("/api/v1/admin/audit-logs", adminAuditRoutes);
 

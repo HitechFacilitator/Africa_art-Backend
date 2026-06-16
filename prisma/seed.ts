@@ -406,27 +406,94 @@ async function main() {
 
   console.log(`Acquisitions: 2`);
 
-  // Create inquiries
-  const inq1 = await prisma.inquiry.create({
+  // ─── Additional acquisitions for Julian ─────────────────────────
+  const acq3 = await prisma.acquisition.create({
     data: {
       userId: julian.id,
-      artworkTitle: "Contemporary Weave",
-      artworkYear: "2024",
-      status: "Received",
+      title: "Ashanti Ceremonial Stool",
+      era: "19th Century",
+      culture: "Akan Peoples",
+      acquisitionDate: new Date("2024-08-14"),
+      status: "Certified",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/3/36/Akan_Goldweights.jpg",
+      estimatedValueEur: 7100000,
+      description: "A hand-carved single block mahogany ceremonial stool with complex openwork geometric columns.",
     },
   });
-  await prisma.inquiryMessage.create({
+  await prisma.acquisitionProvenance.createMany({
+    data: [
+      { acquisitionId: acq3.id, entry: "Stool House of Kumasi Nobles, Ghana" },
+      { acquisitionId: acq3.id, entry: "MacDonald West African Collection, Edinburgh (1910 - 1968)" },
+      { acquisitionId: acq3.id, entry: "Acquired via Aduna Gallery, 2024" },
+    ],
+  });
+
+  const acq4 = await prisma.acquisition.create({
     data: {
-      inquiryId: inq1.id,
-      sender: "collector",
-      text: "Expressing interest in the Contemporary Weave piece. Please provide provenance details.",
-      timestamp: "10:30 AM",
+      userId: julian.id,
+      title: "Dogon Sanctuary Mask",
+      era: "Late 18th Century",
+      culture: "Dogon Peoples",
+      acquisitionDate: new Date("2024-05-03"),
+      status: "Certified",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Male_Figure_with_Raised_Arms_MET_DP302219.jpg",
+      estimatedValueEur: 3200000,
+      description: "A stunning Sirige tall mask carved with abstract rectangular geometric divisions.",
     },
   });
 
-  console.log(`Inquiries: 1`);
+  const acq5 = await prisma.acquisition.create({
+    data: {
+      userId: julian.id,
+      title: "Nok Terracotta Figure",
+      era: "500 BC - 200 AD",
+      culture: "Nok Culture",
+      acquisitionDate: new Date("2025-03-20"),
+      status: "Certified",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/27/Africa_Nok_Male_Figure_Kimbell.jpg",
+      estimatedValueEur: 6500000,
+      description: "A classic Nok sculpture showing large elliptical eyes and a sophisticated hollow-fired clay body.",
+    },
+  });
 
-  // Create consultations
+  console.log(`Acquisitions: 5 total`);
+
+  // ─── Additional inquiries ──────────────────────────────────────
+  const inq2 = await prisma.inquiry.create({
+    data: {
+      userId: julian.id,
+      artworkTitle: "Kuba Ndop Board",
+      artworkYear: "18th Century",
+      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a7/Brooklyn_Museum_61.33_Ndop_Portrait_of_King_Mishe_miShyaang_maMbul_%2810%29.jpg",
+      status: "In Discussion",
+      date: "Jun 05, 2026",
+    },
+  });
+  await prisma.inquiryMessage.createMany({
+    data: [
+      { inquiryId: inq2.id, sender: "collector", text: "I watched the preview documentation of the Contemporary Weave. Is the provenance report from the artist's estate available?", timestamp: "Jun 05, 2026, 02:15 PM" },
+      { inquiryId: inq2.id, sender: "curator", text: "Hello Julian. Yes, the Contemporary Weave has been vetted by the El Anatsui Foundation. Complete studio records, signature proofs, and custom shipping options are fully documented.", timestamp: "Jun 06, 2026, 10:04 AM" },
+      { inquiryId: inq2.id, sender: "collector", text: "Splendid. I am extremely interested in incorporating this into my special exhibition chamber next month.", timestamp: "Jun 09, 2026, 09:12 AM" },
+    ],
+  });
+
+  console.log(`Inquiries: 2`);
+
+  // ─── Additional consultations ──────────────────────────────────
+  await prisma.consultation.create({
+    data: {
+      userId: julian.id,
+      expertName: "Christian Vanhoutte",
+      expertTitle: "Chief Conservator & Materials Analyst",
+      expertAvatar: "CV",
+      type: "INVESTMENT_ADVICE",
+      status: "PENDING",
+      date: new Date("2026-06-22"),
+      timeSlot: "11:00 - 12:30 GMT",
+      topic: "Bronze Conservation Strategy (Verdigris Management)",
+      notes: "A standard structural ultrasound audit will be run on the Benin Bronze Head.",
+    },
+  });
   await prisma.consultation.create({
     data: {
       userId: julian.id,
@@ -435,124 +502,269 @@ async function main() {
       expertAvatar: "AD",
       type: "ACQUISITION_ADVICE",
       status: "CONFIRMED",
-      date: new Date("2026-07-15T14:00:00Z"),
-      timeSlot: "2:00 PM – 3:00 PM",
-      topic: "Benin Bronze Acquisition Strategy",
-      notes: "Discuss investment potential of Benin bronzes.",
+      date: new Date("2026-07-03"),
+      timeSlot: "10:00 - 11:00 GMT",
+      topic: "Investment Portfolio Review — Q3 2026",
+      notes: "Annual portfolio performance review with updated CAGR projections.",
     },
   });
 
-  console.log(`Consultations: 1`);
+  console.log(`Consultations: 3 total`);
 
-  // Create logistics
-  const ship = await prisma.logisticsShipment.create({
+  // ─── Additional logistics shipments ────────────────────────────
+  const ship2 = await prisma.logisticsShipment.create({
     data: {
       userId: julian.id,
       artworkTitle: "Ife Terracotta Head",
       carrier: "Malca-Amit Premium Art Courier",
-      status: "International Transit",
-      estimatedDeliveryDate: "Jul 5, 2026",
+      status: "Customs Clearance",
+      estimatedDeliveryDate: "Jun 19, 2026",
       securityTier: "Level 5 Armed Vault Transport",
-      insuranceCoverage: "€11,040,000 Policy",
+      insuranceCoverage: "€10,000,000 Swiss Re Art Policy",
     },
   });
   await prisma.shipmentUpdate.createMany({
     data: [
-      { shipmentId: ship.id, date: "Jun 28", status: "Origin Hub Secured", location: "Fine Art Terminal, Paris CDG", description: "Item certified and packaged in temperature-shielded carbon boxes." },
-      { shipmentId: ship.id, date: "Jun 30", status: "Customs Clearance", location: "Geneva Customs", description: "Documentation verified. Clearance in progress." },
+      { shipmentId: ship2.id, date: "Jun 08, 2026", status: "Customs Holding Vetted", location: "Heathrow Security Terminal, London", description: "Vetting of physical export license from source heritage authorities finalized." },
+      { shipmentId: ship2.id, date: "Jun 06, 2026", status: "In Transit", location: "Charles de Gaulle Cargo Safe, Paris", description: "Transferred via temperature-controlled, armored transport vehicle under escort." },
+      { shipmentId: ship2.id, date: "Jun 04, 2026", status: "Departed Origin Hub", location: "Secured Fine Art Logistics Hub, Paris", description: "Cratered in triple-walled museum-grade moisture-seal crates." },
     ],
   });
 
-  console.log(`Logistics: 1`);
+  const ship3 = await prisma.logisticsShipment.create({
+    data: {
+      userId: julian.id,
+      artworkTitle: "Luba Ancestor Staff",
+      carrier: "Malca-Amit Premium Art Courier",
+      status: "International Transit",
+      estimatedDeliveryDate: "Jun 25, 2026",
+      securityTier: "Level 4 Secure Transport",
+      insuranceCoverage: "€3,500,000 Swiss Re Art Policy",
+    },
+  });
+  await prisma.shipmentUpdate.createMany({
+    data: [
+      { shipmentId: ship3.id, date: "Jun 09, 2026", status: "In Transit", location: "Brussels Cargo Hub, Belgium", description: "Departed origin warehouse under armored escort." },
+      { shipmentId: ship3.id, date: "Jun 07, 2026", status: "Origin Hub Secured", location: "Fine Art Terminal, Kinshasa", description: "Item certified, packaged in museum-grade shock-absorbent crate." },
+    ],
+  });
 
-  // Create security records
+  console.log(`Logistics: 3 total`);
+
+  // ─── Additional security records ───────────────────────────────
   await prisma.securityRecord.create({
     data: {
       userId: julian.id,
       artworkTitle: "Benin Bronze Head",
-      vaultLocation: "Geneva Freeport - Chamber I",
-      fingerprintId: "FP-BENI-4821",
-      smartContractAddress: "0x7a3f...8e2d (Aduna Registry V2)",
-      lastInspectionDate: "Jun 10, 2026",
-      temperatureHumidity: "20.3°C / 46.2% RH",
-      insurancePolicyNumber: "AXA-MUSEUM-72914-M",
+      vaultLocation: "Private Vault Sector B-4, Geneva FreePort",
+      fingerprintId: "FP-BENIN-0918-B",
+      smartContractAddress: "0x3C9a...82Fd (Aduna Registry V2)",
+      lastInspectionDate: "May 12, 2026",
+      temperatureHumidity: "20.2°C / 48.5% RH (Optimal)",
+      insurancePolicyNumber: "AXA-MUSEUM-99120-J",
+    },
+  });
+  await prisma.securityRecord.create({
+    data: {
+      userId: julian.id,
+      artworkTitle: "Dogon Sanctuary Mask",
+      vaultLocation: "Collector Private Display, Wing A",
+      fingerprintId: "FP-DOGON-4412-M",
+      smartContractAddress: "0x7E12...33Ca (Aduna Registry V2)",
+      lastInspectionDate: "Jun 01, 2026",
+      temperatureHumidity: "21.0°C / 45.0% RH (Stabilized)",
+      insurancePolicyNumber: "AXA-MUSEUM-99120-K",
+    },
+  });
+  await prisma.securityRecord.create({
+    data: {
+      userId: julian.id,
+      artworkTitle: "Nok Terracotta Figure",
+      vaultLocation: "Private Vault Sector A-2, Geneva FreePort",
+      fingerprintId: "FP-NOK-5521-N",
+      smartContractAddress: "0x4A8b...11Ef (Aduna Registry V2)",
+      lastInspectionDate: "Jun 05, 2026",
+      temperatureHumidity: "20.0°C / 47.2% RH (Optimal)",
+      insurancePolicyNumber: "AXA-MUSEUM-99120-L",
     },
   });
 
-  console.log(`Security: 1`);
+  console.log(`Security: 4 total`);
 
-  // Create chat threads
-  const thread = await prisma.chatThread.create({
+  // ─── Additional chat threads ───────────────────────────────────
+  const thread2 = await prisma.chatThread.create({
     data: {
-      clientName: "Julian Doe",
+      clientName: "Amara Nkosi",
       clientRole: "collector",
       advisorName: "Dr. Fatima Benali",
-      subject: "Igbo-Ukwu Bronze Vessel Provenance",
+      subject: "Private Catalogue — Yoruba Crown Acquisition",
       status: "active",
-      lastMessage: "Let me compile the radiometric carbon testing data for your review.",
-      lastMessageTime: "2026-06-14 16:45 UTC",
+      lastMessage: "The Yoruba Ade Crown is available for private viewing.",
+      lastMessageTime: "2026-06-15 11:00 UTC",
       unreadCount: 1,
     },
   });
   await prisma.chatMessage.createMany({
     data: [
-      { threadId: thread.id, senderId: "usr-001", senderName: "Julian Doe", senderRole: "collector", text: "Dr. Benali, I need the full provenance report for the Igbo-Ukwu vessel.", timestamp: "2026-06-14 14:30 UTC", read: true },
-      { threadId: thread.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "Of course. The Igbo-Ukwu provenance chain is extensive. Let me compile the relevant documentation.", timestamp: "2026-06-14 15:15 UTC", read: true },
-      { threadId: thread.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "Let me compile the radiometric carbon testing data for your review.", timestamp: "2026-06-14 16:45 UTC", read: false },
+      { threadId: thread2.id, senderId: "usr-002", senderName: "Amara Nkosi", senderRole: "collector", text: "Dr. Benali, I saw the Royal Beaded Crown in the private catalogue. Is it still available?", timestamp: "2026-06-14 16:00 UTC", read: true },
+      { threadId: thread2.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "Yes, the Yoruba Ade Crown is still available. It is one of our finest pieces with intact glass beadwork.", timestamp: "2026-06-15 09:30 UTC", read: true },
+      { threadId: thread2.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "The Yoruba Ade Crown is available for private viewing. Would you like to schedule a visit?", timestamp: "2026-06-15 11:00 UTC", read: false },
     ],
   });
 
-  console.log(`Chat threads: 1`);
-
-  // Create support tickets
-  const ticket = await prisma.supportTicket.create({
+  const thread3 = await prisma.chatThread.create({
     data: {
-      userId: julian.id,
-      clientName: "Julian Doe",
+      clientName: "Guest Visitor",
+      clientRole: "visitor",
+      advisorName: "Helena Sterling",
+      subject: "General Inquiry — African Art Authentication",
+      status: "active",
+      lastMessage: "We offer authentication services starting from €500.",
+      lastMessageTime: "2026-06-15 13:00 UTC",
+      unreadCount: 0,
+    },
+  });
+  await prisma.chatMessage.createMany({
+    data: [
+      { threadId: thread3.id, senderId: "usr-005", senderName: "Guest Visitor", senderRole: "visitor", text: "Hello, I have a Benin Bronze piece that I would like authenticated. What is the process?", timestamp: "2026-06-15 10:00 UTC", read: true },
+      { threadId: thread3.id, senderId: "usr-003", senderName: "Helena Sterling", senderRole: "advisor", text: "We offer authentication services starting from €500. Would you like to proceed?", timestamp: "2026-06-15 13:00 UTC", read: true },
+    ],
+  });
+
+  console.log(`Chat threads: 3 total`);
+
+  // ─── Additional support tickets ────────────────────────────────
+  const ticket2 = await prisma.supportTicket.create({
+    data: {
+      userId: amara.id,
+      clientName: "Amara Nkosi",
       clientRole: "collector",
-      subject: "Certificate Download Issue",
-      description: "Unable to download the COA PDF for my Benin Bronze Head acquisition.",
-      status: "In Progress",
-      priority: "Medium",
-      createdDate: "2026-06-12",
-      lastUpdate: "2026-06-14",
-      assignedTo: "Helena Sterling",
+      subject: "Escrow Status Inquiry",
+      description: "I would like to know the current status of my escrow transaction.",
+      status: "Open",
+      priority: "Low",
+      createdDate: "2026-06-15",
+      lastUpdate: "2026-06-15",
+      assignedTo: "Financial Team",
     },
   });
   await prisma.ticketResponse.createMany({
     data: [
-      { ticketId: ticket.id, author: "Helena Sterling", text: "We are investigating the download issue. The PDF generation service may need restarting.", timestamp: "2026-06-13 09:00 UTC" },
-      { ticketId: ticket.id, author: "Admin", text: "Service restarted. Please try downloading again.", timestamp: "2026-06-14 11:30 UTC" },
+      { ticketId: ticket2.id, author: "Amara Nkosi", text: "I would like to know the current status of my escrow transaction.", timestamp: "2026-06-15 08:00 UTC" },
     ],
   });
 
-  console.log(`Support tickets: 1`);
+  const ticket3 = await prisma.supportTicket.create({
+    data: {
+      clientName: "Dr. Fatima Benali",
+      clientRole: "advisor",
+      subject: "Consultation Scheduling Conflict",
+      description: "Two of my consultations are scheduled at the same time slot on June 20.",
+      status: "Resolved",
+      priority: "High",
+      createdDate: "2026-06-13",
+      lastUpdate: "2026-06-14",
+      assignedTo: "Operations Team",
+    },
+  });
+  await prisma.ticketResponse.createMany({
+    data: [
+      { ticketId: ticket3.id, author: "Dr. Fatima Benali", text: "Two of my consultations are scheduled at the same time slot on June 20.", timestamp: "2026-06-13 14:00 UTC" },
+      { ticketId: ticket3.id, author: "Support", text: "We have rescheduled the consultation with M. Koffi to June 21 at 11:00 GMT.", timestamp: "2026-06-14 09:00 UTC" },
+      { ticketId: ticket3.id, author: "Dr. Fatima Benali", text: "Thank you, that works perfectly.", timestamp: "2026-06-14 09:30 UTC" },
+    ],
+  });
 
-  // Create audit logs
+  console.log(`Support tickets: 3 total`);
+
+  // ─── Additional audit logs ─────────────────────────────────────
   await prisma.auditLog.createMany({
     data: [
-      { userId: admin.id, action: "User registered: Julian Doe", resource: "User", resourceId: julian.id, txHash: "0x7f8a...1b2c" },
-      { userId: admin.id, action: "Artwork added: Benin Bronze Head", resource: "Artwork", resourceId: artworks[2].id, txHash: "0xa1b2...3d4e" },
-      { userId: julian.id, action: "Acquisition certified: Benin Bronze Head", resource: "Acquisition", resourceId: acq1.id, txHash: "0xc3d4...5e6f" },
-      { userId: admin.id, action: "AML verification completed", resource: "User", resourceId: julian.id, txHash: "0xe5f6...7a8b" },
+      { userId: admin.id, action: "Artwork status changed to Live", resource: "Artwork", resourceId: artworks[0].id, txHash: "0x7f3a...c912", signed: true },
+      { userId: fatima.id, action: "Collector KYC verified for COL-004", resource: "User", resourceId: admin.id, txHash: "0x2b8e...d456", signed: true },
+      { userId: julian.id, action: "Escrow TX funds locked", resource: "Escrow", txHash: "0x9c1f...a738", signed: false },
+      { userId: admin.id, action: "Compliance scan completed for artwork", resource: "Artwork", resourceId: artworks[2].id, txHash: "0x4e6d...b190", signed: true },
+      { userId: fatima.id, action: "New artwork draft created", resource: "Artwork", resourceId: artworks[3].id, txHash: "0x1a5c...e824", signed: true },
+      { userId: julian.id, action: "Settings updated: regulatory email changed", resource: "User", resourceId: julian.id, txHash: "0x8d2b...f567", signed: true },
+      { userId: admin.id, action: "New collector enrolled: Amara Nkosi", resource: "User", resourceId: amara.id, txHash: "0x5d7e...a1b9", signed: true },
     ],
   });
 
-  console.log(`Audit logs: 4`);
+  console.log(`Audit logs: 11 total`);
 
-  // Create escrow
+  // ─── Additional escrow transactions ────────────────────────────
   await prisma.escrowTransaction.create({
     data: {
-      artworkTitle: "Benin Bronze Head",
-      buyerName: "Julian Doe",
-      sellerName: "European Estate",
-      amount: 8500000,
+      artworkTitle: "Gold Ashanti Ceremonial Weights",
+      buyerName: "M. Koffi",
+      sellerName: "Aduna Gallery",
+      amount: 150000,
       status: "RELEASED",
-      notes: "Funds verified and released to seller.",
+      notes: "Successfully completed. Funds disbursed to seller.",
+    },
+  });
+  await prisma.escrowTransaction.create({
+    data: {
+      artworkTitle: "Ndop Ceremonial King Portrait",
+      buyerName: "J. Rothschild",
+      sellerName: "Private Estate, Paris",
+      amount: 510000,
+      status: "DISPUTED",
+      notes: "Buyer initiated dispute due to provenance document discrepancy. Under arbitration.",
+    },
+  });
+  await prisma.escrowTransaction.create({
+    data: {
+      artworkTitle: "Dogon Tellem Ancestor Figure",
+      buyerName: "Museum of African Art, Dakar",
+      sellerName: "Aduna Gallery",
+      amount: 380000,
+      status: "HELD",
+      notes: "Institutional acquisition. Awaiting museum board final approval.",
     },
   });
 
-  console.log(`Escrow: 1`);
+  console.log(`Escrow: 4 total`);
+
+  // ─── Advisor data ──────────────────────────────────────────────
+  // Advisor clients
+  await prisma.advisorClient.createMany({
+    data: [
+      { advisorId: fatima.id, name: "E. Sterling", email: "e.sterling@sterlingfoundation.org", tier: "VIP", country: "United Kingdom", avatarColor: "#C5A059", totalSpent: 4200000, acquisitionsCount: 7, satisfactionScore: 98, lastContact: "2026-06-15", interests: '["Benin Bronzes","Yoruba Art","Investment-grade pieces"]' },
+      { advisorId: fatima.id, name: "J. Rothschild", email: "j.rothschild@rothschildart.com", tier: "VIP", country: "Switzerland", avatarColor: "#B35C44", totalSpent: 8900000, acquisitionsCount: 12, satisfactionScore: 95, lastContact: "2026-06-14", interests: '["Kuba Art","Pre-Columbian","High-value sculptures"]' },
+      { advisorId: fatima.id, name: "Sheikh Al-Maktoum", email: "office@almaktoum-collect.ae", tier: "Prestige", country: "UAE", avatarColor: "#0F0F0F", totalSpent: 15600000, acquisitionsCount: 23, satisfactionScore: 99, lastContact: "2026-06-15", interests: '["West African Bronzes","Egyptian Antiquities","Investment portfolios"]' },
+      { advisorId: fatima.id, name: "M. Koffi", email: "m.koffi@lagosartgroup.ng", tier: "Standard", country: "Nigeria", avatarColor: "#6B8E23", totalSpent: 750000, acquisitionsCount: 3, satisfactionScore: 88, lastContact: "2026-06-10", interests: '["Nigerian Contemporary","Nok Terracotta","Entry-level collectibles"]' },
+      { advisorId: fatima.id, name: "Museum of African Art, Dakar", email: "acquisitions@maa.sn", tier: "VIP", country: "Senegal", avatarColor: "#8B4513", totalSpent: 3100000, acquisitionsCount: 5, satisfactionScore: 96, lastContact: "2026-06-12", interests: '["Museum-grade pieces","Institutional loans","Cultural heritage"]' },
+      { advisorId: fatima.id, name: "T. Nakamura", email: "t.nakamura@tokyofineart.jp", tier: "Prestige", country: "Japan", avatarColor: "#DC143C", totalSpent: 2800000, acquisitionsCount: 4, satisfactionScore: 92, lastContact: "2026-06-08", interests: '["Contemporary African","Dogon Art","Investment diversification"]' },
+    ],
+  });
+
+  // Advisor placements
+  await prisma.advisorPlacement.createMany({
+    data: [
+      { userId: fatima.id, artworkTitle: "Igbo-Ukwu Bronze Vessel", artworkCulture: "Igbo Culture (Nigeria)", artworkEra: "9th Century", imageUrl: "https://images.unsplash.com/photo-1600320254374-ce2d293c324e?auto=format&fit=crop&q=80", valuation: 2200000, commission: 110000, clientName: "E. Sterling", status: "Under Review", notes: "Client reviewing XRF analysis. Expected decision by June 20.", proposedDate: new Date("2026-06-10") },
+      { userId: fatima.id, artworkTitle: "Ndop Ceremonial King Portrait", artworkCulture: "Kuba Kingdom (DR Congo)", artworkEra: "18th Century", imageUrl: "https://images.unsplash.com/photo-1582582621959-48d27397dc69?auto=format&fit=crop&q=80", valuation: 510000, commission: 25500, clientName: "J. Rothschild", status: "Proposed", notes: "Pending dispute resolution on prior transaction.", proposedDate: new Date("2026-06-12") },
+      { userId: fatima.id, artworkTitle: "Commemorative Oba Head", artworkCulture: "Benin Empire (Nigeria)", artworkEra: "16th Century", imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCJ92I1jZERzyaqiKc3FH4C9WCoalLYXn4QtDJIh9ZxMxNszZAyIVEgqplLCo7hV6V2HH7-BoQadYiRfZZ2rRVU2KyFezQYJuPejkEXFZmCocL68oD0FhhmK9qjLDUo_dGaLRJjMVDik4XNPGjB6Oc9qTanNVOjjccILVz6KJ9t75nNkB6_MXRhluItt8QhY_hJT0f1IjvtTbYQtOVAAFWxowRUhcdAARMvXHJ_EcwLFlZ4EPwj2Hy7iJOq7_ZanC7qnp6Kfj7IvA", valuation: 1350000, commission: 67500, clientName: "Sheikh Al-Maktoum", status: "Accepted", notes: "Client accepted. Escrow in progress.", proposedDate: new Date("2026-06-05") },
+      { userId: fatima.id, artworkTitle: "Gold Ashanti Ceremonial Weights", artworkCulture: "Akan Culture (Ghana)", artworkEra: "18th Century", imageUrl: "https://images.unsplash.com/photo-1590735213920-68192a487bc2?auto=format&fit=crop&q=80", valuation: 150000, commission: 7500, clientName: "M. Koffi", status: "Proposed", notes: "Entry-level recommendation. Good investment potential.", proposedDate: new Date("2026-06-14") },
+      { userId: fatima.id, artworkTitle: "Dogon Tellem Ancestor Figure", artworkCulture: "Dogon Peoples (Mali)", artworkEra: "17th Century", imageUrl: "https://images.unsplash.com/photo-1501472312651-726afd116ff1?auto=format&fit=crop&q=80", valuation: 380000, commission: 19000, clientName: "Museum of African Art, Dakar", status: "Completed", notes: "Museum acquisition completed. Loan agreement signed.", proposedDate: new Date("2026-05-28") },
+    ],
+  });
+
+  // Advisor activities
+  await prisma.advisorActivity.createMany({
+    data: [
+      { type: "consultation", title: "Consultation Completed", description: "Video advisory session with Sheikh Al-Maktoum — West African Bronze Portfolio", timestamp: "2026-06-15 09:45 UTC", icon: "video" },
+      { type: "placement", title: "Placement Accepted", description: "Commemorative Oba Head accepted by Sheikh Al-Maktoum — Escrow initiated", timestamp: "2026-06-15 10:12 UTC", icon: "check" },
+      { type: "client", title: "Client Update", description: "E. Sterling requested additional XRF analysis for Igbo-Ukwu Bronze Vessel", timestamp: "2026-06-15 11:30 UTC", icon: "user" },
+      { type: "system", title: "Escrow Alert", description: "TX dispute initiated by J. Rothschild — Ndop King Portrait. Under arbitration.", timestamp: "2026-06-14 16:22 UTC", icon: "alert" },
+      { type: "consultation", title: "Consultation Scheduled", description: "Video advisory with T. Nakamura — Contemporary African Sculpture investment", timestamp: "2026-06-14 08:00 UTC", icon: "calendar" },
+      { type: "placement", title: "Placement Proposed", description: "Gold Ashanti Ceremonial Weights proposed to M. Koffi — Entry-level recommendation", timestamp: "2026-06-14 14:15 UTC", icon: "send" },
+      { type: "client", title: "Loan Agreement Signed", description: "Museum of African Art, Dakar — Dogon Tellem Ancestor Figure 3-month exhibition", timestamp: "2026-06-12 15:30 UTC", icon: "file" },
+      { type: "system", title: "Commission Payout", description: "€19,000 commission disbursed for Dogon Tellem Ancestor Figure placement", timestamp: "2026-06-12 17:00 UTC", icon: "dollar" },
+    ],
+  });
+
+  console.log(`Advisor data seeded`);
 
   console.log("Seed completed!");
 }
