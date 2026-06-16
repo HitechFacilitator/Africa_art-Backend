@@ -7,6 +7,7 @@ interface ArtworkFilters {
   artist?: string;
   origin?: string;
   availability?: string;
+  artworkStatus?: string;
   isPOR?: string;
   minPrice?: string;
   maxPrice?: string;
@@ -63,6 +64,9 @@ export async function getAll(filters: ArtworkFilters, page: number, limit: numbe
   }
   if (filters.availability) {
     where.availability = filters.availability as Availability;
+  }
+  if (filters.artworkStatus) {
+    where.artworkStatus = filters.artworkStatus;
   }
   if (filters.isPOR !== undefined) {
     where.isPOR = filters.isPOR === "true";

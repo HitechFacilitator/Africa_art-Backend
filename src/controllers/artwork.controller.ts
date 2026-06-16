@@ -10,6 +10,7 @@ export const getAll = catchAsync(async (req: Request, res: Response) => {
     artist: req.query.artist as string,
     origin: req.query.origin as string,
     availability: req.query.availability as string,
+    artworkStatus: req.query.artworkStatus as string,
     isPOR: req.query.isPOR as string,
     minPrice: req.query.minPrice as string,
     maxPrice: req.query.maxPrice as string,
