@@ -28,6 +28,7 @@ export declare function login(email: string, _password: string): Promise<{
     };
     token: string;
     requiresOTP: boolean;
+    otpCode: string;
 }>;
 export declare function loginAs(role: string): Promise<{
     user: {
@@ -40,7 +41,16 @@ export declare function loginAs(role: string): Promise<{
     };
     token: string;
 }>;
-export declare function verifyOTP(_code: string): Promise<{
+export declare function verifyOTP(email: string, _code: string): Promise<{
+    user: {
+        id: string;
+        email: string;
+        name: string;
+        role: string;
+        avatar: string | undefined;
+        institution: string | undefined;
+    };
+    token: string;
     success: boolean;
 }>;
 export declare function getMe(userId: number): Promise<{

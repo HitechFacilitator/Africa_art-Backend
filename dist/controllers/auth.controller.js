@@ -54,8 +54,8 @@ exports.loginAs = (0, catchAsync_1.default)(async (req, res) => {
     res.json({ success: true, data: result });
 });
 exports.verifyOTP = (0, catchAsync_1.default)(async (req, res) => {
-    const { code } = req.body;
-    const result = await authService.verifyOTP(code);
+    const { email, code } = req.body;
+    const result = await authService.verifyOTP(email, code);
     res.json({ success: true, data: result });
 });
 exports.getMe = (0, catchAsync_1.default)(async (req, res) => {

@@ -7,6 +7,6 @@ require("dotenv/config");
 const app_1 = __importDefault(require("./app"));
 const PORT = process.env.PORT || 5000;
 app_1.default.listen(PORT, () => {
-    console.log(`Africa Art API running on port ${PORT}`);
+    console.log(`Africa Art API running on http://localhost:${PORT}`);
 });
 //# sourceMappingURL=server.js.map

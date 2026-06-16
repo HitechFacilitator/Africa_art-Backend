@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+const morgan_1 = __importDefault(require("morgan"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
@@ -36,6 +37,7 @@ app.use((0, cors_1.default)({
     origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
 }));
+app.use((0, morgan_1.default)("dev"));
 const generalLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
     max: 200,

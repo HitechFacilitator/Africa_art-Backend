@@ -20,8 +20,8 @@ export const loginAs = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const verifyOTP = catchAsync(async (req: Request, res: Response) => {
-  const { code } = req.body;
-  const result = await authService.verifyOTP(code);
+  const { email, code } = req.body;
+  const result = await authService.verifyOTP(email, code);
   res.json({ success: true, data: result });
 });
 

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 import errorHandler from "./middlewares/errorHandler";
 
@@ -35,6 +36,8 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:3000",
   credentials: true,
 }));
+
+app.use(morgan("dev"));
 
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

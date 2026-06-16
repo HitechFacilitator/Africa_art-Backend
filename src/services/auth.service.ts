@@ -66,10 +66,17 @@ export async function login(email: string, _password: string) {
   // In production: validate with bcrypt.compare
   const token = generateToken(user.id, user.role);
 
+  // Generate a 6-digit OTP and print it to the backend terminal for development
+  const otpCode = String(Math.floor(100000 + Math.random() * 900000));
+  console.log(`\n${"=".repeat(50)}`);
+  console.log(`  OTP CODE for ${email}: ${otpCode}`);
+  console.log(`${"=".repeat(50)}\n`);
+
   return {
     user: toUserSession(user),
     token,
     requiresOTP: true,
+    otpCode,
   };
 }
 
@@ -94,15 +101,29 @@ export async function loginAs(role: string) {
 
   const token = generateToken(user.id, user.role);
 
+  // Generate a 6-digit OTP and print it to the backend terminal for development
+  const otpCode = String(Math.floor(100000 + Math.random() * 900000));
+  console.log(`\n${"=".repeat(50)}`);
+  console.log(`  OTP CODE for ${user.email} (${role}): ${otpCode}`);
+  console.log(`${"=".repeat(50)}\n`);
+
   return {
     user: toUserSession(user),
     token,
   };
 }
 
-export async function verifyOTP(_code: string) {
-  // Mock OTP verification - accept any 6-digit code
-  return { success: true };
+export async function verifyOTP(email: string, _code: string) {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new AppError("Invalid session", 401);
+  }
+  const token = generateToken(user.id, user.role);
+  return {
+    user: toUserSession(user),
+    token,
+    success: true,
+  };
 }
 
 export async function getMe(userId: number) {
