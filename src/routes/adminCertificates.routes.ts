@@ -11,5 +11,6 @@ router.post("/", authenticate, authorize(Role.ADMIN), adminCertificatesControlle
 router.patch("/:id", authenticate, authorize(Role.ADMIN), adminCertificatesController.update);
 router.patch("/:id/revoke", authenticate, authorize(Role.ADMIN), adminCertificatesController.revoke);
 router.delete("/:id", authenticate, authorize(Role.ADMIN), adminCertificatesController.remove);
+router.get("/:id/pdf", authenticate, authorize(Role.ADMIN), adminCertificatesController.downloadPdf);
 
 export default router;

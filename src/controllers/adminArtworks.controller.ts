@@ -14,6 +14,21 @@ export const getAll = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+export const getById = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminArtworksService.getById(Number(req.params.id));
+  res.json({ success: true, data: result });
+});
+
+export const create = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminArtworksService.create(req.body);
+  res.status(201).json({ success: true, data: result });
+});
+
+export const update = catchAsync(async (req: Request, res: Response) => {
+  const result = await adminArtworksService.update(Number(req.params.id), req.body);
+  res.json({ success: true, data: result });
+});
+
 export const updateStatus = catchAsync(async (req: Request, res: Response) => {
   const result = await adminArtworksService.updateStatus(Number(req.params.id), req.body.status);
   res.json({ success: true, data: result });

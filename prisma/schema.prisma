@@ -17,6 +17,12 @@ enum Role {
   ADMIN
 }
 
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING
+}
+
 enum Availability {
   AVAILABLE
   RESERVED
@@ -116,6 +122,7 @@ model User {
   password        String
   name            String
   role            Role      @default(COLLECTOR)
+  status          UserStatus @default(ACTIVE)
   avatar          String?
   institution     String?
   country         String?
@@ -199,10 +206,10 @@ model Artwork {
   acquiredYear    Int?
   acquiredMethod  String?
 
-  artistId        Int
-  artist          Artist       @relation(fields: [artistId], references: [id])
-  categoryId      Int
-  category        Category     @relation(fields: [categoryId], references: [id])
+  artistId        Int?
+  artist          Artist?       @relation(fields: [artistId], references: [id])
+  categoryId      Int?
+  category        Category?     @relation(fields: [categoryId], references: [id])
 
   images          ArtworkImage[]
   provenance      ProvenanceRecord[]

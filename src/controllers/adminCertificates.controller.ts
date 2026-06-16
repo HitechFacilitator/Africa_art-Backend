@@ -1,50 +1,44 @@
 import { Request, Response } from "express";
 import * as service from "../services/adminCertificates.service";
+import catchAsync from "../utils/catchAsync";
 
-export async function getAll(_req: Request, res: Response) {
-  try {
-    const result = await service.getAll();
-    res.json({ success: true, ...result });
-  } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to fetch certificates" });
-  }
-}
+export const getAll = catchAsync(async (_req: Request, res: Response) => {
+  const result = await service.getAll();
+  res.json({ success: true, ...result });
+});
 
-export async function create(req: Request, res: Response) {
-  try {
-    const cert = await service.create(req.body);
-    res.json({ success: true, data: cert });
-  } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to create certificate" });
-  }
-}
+export const create = catchAsync(async (req: Request, res: Response) => {
+  const cert = await service.create(req.body);
+  res.status(201).json({ success: true, data: cert });
+});
 
-export async function update(req: Request, res: Response) {
-  try {
-    const id = Number(req.params.id);
-    await service.update(id, req.body);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to update certificate" });
-  }
-}
+export const update = catchAsync(async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  await service.update(id, req.body);
+  res.json({ success: true });
+});
 
-export async function revoke(req: Request, res: Response) {
-  try {
-    const id = Number(req.params.id);
-    await service.revoke(id);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to revoke certificate" });
-  }
-}
+export const revoke = catchAsync(async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  await service.revoke(id);
+  res.json({ success: true });
+});
 
-export async function remove(req: Request, res: Response) {
-  try {
-    const id = Number(req.params.id);
-    await service.remove(id);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ success: false, error: "Failed to delete certificate" });
-  }
-}
+export const remove = catchAsync(async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  await service.remove(id);
+  res.json({ success: true });
+});
+
+export const downloadPdf = catchAsync(async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const pdfBuffer = await service.generatePdf(id);
+  const cert = await service.getAll();
+  const certData = cert.data.find((c) => c.id === `cert-${id}`);
+  const filename = certData
+    ? `${certData.artworkTitle.replace(/[^a-zA-Z0-9]/g, "_")}_certificate.pdf`
+    : `certificate_${id}.pdf`;
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+  res.send(pdfBuffer);
+});

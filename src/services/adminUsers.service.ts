@@ -34,18 +34,76 @@ export async function getAll(params?: { page?: number; limit?: number; search?: 
       institution: u.institution || "",
       joinedDate: u.createdAt.toISOString().split("T")[0],
       lastActive: u.updatedAt.toISOString().split("T")[0],
-      status: "Active" as const,
+      status: u.status || "ACTIVE",
     })),
     pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
   };
 }
 
+export async function getById(id: number) {
+  const u = await prisma.user.findUnique({ where: { id } });
+  if (!u) throw new Error("User not found");
+  return {
+    id: `usr-${u.id}`,
+    name: u.name,
+    email: u.email,
+    role: u.role.toLowerCase(),
+    institution: u.institution || "",
+    country: u.country || "",
+    tier: u.tier || "Standard",
+    avatar: u.avatar || "",
+    joinedDate: u.createdAt.toISOString().split("T")[0],
+    lastActive: u.updatedAt.toISOString().split("T")[0],
+    status: u.status || "ACTIVE",
+  };
+}
+
+export async function create(data: { name: string; email: string; password: string; role?: string; institution?: string; country?: string }) {
+  const bcrypt = await import("bcrypt");
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  const user = await prisma.user.create({
+    data: {
+      name: data.name,
+      email: data.email,
+      password: hashedPassword,
+      role: (data.role?.toUpperCase() || "COLLECTOR") as "COLLECTOR",
+      institution: data.institution || null,
+      country: data.country || null,
+      status: "ACTIVE",
+    },
+  });
+  return { id: `usr-${user.id}`, name: user.name, email: user.email, role: user.role.toLowerCase(), status: user.status };
+}
+
+export async function update(id: number, data: { name?: string; email?: string; role?: string; institution?: string; country?: string; status?: string }) {
+  const existing = await prisma.user.findUnique({ where: { id } });
+  if (!existing) throw new Error("User not found");
+
+  const updateData: Record<string, unknown> = {};
+  if (data.name) updateData.name = data.name;
+  if (data.email) updateData.email = data.email;
+  if (data.role) updateData.role = data.role.toUpperCase();
+  if (data.institution !== undefined) updateData.institution = data.institution || null;
+  if (data.country !== undefined) updateData.country = data.country || null;
+  if (data.status) updateData.status = data.status.toUpperCase();
+
+  const updated = await prisma.user.update({ where: { id }, data: updateData });
+  return { id: `usr-${updated.id}`, name: updated.name, email: updated.email, role: updated.role.toLowerCase(), status: updated.status };
+}
+
 export async function updateStatus(id: number, status: string) {
-  await prisma.user.update({ where: { id }, data: {} });
-  return { success: true };
+  const existing = await prisma.user.findUnique({ where: { id } });
+  if (!existing) throw new Error("User not found");
+  const updated = await prisma.user.update({
+    where: { id },
+    data: { status: status.toUpperCase() as "ACTIVE" },
+  });
+  return { id: `usr-${updated.id}`, status: updated.status };
 }
 
 export async function remove(id: number) {
+  const existing = await prisma.user.findUnique({ where: { id } });
+  if (!existing) throw new Error("User not found");
   await prisma.user.delete({ where: { id } });
   return { success: true };
 }
