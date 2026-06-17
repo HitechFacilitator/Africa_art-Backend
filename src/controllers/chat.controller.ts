@@ -1,24 +1,47 @@
 import { Request, Response } from "express";
 import * as chatService from "../services/chat.service";
 import catchAsync from "../utils/catchAsync";
+import { sseManager } from "../utils/sse";
 
-export const getThreads = catchAsync(async (_req: Request, res: Response) => {
-  const data = await chatService.getThreads();
+export const getThreads = catchAsync(async (req: Request, res: Response) => {
+  const data = await chatService.getThreads(req.user!.userId);
   res.json({ success: true, data });
 });
 
 export const sendMessage = catchAsync(async (req: Request, res: Response) => {
-  const message = await chatService.sendMessage(Number(req.params.threadId), req.body);
+  const message = await chatService.sendMessage(Number(req.params.threadId), {
+    ...req.body,
+    userId: req.user!.userId,
+  });
+
+  sseManager.sendToThread(
+    Number(req.params.threadId),
+    "new-message",
+    { threadId: Number(req.params.threadId), message },
+    String(req.user!.userId)
+  );
+
   res.status(201).json({ success: true, data: message });
 });
 
-export const getTickets = catchAsync(async (_req: Request, res: Response) => {
-  const data = await chatService.getTickets();
+export const markThreadRead = catchAsync(async (req: Request, res: Response) => {
+  const result = await chatService.markThreadRead(
+    Number(req.params.threadId),
+    req.user!.userId
+  );
+  res.json({ success: true, data: result });
+});
+
+export const getTickets = catchAsync(async (req: Request, res: Response) => {
+  const data = await chatService.getTickets(req.user!.userId, req.user!.role);
   res.json({ success: true, data });
 });
 
 export const createTicket = catchAsync(async (req: Request, res: Response) => {
-  const ticket = await chatService.createTicket(req.user!.userId, req.body);
+  const ticket = await chatService.createTicket(req.user!.userId, {
+    ...req.body,
+    clientName: req.body.clientName || "",
+  });
   res.status(201).json({ success: true, data: ticket });
 });
 
@@ -28,6 +51,16 @@ export const updateTicketStatus = catchAsync(async (req: Request, res: Response)
 });
 
 export const addTicketResponse = catchAsync(async (req: Request, res: Response) => {
-  const response = await chatService.addTicketResponse(Number(req.params.id), req.body.author, req.body.text);
+  const response = await chatService.addTicketResponse(
+    Number(req.params.id),
+    req.body.author || "Admin",
+    req.body.text
+  );
+
+  sseManager.broadcast("ticket-update", {
+    ticketId: Number(req.params.id),
+    response,
+  });
+
   res.status(201).json({ success: true, data: response });
 });

@@ -75,6 +75,20 @@ async function main() {
     },
   });
 
+  const support = await prisma.user.upsert({
+    where: { email: "support@adunagallery.com" },
+    update: {},
+    create: {
+      email: "support@adunagallery.com",
+      password,
+      name: "Support Team",
+      role: Role.SUPPORT,
+      avatar: "ST",
+      institution: "Aduna Gallery",
+      emailVerified: true,
+    },
+  });
+
   const visitor = await prisma.user.upsert({
     where: { email: "visitor@example.com" },
     update: {},

@@ -29,6 +29,28 @@ export async function create(userId: number, data: {
   status?: string;
   messages?: { sender: string; text: string; timestamp?: string }[];
 }) {
+  const existing = await prisma.inquiry.findFirst({
+    where: { userId, artworkTitle: data.artworkTitle },
+    include: { messages: { orderBy: { createdAt: "asc" } } },
+  });
+
+  if (existing) {
+    return {
+      id: `inq-${existing.id}`,
+      artworkTitle: existing.artworkTitle,
+      artworkYear: existing.artworkYear || "",
+      imageUrl: existing.imageUrl || "",
+      status: existing.status,
+      date: existing.date || existing.createdAt.toISOString(),
+      messages: existing.messages.map(m => ({
+        sender: m.sender,
+        text: m.text || "",
+        timestamp: m.timestamp || "",
+      })),
+      existing: true,
+    };
+  }
+
   const inquiry = await prisma.inquiry.create({
     data: {
       userId,
