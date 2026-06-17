@@ -14,10 +14,14 @@ export type AggregateChatThread = {
 };
 export type ChatThreadAvgAggregateOutputType = {
     id: number | null;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     unreadCount: number | null;
 };
 export type ChatThreadSumAggregateOutputType = {
     id: number | null;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     unreadCount: number | null;
 };
 export type ChatThreadMinAggregateOutputType = {
@@ -25,6 +29,8 @@ export type ChatThreadMinAggregateOutputType = {
     clientName: string | null;
     clientRole: string | null;
     advisorName: string | null;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     subject: string | null;
     status: string | null;
     lastMessage: string | null;
@@ -38,6 +44,8 @@ export type ChatThreadMaxAggregateOutputType = {
     clientName: string | null;
     clientRole: string | null;
     advisorName: string | null;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     subject: string | null;
     status: string | null;
     lastMessage: string | null;
@@ -51,6 +59,8 @@ export type ChatThreadCountAggregateOutputType = {
     clientName: number;
     clientRole: number;
     advisorName: number;
+    clientUserId: number;
+    advisorUserId: number;
     subject: number;
     status: number;
     lastMessage: number;
@@ -62,10 +72,14 @@ export type ChatThreadCountAggregateOutputType = {
 };
 export type ChatThreadAvgAggregateInputType = {
     id?: true;
+    clientUserId?: true;
+    advisorUserId?: true;
     unreadCount?: true;
 };
 export type ChatThreadSumAggregateInputType = {
     id?: true;
+    clientUserId?: true;
+    advisorUserId?: true;
     unreadCount?: true;
 };
 export type ChatThreadMinAggregateInputType = {
@@ -73,6 +87,8 @@ export type ChatThreadMinAggregateInputType = {
     clientName?: true;
     clientRole?: true;
     advisorName?: true;
+    clientUserId?: true;
+    advisorUserId?: true;
     subject?: true;
     status?: true;
     lastMessage?: true;
@@ -86,6 +102,8 @@ export type ChatThreadMaxAggregateInputType = {
     clientName?: true;
     clientRole?: true;
     advisorName?: true;
+    clientUserId?: true;
+    advisorUserId?: true;
     subject?: true;
     status?: true;
     lastMessage?: true;
@@ -99,6 +117,8 @@ export type ChatThreadCountAggregateInputType = {
     clientName?: true;
     clientRole?: true;
     advisorName?: true;
+    clientUserId?: true;
+    advisorUserId?: true;
     subject?: true;
     status?: true;
     lastMessage?: true;
@@ -189,6 +209,8 @@ export type ChatThreadGroupByOutputType = {
     clientName: string | null;
     clientRole: string | null;
     advisorName: string | null;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     subject: string | null;
     status: string;
     lastMessage: string | null;
@@ -213,6 +235,8 @@ export type ChatThreadWhereInput = {
     clientName?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     clientRole?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     advisorName?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
+    clientUserId?: Prisma.IntNullableFilter<"ChatThread"> | number | null;
+    advisorUserId?: Prisma.IntNullableFilter<"ChatThread"> | number | null;
     subject?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     status?: Prisma.StringFilter<"ChatThread"> | string;
     lastMessage?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
@@ -228,6 +252,8 @@ export type ChatThreadOrderByWithRelationInput = {
     clientName?: Prisma.SortOrderInput | Prisma.SortOrder;
     clientRole?: Prisma.SortOrderInput | Prisma.SortOrder;
     advisorName?: Prisma.SortOrderInput | Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrderInput | Prisma.SortOrder;
     subject?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     lastMessage?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -247,6 +273,8 @@ export type ChatThreadWhereUniqueInput = Prisma.AtLeast<{
     clientName?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     clientRole?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     advisorName?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
+    clientUserId?: Prisma.IntNullableFilter<"ChatThread"> | number | null;
+    advisorUserId?: Prisma.IntNullableFilter<"ChatThread"> | number | null;
     subject?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
     status?: Prisma.StringFilter<"ChatThread"> | string;
     lastMessage?: Prisma.StringNullableFilter<"ChatThread"> | string | null;
@@ -262,6 +290,8 @@ export type ChatThreadOrderByWithAggregationInput = {
     clientName?: Prisma.SortOrderInput | Prisma.SortOrder;
     clientRole?: Prisma.SortOrderInput | Prisma.SortOrder;
     advisorName?: Prisma.SortOrderInput | Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrderInput | Prisma.SortOrder;
     subject?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     lastMessage?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -283,6 +313,8 @@ export type ChatThreadScalarWhereWithAggregatesInput = {
     clientName?: Prisma.StringNullableWithAggregatesFilter<"ChatThread"> | string | null;
     clientRole?: Prisma.StringNullableWithAggregatesFilter<"ChatThread"> | string | null;
     advisorName?: Prisma.StringNullableWithAggregatesFilter<"ChatThread"> | string | null;
+    clientUserId?: Prisma.IntNullableWithAggregatesFilter<"ChatThread"> | number | null;
+    advisorUserId?: Prisma.IntNullableWithAggregatesFilter<"ChatThread"> | number | null;
     subject?: Prisma.StringNullableWithAggregatesFilter<"ChatThread"> | string | null;
     status?: Prisma.StringWithAggregatesFilter<"ChatThread"> | string;
     lastMessage?: Prisma.StringNullableWithAggregatesFilter<"ChatThread"> | string | null;
@@ -295,6 +327,8 @@ export type ChatThreadCreateInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -310,6 +344,8 @@ export type ChatThreadUncheckedCreateInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -324,6 +360,8 @@ export type ChatThreadUpdateInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -339,6 +377,8 @@ export type ChatThreadUncheckedUpdateInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -354,6 +394,8 @@ export type ChatThreadCreateManyInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -366,6 +408,8 @@ export type ChatThreadUpdateManyMutationInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -379,6 +423,8 @@ export type ChatThreadUncheckedUpdateManyInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -397,6 +443,8 @@ export type ChatThreadCountOrderByAggregateInput = {
     clientName?: Prisma.SortOrder;
     clientRole?: Prisma.SortOrder;
     advisorName?: Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrder;
     subject?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     lastMessage?: Prisma.SortOrder;
@@ -407,6 +455,8 @@ export type ChatThreadCountOrderByAggregateInput = {
 };
 export type ChatThreadAvgOrderByAggregateInput = {
     id?: Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrder;
     unreadCount?: Prisma.SortOrder;
 };
 export type ChatThreadMaxOrderByAggregateInput = {
@@ -414,6 +464,8 @@ export type ChatThreadMaxOrderByAggregateInput = {
     clientName?: Prisma.SortOrder;
     clientRole?: Prisma.SortOrder;
     advisorName?: Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrder;
     subject?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     lastMessage?: Prisma.SortOrder;
@@ -427,6 +479,8 @@ export type ChatThreadMinOrderByAggregateInput = {
     clientName?: Prisma.SortOrder;
     clientRole?: Prisma.SortOrder;
     advisorName?: Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrder;
     subject?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     lastMessage?: Prisma.SortOrder;
@@ -437,6 +491,8 @@ export type ChatThreadMinOrderByAggregateInput = {
 };
 export type ChatThreadSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
+    clientUserId?: Prisma.SortOrder;
+    advisorUserId?: Prisma.SortOrder;
     unreadCount?: Prisma.SortOrder;
 };
 export type ChatThreadScalarRelationFilter = {
@@ -471,6 +527,8 @@ export type ChatThreadCreateWithoutMessagesInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -485,6 +543,8 @@ export type ChatThreadUncheckedCreateWithoutMessagesInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -511,6 +571,8 @@ export type ChatThreadUpdateWithoutMessagesInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -525,6 +587,8 @@ export type ChatThreadUncheckedUpdateWithoutMessagesInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -538,6 +602,8 @@ export type ChatThreadCreateWithoutReadStatusesInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -552,6 +618,8 @@ export type ChatThreadUncheckedCreateWithoutReadStatusesInput = {
     clientName?: string | null;
     clientRole?: string | null;
     advisorName?: string | null;
+    clientUserId?: number | null;
+    advisorUserId?: number | null;
     subject?: string | null;
     status?: string;
     lastMessage?: string | null;
@@ -578,6 +646,8 @@ export type ChatThreadUpdateWithoutReadStatusesInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -592,6 +662,8 @@ export type ChatThreadUncheckedUpdateWithoutReadStatusesInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    advisorUserId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -638,6 +710,8 @@ export type ChatThreadSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     clientName?: boolean;
     clientRole?: boolean;
     advisorName?: boolean;
+    clientUserId?: boolean;
+    advisorUserId?: boolean;
     subject?: boolean;
     status?: boolean;
     lastMessage?: boolean;
@@ -654,6 +728,8 @@ export type ChatThreadSelectScalar = {
     clientName?: boolean;
     clientRole?: boolean;
     advisorName?: boolean;
+    clientUserId?: boolean;
+    advisorUserId?: boolean;
     subject?: boolean;
     status?: boolean;
     lastMessage?: boolean;
@@ -662,7 +738,7 @@ export type ChatThreadSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type ChatThreadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientName" | "clientRole" | "advisorName" | "subject" | "status" | "lastMessage" | "lastMessageTime" | "unreadCount" | "createdAt" | "updatedAt", ExtArgs["result"]["chatThread"]>;
+export type ChatThreadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientName" | "clientRole" | "advisorName" | "clientUserId" | "advisorUserId" | "subject" | "status" | "lastMessage" | "lastMessageTime" | "unreadCount" | "createdAt" | "updatedAt", ExtArgs["result"]["chatThread"]>;
 export type ChatThreadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     messages?: boolean | Prisma.ChatThread$messagesArgs<ExtArgs>;
     readStatuses?: boolean | Prisma.ChatThread$readStatusesArgs<ExtArgs>;
@@ -679,6 +755,8 @@ export type $ChatThreadPayload<ExtArgs extends runtime.Types.Extensions.Internal
         clientName: string | null;
         clientRole: string | null;
         advisorName: string | null;
+        clientUserId: number | null;
+        advisorUserId: number | null;
         subject: string | null;
         status: string;
         lastMessage: string | null;
@@ -994,6 +1072,8 @@ export interface ChatThreadFieldRefs {
     readonly clientName: Prisma.FieldRef<"ChatThread", 'String'>;
     readonly clientRole: Prisma.FieldRef<"ChatThread", 'String'>;
     readonly advisorName: Prisma.FieldRef<"ChatThread", 'String'>;
+    readonly clientUserId: Prisma.FieldRef<"ChatThread", 'Int'>;
+    readonly advisorUserId: Prisma.FieldRef<"ChatThread", 'Int'>;
     readonly subject: Prisma.FieldRef<"ChatThread", 'String'>;
     readonly status: Prisma.FieldRef<"ChatThread", 'String'>;
     readonly lastMessage: Prisma.FieldRef<"ChatThread", 'String'>;

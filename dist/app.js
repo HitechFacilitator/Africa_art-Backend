@@ -45,21 +45,18 @@ app.use((0, morgan_1.default)("dev"));
 // Auth rate limiter — only for login/register/otp (prevent brute force)
 const authLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
-    max: 20,
+    max: 50,
     message: { success: false, message: "Too many auth attempts, please try again later" },
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.ip || "unknown",
 });
 // General rate limiter — generous for normal multi-user usage
 const generalLimiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000,
-    max: 2000,
+    windowMs: 1 * 60 * 1000,
+    max: 500,
     message: { success: false, message: "Too many requests, please try again later" },
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.ip || "unknown",
-    // Skip rate limiting for SSE endpoints (long-lived connections)
     skip: (req) => req.originalUrl.includes("/chat/events"),
 });
 app.use(express_1.default.json({ limit: "10mb" }));

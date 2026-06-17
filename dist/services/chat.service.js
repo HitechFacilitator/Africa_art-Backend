@@ -12,14 +12,35 @@ exports.updateTicketStatus = updateTicketStatus;
 exports.deleteTicket = deleteTicket;
 exports.addTicketResponse = addTicketResponse;
 const db_1 = __importDefault(require("../config/db"));
-async function getThreads(userId) {
-    const threads = await db_1.default.chatThread.findMany({
-        include: {
-            messages: { orderBy: { createdAt: "asc" } },
-            readStatuses: { where: { userId } },
-        },
-        orderBy: { updatedAt: "desc" },
-    });
+async function getThreads(userId, role) {
+    let threads;
+    if (role.toLowerCase() === "admin") {
+        // Admin sees all threads
+        threads = await db_1.default.chatThread.findMany({
+            include: {
+                messages: { orderBy: { createdAt: "asc" } },
+                readStatuses: { where: { userId } },
+            },
+            orderBy: { updatedAt: "desc" },
+        });
+    }
+    else {
+        // All other users (including support) only see threads they participate in
+        const participantThreadIds = await db_1.default.chatMessage.findMany({
+            where: { userId },
+            select: { threadId: true },
+            distinct: ["threadId"],
+        });
+        const threadIds = participantThreadIds.map(m => m.threadId);
+        threads = await db_1.default.chatThread.findMany({
+            where: { id: { in: threadIds } },
+            include: {
+                messages: { orderBy: { createdAt: "asc" } },
+                readStatuses: { where: { userId } },
+            },
+            orderBy: { updatedAt: "desc" },
+        });
+    }
     return threads.map(t => {
         const readStatus = t.readStatuses[0];
         const lastReadId = readStatus?.lastReadId || 0;
@@ -29,6 +50,8 @@ async function getThreads(userId) {
             clientName: t.clientName || "",
             clientRole: t.clientRole || "",
             advisorName: t.advisorName || "",
+            clientUserId: t.clientUserId || null,
+            advisorUserId: t.advisorUserId || null,
             subject: t.subject || "",
             lastMessage: t.lastMessage || "",
             lastMessageTime: t.lastMessageTime || "",
@@ -66,6 +89,31 @@ async function sendMessage(threadId, data) {
             lastMessageTime: message.timestamp || "",
         },
     });
+    // Get thread to determine correct recipients
+    const thread = await db_1.default.chatThread.findUnique({ where: { id: threadId } });
+    // Find recipient user IDs from thread participant fields
+    const recipientIds = [];
+    if (thread) {
+        if (thread.clientUserId && thread.clientUserId !== data.userId) {
+            recipientIds.push(thread.clientUserId);
+        }
+        if (thread.advisorUserId && thread.advisorUserId !== data.userId) {
+            recipientIds.push(thread.advisorUserId);
+        }
+        // Support/admin sending: route to the non-support participant
+        if (recipientIds.length === 0 && data.userId) {
+            // Fallback: use message participants
+            const participantMessages = await db_1.default.chatMessage.findMany({
+                where: { threadId, userId: { not: null, notIn: [data.userId] } },
+                select: { userId: true },
+                distinct: ["userId"],
+            });
+            for (const m of participantMessages) {
+                if (m.userId)
+                    recipientIds.push(m.userId);
+            }
+        }
+    }
     return {
         id: `msg-${message.id}`,
         senderId: message.senderId || "",
@@ -74,6 +122,7 @@ async function sendMessage(threadId, data) {
         text: message.text || "",
         timestamp: message.timestamp || "",
         read: message.read,
+        recipientIds: recipientIds.map(String),
     };
 }
 async function markThreadRead(threadId, userId) {

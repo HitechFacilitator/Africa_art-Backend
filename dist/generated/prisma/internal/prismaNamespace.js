@@ -495,6 +495,8 @@ exports.ChatThreadScalarFieldEnum = {
     clientName: 'clientName',
     clientRole: 'clientRole',
     advisorName: 'advisorName',
+    clientUserId: 'clientUserId',
+    advisorUserId: 'advisorUserId',
     subject: 'subject',
     status: 'status',
     lastMessage: 'lastMessage',

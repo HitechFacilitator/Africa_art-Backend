@@ -42,7 +42,7 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const sse_1 = require("../utils/sse");
 const db_1 = __importDefault(require("../config/db"));
 exports.getThreads = (0, catchAsync_1.default)(async (req, res) => {
-    const data = await chatService.getThreads(req.user.userId);
+    const data = await chatService.getThreads(req.user.userId, req.user.role);
     res.json({ success: true, data });
 });
 exports.sendMessage = (0, catchAsync_1.default)(async (req, res) => {
@@ -50,15 +50,8 @@ exports.sendMessage = (0, catchAsync_1.default)(async (req, res) => {
         ...req.body,
         userId: req.user.userId,
     });
-    const participantMessages = await db_1.default.chatMessage.findMany({
-        where: { threadId: Number(req.params.threadId), userId: { not: null } },
-        select: { userId: true },
-        distinct: ["userId"],
-    });
-    const recipientIds = participantMessages
-        .map((m) => m.userId)
-        .filter((id) => id !== null && id !== req.user.userId)
-        .map(String);
+    // Use recipientIds from service (based on thread participant fields)
+    const recipientIds = message.recipientIds || [];
     if (recipientIds.length > 0) {
         sse_1.sseManager.sendToUsers(recipientIds, "new-message", {
             threadId: Number(req.params.threadId),
@@ -86,6 +79,17 @@ exports.createTicket = (0, catchAsync_1.default)(async (req, res) => {
 });
 exports.updateTicketStatus = (0, catchAsync_1.default)(async (req, res) => {
     await chatService.updateTicketStatus(Number(req.params.id), req.body.status);
+    // Notify ticket owner of status change
+    const ticket = await db_1.default.supportTicket.findUnique({
+        where: { id: Number(req.params.id) },
+        select: { userId: true },
+    });
+    if (ticket && ticket.userId !== req.user.userId) {
+        sse_1.sseManager.sendToUsers([String(ticket.userId)], "ticket-update", {
+            ticketId: Number(req.params.id),
+            response: { author: "System", text: `Status changed to: ${req.body.status}`, timestamp: new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC" },
+        });
+    }
     res.json({ success: true, message: "Ticket status updated" });
 });
 exports.addTicketResponse = (0, catchAsync_1.default)(async (req, res) => {
@@ -95,10 +99,17 @@ exports.addTicketResponse = (0, catchAsync_1.default)(async (req, res) => {
         author = dbUser?.name || "Unknown";
     }
     const response = await chatService.addTicketResponse(Number(req.params.id), author || "Unknown", req.body.text);
-    sse_1.sseManager.broadcast("ticket-update", {
-        ticketId: Number(req.params.id),
-        response,
+    // Only notify the ticket owner (not the sender)
+    const ticket = await db_1.default.supportTicket.findUnique({
+        where: { id: Number(req.params.id) },
+        select: { userId: true },
     });
+    if (ticket && ticket.userId !== req.user.userId) {
+        sse_1.sseManager.sendToUsers([String(ticket.userId)], "ticket-update", {
+            ticketId: Number(req.params.id),
+            response,
+        });
+    }
     res.status(201).json({ success: true, data: response });
 });
 exports.deleteTicket = (0, catchAsync_1.default)(async (req, res) => {

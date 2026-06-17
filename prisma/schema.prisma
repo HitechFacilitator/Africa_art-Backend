@@ -595,6 +595,8 @@ model ChatThread {
   clientName      String?
   clientRole      String?
   advisorName     String?
+  clientUserId    Int?
+  advisorUserId   Int?
   subject         String?
   status          String   @default("active")
   lastMessage     String?

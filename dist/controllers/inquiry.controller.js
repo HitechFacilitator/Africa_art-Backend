@@ -40,6 +40,7 @@ exports.addMessage = exports.create = exports.getByUser = void 0;
 const inquiryService = __importStar(require("../services/inquiry.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const sse_1 = require("../utils/sse");
+const db_1 = __importDefault(require("../config/db"));
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
     const data = await inquiryService.getByUser(req.user.userId);
     res.json({ success: true, data });
@@ -50,10 +51,17 @@ exports.create = (0, catchAsync_1.default)(async (req, res) => {
 });
 exports.addMessage = (0, catchAsync_1.default)(async (req, res) => {
     const message = await inquiryService.addMessage(Number(req.params.id), req.body.sender, req.body.text);
-    sse_1.sseManager.broadcast("inquiry-update", {
-        inquiryId: Number(req.params.id),
-        message,
+    // Only notify the inquiry owner (not the sender)
+    const inquiry = await db_1.default.inquiry.findUnique({
+        where: { id: Number(req.params.id) },
+        select: { userId: true },
     });
+    if (inquiry && inquiry.userId !== req.user.userId) {
+        sse_1.sseManager.sendToUsers([String(inquiry.userId)], "inquiry-update", {
+            inquiryId: Number(req.params.id),
+            message,
+        });
+    }
     res.status(201).json({ success: true, data: message });
 });
 //# sourceMappingURL=inquiry.controller.js.map

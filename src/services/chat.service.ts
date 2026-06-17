@@ -3,8 +3,8 @@ import prisma from "../config/db";
 export async function getThreads(userId: number, role: string) {
   let threads;
 
-  if (role.toLowerCase() === "support" || role.toLowerCase() === "admin") {
-    // Support/admin see all threads
+  if (role.toLowerCase() === "admin") {
+    // Admin sees all threads
     threads = await prisma.chatThread.findMany({
       include: {
         messages: { orderBy: { createdAt: "asc" } },
@@ -13,7 +13,7 @@ export async function getThreads(userId: number, role: string) {
       orderBy: { updatedAt: "desc" },
     });
   } else {
-    // Regular users only see threads they participate in
+    // All other users (including support) only see threads they participate in
     const participantThreadIds = await prisma.chatMessage.findMany({
       where: { userId },
       select: { threadId: true },
@@ -41,6 +41,8 @@ export async function getThreads(userId: number, role: string) {
       clientName: t.clientName || "",
       clientRole: t.clientRole || "",
       advisorName: t.advisorName || "",
+      clientUserId: t.clientUserId || null,
+      advisorUserId: t.advisorUserId || null,
       subject: t.subject || "",
       lastMessage: t.lastMessage || "",
       lastMessageTime: t.lastMessageTime || "",
@@ -87,6 +89,32 @@ export async function sendMessage(threadId: number, data: {
     },
   });
 
+  // Get thread to determine correct recipients
+  const thread = await prisma.chatThread.findUnique({ where: { id: threadId } });
+
+  // Find recipient user IDs from thread participant fields
+  const recipientIds: number[] = [];
+  if (thread) {
+    if (thread.clientUserId && thread.clientUserId !== data.userId) {
+      recipientIds.push(thread.clientUserId);
+    }
+    if (thread.advisorUserId && thread.advisorUserId !== data.userId) {
+      recipientIds.push(thread.advisorUserId);
+    }
+    // Support/admin sending: route to the non-support participant
+    if (recipientIds.length === 0 && data.userId) {
+      // Fallback: use message participants
+      const participantMessages = await prisma.chatMessage.findMany({
+        where: { threadId, userId: { not: null, notIn: [data.userId] } },
+        select: { userId: true },
+        distinct: ["userId"],
+      });
+      for (const m of participantMessages) {
+        if (m.userId) recipientIds.push(m.userId);
+      }
+    }
+  }
+
   return {
     id: `msg-${message.id}`,
     senderId: message.senderId || "",
@@ -95,6 +123,7 @@ export async function sendMessage(threadId: number, data: {
     text: message.text || "",
     timestamp: message.timestamp || "",
     read: message.read,
+    recipientIds: recipientIds.map(String),
   };
 }
 

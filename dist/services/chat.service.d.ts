@@ -1,8 +1,10 @@
-export declare function getThreads(userId: number): Promise<{
+export declare function getThreads(userId: number, role: string): Promise<{
     id: string;
     clientName: string;
     clientRole: string;
     advisorName: string;
+    clientUserId: number | null;
+    advisorUserId: number | null;
     subject: string;
     lastMessage: string;
     lastMessageTime: string;
@@ -32,6 +34,7 @@ export declare function sendMessage(threadId: number, data: {
     text: string;
     timestamp: string;
     read: boolean;
+    recipientIds: string[];
 }>;
 export declare function markThreadRead(threadId: number, userId: number): Promise<{
     success: boolean;

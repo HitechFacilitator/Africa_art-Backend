@@ -445,6 +445,8 @@ export declare const ChatThreadScalarFieldEnum: {
     readonly clientName: "clientName";
     readonly clientRole: "clientRole";
     readonly advisorName: "advisorName";
+    readonly clientUserId: "clientUserId";
+    readonly advisorUserId: "advisorUserId";
     readonly subject: "subject";
     readonly status: "status";
     readonly lastMessage: "lastMessage";

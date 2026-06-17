@@ -15,16 +15,8 @@ export const sendMessage = catchAsync(async (req: Request, res: Response) => {
     userId: req.user!.userId,
   });
 
-  const participantMessages = await prisma.chatMessage.findMany({
-    where: { threadId: Number(req.params.threadId), userId: { not: null } },
-    select: { userId: true },
-    distinct: ["userId"],
-  });
-
-  const recipientIds = participantMessages
-    .map((m) => m.userId)
-    .filter((id): id is number => id !== null && id !== req.user!.userId)
-    .map(String);
+  // Use recipientIds from service (based on thread participant fields)
+  const recipientIds = (message as unknown as { recipientIds: string[] }).recipientIds || [];
 
   if (recipientIds.length > 0) {
     sseManager.sendToUsers(recipientIds, "new-message", {
