@@ -1,13 +1,35 @@
 import prisma from "../config/db";
 
-export async function getThreads(userId: number) {
-  const threads = await prisma.chatThread.findMany({
-    include: {
-      messages: { orderBy: { createdAt: "asc" } },
-      readStatuses: { where: { userId } },
-    },
-    orderBy: { updatedAt: "desc" },
-  });
+export async function getThreads(userId: number, role: string) {
+  let threads;
+
+  if (role.toLowerCase() === "support" || role.toLowerCase() === "admin") {
+    // Support/admin see all threads
+    threads = await prisma.chatThread.findMany({
+      include: {
+        messages: { orderBy: { createdAt: "asc" } },
+        readStatuses: { where: { userId } },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+  } else {
+    // Regular users only see threads they participate in
+    const participantThreadIds = await prisma.chatMessage.findMany({
+      where: { userId },
+      select: { threadId: true },
+      distinct: ["threadId"],
+    });
+    const threadIds = participantThreadIds.map(m => m.threadId);
+
+    threads = await prisma.chatThread.findMany({
+      where: { id: { in: threadIds } },
+      include: {
+        messages: { orderBy: { createdAt: "asc" } },
+        readStatuses: { where: { userId } },
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+  }
 
   return threads.map(t => {
     const readStatus = t.readStatuses[0];

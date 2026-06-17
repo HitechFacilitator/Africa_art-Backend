@@ -5,7 +5,7 @@ import { sseManager } from "../utils/sse";
 import prisma from "../config/db";
 
 export const getThreads = catchAsync(async (req: Request, res: Response) => {
-  const data = await chatService.getThreads(req.user!.userId);
+  const data = await chatService.getThreads(req.user!.userId, req.user!.role);
   res.json({ success: true, data });
 });
 
@@ -61,6 +61,19 @@ export const createTicket = catchAsync(async (req: Request, res: Response) => {
 
 export const updateTicketStatus = catchAsync(async (req: Request, res: Response) => {
   await chatService.updateTicketStatus(Number(req.params.id), req.body.status);
+
+  // Notify ticket owner of status change
+  const ticket = await prisma.supportTicket.findUnique({
+    where: { id: Number(req.params.id) },
+    select: { userId: true },
+  });
+  if (ticket && ticket.userId !== req.user!.userId) {
+    sseManager.sendToUsers([String(ticket.userId)], "ticket-update", {
+      ticketId: Number(req.params.id),
+      response: { author: "System", text: `Status changed to: ${req.body.status}`, timestamp: new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC" },
+    });
+  }
+
   res.json({ success: true, message: "Ticket status updated" });
 });
 
@@ -76,10 +89,17 @@ export const addTicketResponse = catchAsync(async (req: Request, res: Response) 
     req.body.text
   );
 
-  sseManager.broadcast("ticket-update", {
-    ticketId: Number(req.params.id),
-    response,
+  // Only notify the ticket owner (not the sender)
+  const ticket = await prisma.supportTicket.findUnique({
+    where: { id: Number(req.params.id) },
+    select: { userId: true },
   });
+  if (ticket && ticket.userId !== req.user!.userId) {
+    sseManager.sendToUsers([String(ticket.userId)], "ticket-update", {
+      ticketId: Number(req.params.id),
+      response,
+    });
+  }
 
   res.status(201).json({ success: true, data: response });
 });
