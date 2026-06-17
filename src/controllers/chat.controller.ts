@@ -17,6 +17,11 @@ export const getTickets = catchAsync(async (_req: Request, res: Response) => {
   res.json({ success: true, data });
 });
 
+export const createTicket = catchAsync(async (req: Request, res: Response) => {
+  const ticket = await chatService.createTicket(req.user!.userId, req.body);
+  res.status(201).json({ success: true, data: ticket });
+});
+
 export const updateTicketStatus = catchAsync(async (req: Request, res: Response) => {
   await chatService.updateTicketStatus(Number(req.params.id), req.body.status);
   res.json({ success: true, message: "Ticket status updated" });

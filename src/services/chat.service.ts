@@ -90,6 +90,42 @@ export async function getTickets() {
   }));
 }
 
+export async function createTicket(userId: number, data: {
+  subject: string;
+  description: string;
+  priority?: string;
+  clientName?: string;
+  clientRole?: string;
+}) {
+  const ticket = await prisma.supportTicket.create({
+    data: {
+      userId,
+      subject: data.subject,
+      description: data.description,
+      priority: data.priority || "Medium",
+      clientName: data.clientName || "",
+      clientRole: data.clientRole || "collector",
+      status: "Open",
+      createdDate: new Date().toISOString().split("T")[0],
+      lastUpdate: new Date().toISOString().split("T")[0],
+    },
+  });
+
+  return {
+    id: ticket.id.toString(),
+    clientName: ticket.clientName || "",
+    clientRole: ticket.clientRole || "",
+    subject: ticket.subject || "",
+    description: ticket.description || "",
+    status: ticket.status,
+    priority: ticket.priority,
+    createdDate: ticket.createdDate || "",
+    lastUpdate: ticket.lastUpdate || "",
+    assignedTo: "",
+    responses: [],
+  };
+}
+
 export async function updateTicketStatus(id: number, status: string) {
   await prisma.supportTicket.update({
     where: { id },

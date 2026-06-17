@@ -7,6 +7,7 @@ const router = Router();
 router.get("/threads", authenticate, chatController.getThreads);
 router.post("/threads/:threadId/messages", authenticate, chatController.sendMessage);
 router.get("/tickets", authenticate, chatController.getTickets);
+router.post("/tickets", authenticate, chatController.createTicket);
 router.patch("/tickets/:id/status", authenticate, chatController.updateTicketStatus);
 router.post("/tickets/:id/responses", authenticate, chatController.addTicketResponse);
 
