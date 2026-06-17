@@ -101,7 +101,7 @@ export async function markThreadRead(threadId: number, userId: number) {
 export async function getTickets(userId: number, role: string) {
   const where: Record<string, unknown> = {};
 
-  if (role === "support" || role === "admin") {
+  if (role.toLowerCase() === "support" || role.toLowerCase() === "admin") {
     // Support and admin see all tickets
   } else {
     where.userId = userId;
@@ -186,7 +186,7 @@ export async function deleteTicket(id: number, userId: number, role: string) {
   const ticket = await prisma.supportTicket.findUnique({ where: { id } });
   if (!ticket) throw new Error("Ticket not found");
 
-  if (role !== "support" && role !== "admin" && ticket.userId !== userId) {
+  if (role.toLowerCase() !== "support" && role.toLowerCase() !== "admin" && ticket.userId !== userId) {
     throw new Error("Not authorized to delete this ticket");
   }
 
