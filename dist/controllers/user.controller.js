@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateRole = exports.deleteOne = exports.update = exports.getById = exports.getAll = void 0;
+exports.changePassword = exports.updateRole = exports.deleteOne = exports.update = exports.getById = exports.getAll = void 0;
 const userService = __importStar(require("../services/user.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const pagination_1 = require("../utils/pagination");
@@ -64,5 +64,11 @@ exports.deleteOne = (0, catchAsync_1.default)(async (req, res) => {
 exports.updateRole = (0, catchAsync_1.default)(async (req, res) => {
     const user = await userService.updateRole(Number(req.params.id), req.body.role);
     res.json({ success: true, data: user });
+});
+exports.changePassword = (0, catchAsync_1.default)(async (req, res) => {
+    const userId = req.user.userId;
+    const { currentPassword, newPassword } = req.body;
+    await userService.changePassword(userId, currentPassword, newPassword);
+    res.json({ success: true, message: "Password changed successfully" });
 });
 //# sourceMappingURL=user.controller.js.map

@@ -20,10 +20,10 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
     } & {
         userId: number;
         id: number;
+        status: ConsultationStatus;
         createdAt: Date;
         updatedAt: Date;
         notes: string | null;
-        status: ConsultationStatus;
         advisorId: number | null;
         expertName: string | null;
         expertTitle: string | null;
@@ -47,10 +47,10 @@ export declare function create(userId: number, data: {
 }): Promise<{
     userId: number;
     id: number;
+    status: ConsultationStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: ConsultationStatus;
     advisorId: number | null;
     expertName: string | null;
     expertTitle: string | null;
@@ -63,10 +63,10 @@ export declare function create(userId: number, data: {
 export declare function confirm(id: number, advisorId: number): Promise<{
     userId: number;
     id: number;
+    status: ConsultationStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: ConsultationStatus;
     advisorId: number | null;
     expertName: string | null;
     expertTitle: string | null;
@@ -79,10 +79,10 @@ export declare function confirm(id: number, advisorId: number): Promise<{
 export declare function complete(id: number): Promise<{
     userId: number;
     id: number;
+    status: ConsultationStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: ConsultationStatus;
     advisorId: number | null;
     expertName: string | null;
     expertTitle: string | null;
@@ -95,10 +95,10 @@ export declare function complete(id: number): Promise<{
 export declare function cancel(id: number): Promise<{
     userId: number;
     id: number;
+    status: ConsultationStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: ConsultationStatus;
     advisorId: number | null;
     expertName: string | null;
     expertTitle: string | null;

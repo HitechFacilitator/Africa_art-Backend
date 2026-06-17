@@ -11,6 +11,7 @@ export declare function getByArtwork(artworkId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: string | null;
     createdAt: Date;
     updatedAt: Date;
     title: string;
@@ -22,7 +23,6 @@ export declare function getByArtwork(artworkId: number): Promise<({
     issuedDate: Date;
     expiryDate: Date | null;
     blockchainHash: string | null;
-    status: string | null;
     authenticationLevel: string | null;
     lastVerified: Date | null;
     certifyingBody: string | null;
@@ -35,6 +35,7 @@ export declare function getByUser(userId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: string | null;
     createdAt: Date;
     updatedAt: Date;
     title: string;
@@ -46,7 +47,6 @@ export declare function getByUser(userId: number): Promise<({
     issuedDate: Date;
     expiryDate: Date | null;
     blockchainHash: string | null;
-    status: string | null;
     authenticationLevel: string | null;
     lastVerified: Date | null;
     certifyingBody: string | null;
@@ -63,9 +63,9 @@ export declare function getById(id: number): Promise<{
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;
@@ -98,6 +98,7 @@ export declare function getById(id: number): Promise<{
 } & {
     userId: number;
     id: number;
+    status: string | null;
     createdAt: Date;
     updatedAt: Date;
     title: string;
@@ -109,7 +110,6 @@ export declare function getById(id: number): Promise<{
     issuedDate: Date;
     expiryDate: Date | null;
     blockchainHash: string | null;
-    status: string | null;
     authenticationLevel: string | null;
     lastVerified: Date | null;
     certifyingBody: string | null;
@@ -125,6 +125,7 @@ export declare function create(data: {
 }): Promise<{
     userId: number;
     id: number;
+    status: string | null;
     createdAt: Date;
     updatedAt: Date;
     title: string;
@@ -136,7 +137,6 @@ export declare function create(data: {
     issuedDate: Date;
     expiryDate: Date | null;
     blockchainHash: string | null;
-    status: string | null;
     authenticationLevel: string | null;
     lastVerified: Date | null;
     certifyingBody: string | null;
@@ -156,6 +156,7 @@ export declare function verify(certificateNumber: string): Promise<{
     } & {
         userId: number;
         id: number;
+        status: string | null;
         createdAt: Date;
         updatedAt: Date;
         title: string;
@@ -167,7 +168,6 @@ export declare function verify(certificateNumber: string): Promise<{
         issuedDate: Date;
         expiryDate: Date | null;
         blockchainHash: string | null;
-        status: string | null;
         authenticationLevel: string | null;
         lastVerified: Date | null;
         certifyingBody: string | null;

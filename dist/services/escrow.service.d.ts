@@ -13,9 +13,9 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
 }>;
 export declare function release(id: number): Promise<{
     id: number;
+    status: import("../generated/prisma/enums").EscrowStatus;
     updatedAt: Date;
     notes: string | null;
-    status: import("../generated/prisma/enums").EscrowStatus;
     artworkTitle: string;
     buyerName: string | null;
     sellerName: string | null;
@@ -24,9 +24,9 @@ export declare function release(id: number): Promise<{
 }>;
 export declare function dispute(id: number): Promise<{
     id: number;
+    status: import("../generated/prisma/enums").EscrowStatus;
     updatedAt: Date;
     notes: string | null;
-    status: import("../generated/prisma/enums").EscrowStatus;
     artworkTitle: string;
     buyerName: string | null;
     sellerName: string | null;
@@ -35,9 +35,9 @@ export declare function dispute(id: number): Promise<{
 }>;
 export declare function refund(id: number): Promise<{
     id: number;
+    status: import("../generated/prisma/enums").EscrowStatus;
     updatedAt: Date;
     notes: string | null;
-    status: import("../generated/prisma/enums").EscrowStatus;
     artworkTitle: string;
     buyerName: string | null;
     sellerName: string | null;

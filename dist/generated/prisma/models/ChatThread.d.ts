@@ -221,6 +221,7 @@ export type ChatThreadWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"ChatThread"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ChatThread"> | Date | string;
     messages?: Prisma.ChatMessageListRelationFilter;
+    readStatuses?: Prisma.ChatThreadReadStatusListRelationFilter;
 };
 export type ChatThreadOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -235,6 +236,7 @@ export type ChatThreadOrderByWithRelationInput = {
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     messages?: Prisma.ChatMessageOrderByRelationAggregateInput;
+    readStatuses?: Prisma.ChatThreadReadStatusOrderByRelationAggregateInput;
     _relevance?: Prisma.ChatThreadOrderByRelevanceInput;
 };
 export type ChatThreadWhereUniqueInput = Prisma.AtLeast<{
@@ -253,6 +255,7 @@ export type ChatThreadWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"ChatThread"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"ChatThread"> | Date | string;
     messages?: Prisma.ChatMessageListRelationFilter;
+    readStatuses?: Prisma.ChatThreadReadStatusListRelationFilter;
 }, "id">;
 export type ChatThreadOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -300,6 +303,7 @@ export type ChatThreadCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     messages?: Prisma.ChatMessageCreateNestedManyWithoutThreadInput;
+    readStatuses?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutThreadInput;
 };
 export type ChatThreadUncheckedCreateInput = {
     id?: number;
@@ -314,6 +318,7 @@ export type ChatThreadUncheckedCreateInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     messages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutThreadInput;
+    readStatuses?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutThreadInput;
 };
 export type ChatThreadUpdateInput = {
     clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -327,6 +332,7 @@ export type ChatThreadUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     messages?: Prisma.ChatMessageUpdateManyWithoutThreadNestedInput;
+    readStatuses?: Prisma.ChatThreadReadStatusUpdateManyWithoutThreadNestedInput;
 };
 export type ChatThreadUncheckedUpdateInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -341,6 +347,7 @@ export type ChatThreadUncheckedUpdateInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     messages?: Prisma.ChatMessageUncheckedUpdateManyWithoutThreadNestedInput;
+    readStatuses?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutThreadNestedInput;
 };
 export type ChatThreadCreateManyInput = {
     id?: number;
@@ -448,6 +455,18 @@ export type ChatThreadUpdateOneRequiredWithoutMessagesNestedInput = {
     connect?: Prisma.ChatThreadWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ChatThreadUpdateToOneWithWhereWithoutMessagesInput, Prisma.ChatThreadUpdateWithoutMessagesInput>, Prisma.ChatThreadUncheckedUpdateWithoutMessagesInput>;
 };
+export type ChatThreadCreateNestedOneWithoutReadStatusesInput = {
+    create?: Prisma.XOR<Prisma.ChatThreadCreateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedCreateWithoutReadStatusesInput>;
+    connectOrCreate?: Prisma.ChatThreadCreateOrConnectWithoutReadStatusesInput;
+    connect?: Prisma.ChatThreadWhereUniqueInput;
+};
+export type ChatThreadUpdateOneRequiredWithoutReadStatusesNestedInput = {
+    create?: Prisma.XOR<Prisma.ChatThreadCreateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedCreateWithoutReadStatusesInput>;
+    connectOrCreate?: Prisma.ChatThreadCreateOrConnectWithoutReadStatusesInput;
+    upsert?: Prisma.ChatThreadUpsertWithoutReadStatusesInput;
+    connect?: Prisma.ChatThreadWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.ChatThreadUpdateToOneWithWhereWithoutReadStatusesInput, Prisma.ChatThreadUpdateWithoutReadStatusesInput>, Prisma.ChatThreadUncheckedUpdateWithoutReadStatusesInput>;
+};
 export type ChatThreadCreateWithoutMessagesInput = {
     clientName?: string | null;
     clientRole?: string | null;
@@ -459,6 +478,7 @@ export type ChatThreadCreateWithoutMessagesInput = {
     unreadCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    readStatuses?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutThreadInput;
 };
 export type ChatThreadUncheckedCreateWithoutMessagesInput = {
     id?: number;
@@ -472,6 +492,7 @@ export type ChatThreadUncheckedCreateWithoutMessagesInput = {
     unreadCount?: number;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    readStatuses?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutThreadInput;
 };
 export type ChatThreadCreateOrConnectWithoutMessagesInput = {
     where: Prisma.ChatThreadWhereUniqueInput;
@@ -497,6 +518,7 @@ export type ChatThreadUpdateWithoutMessagesInput = {
     unreadCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    readStatuses?: Prisma.ChatThreadReadStatusUpdateManyWithoutThreadNestedInput;
 };
 export type ChatThreadUncheckedUpdateWithoutMessagesInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -510,15 +532,85 @@ export type ChatThreadUncheckedUpdateWithoutMessagesInput = {
     unreadCount?: Prisma.IntFieldUpdateOperationsInput | number;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    readStatuses?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutThreadNestedInput;
+};
+export type ChatThreadCreateWithoutReadStatusesInput = {
+    clientName?: string | null;
+    clientRole?: string | null;
+    advisorName?: string | null;
+    subject?: string | null;
+    status?: string;
+    lastMessage?: string | null;
+    lastMessageTime?: string | null;
+    unreadCount?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    messages?: Prisma.ChatMessageCreateNestedManyWithoutThreadInput;
+};
+export type ChatThreadUncheckedCreateWithoutReadStatusesInput = {
+    id?: number;
+    clientName?: string | null;
+    clientRole?: string | null;
+    advisorName?: string | null;
+    subject?: string | null;
+    status?: string;
+    lastMessage?: string | null;
+    lastMessageTime?: string | null;
+    unreadCount?: number;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    messages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutThreadInput;
+};
+export type ChatThreadCreateOrConnectWithoutReadStatusesInput = {
+    where: Prisma.ChatThreadWhereUniqueInput;
+    create: Prisma.XOR<Prisma.ChatThreadCreateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedCreateWithoutReadStatusesInput>;
+};
+export type ChatThreadUpsertWithoutReadStatusesInput = {
+    update: Prisma.XOR<Prisma.ChatThreadUpdateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedUpdateWithoutReadStatusesInput>;
+    create: Prisma.XOR<Prisma.ChatThreadCreateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedCreateWithoutReadStatusesInput>;
+    where?: Prisma.ChatThreadWhereInput;
+};
+export type ChatThreadUpdateToOneWithWhereWithoutReadStatusesInput = {
+    where?: Prisma.ChatThreadWhereInput;
+    data: Prisma.XOR<Prisma.ChatThreadUpdateWithoutReadStatusesInput, Prisma.ChatThreadUncheckedUpdateWithoutReadStatusesInput>;
+};
+export type ChatThreadUpdateWithoutReadStatusesInput = {
+    clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    status?: Prisma.StringFieldUpdateOperationsInput | string;
+    lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastMessageTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unreadCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    messages?: Prisma.ChatMessageUpdateManyWithoutThreadNestedInput;
+};
+export type ChatThreadUncheckedUpdateWithoutReadStatusesInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    clientName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    clientRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    advisorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    status?: Prisma.StringFieldUpdateOperationsInput | string;
+    lastMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    lastMessageTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    unreadCount?: Prisma.IntFieldUpdateOperationsInput | number;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    messages?: Prisma.ChatMessageUncheckedUpdateManyWithoutThreadNestedInput;
 };
 /**
  * Count Type ChatThreadCountOutputType
  */
 export type ChatThreadCountOutputType = {
     messages: number;
+    readStatuses: number;
 };
 export type ChatThreadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     messages?: boolean | ChatThreadCountOutputTypeCountMessagesArgs;
+    readStatuses?: boolean | ChatThreadCountOutputTypeCountReadStatusesArgs;
 };
 /**
  * ChatThreadCountOutputType without action
@@ -535,6 +627,12 @@ export type ChatThreadCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
 export type ChatThreadCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.ChatMessageWhereInput;
 };
+/**
+ * ChatThreadCountOutputType without action
+ */
+export type ChatThreadCountOutputTypeCountReadStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ChatThreadReadStatusWhereInput;
+};
 export type ChatThreadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
     clientName?: boolean;
@@ -548,6 +646,7 @@ export type ChatThreadSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
     createdAt?: boolean;
     updatedAt?: boolean;
     messages?: boolean | Prisma.ChatThread$messagesArgs<ExtArgs>;
+    readStatuses?: boolean | Prisma.ChatThread$readStatusesArgs<ExtArgs>;
     _count?: boolean | Prisma.ChatThreadCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["chatThread"]>;
 export type ChatThreadSelectScalar = {
@@ -566,12 +665,14 @@ export type ChatThreadSelectScalar = {
 export type ChatThreadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientName" | "clientRole" | "advisorName" | "subject" | "status" | "lastMessage" | "lastMessageTime" | "unreadCount" | "createdAt" | "updatedAt", ExtArgs["result"]["chatThread"]>;
 export type ChatThreadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     messages?: boolean | Prisma.ChatThread$messagesArgs<ExtArgs>;
+    readStatuses?: boolean | Prisma.ChatThread$readStatusesArgs<ExtArgs>;
     _count?: boolean | Prisma.ChatThreadCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type $ChatThreadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "ChatThread";
     objects: {
         messages: Prisma.$ChatMessagePayload<ExtArgs>[];
+        readStatuses: Prisma.$ChatThreadReadStatusPayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: number;
@@ -863,6 +964,7 @@ export interface ChatThreadDelegate<ExtArgs extends runtime.Types.Extensions.Int
 export interface Prisma__ChatThreadClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
     messages<T extends Prisma.ChatThread$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ChatThread$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    readStatuses<T extends Prisma.ChatThread$readStatusesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ChatThread$readStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatThreadReadStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1253,6 +1355,29 @@ export type ChatThread$messagesArgs<ExtArgs extends runtime.Types.Extensions.Int
     take?: number;
     skip?: number;
     distinct?: Prisma.ChatMessageScalarFieldEnum | Prisma.ChatMessageScalarFieldEnum[];
+};
+/**
+ * ChatThread.readStatuses
+ */
+export type ChatThread$readStatusesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatThreadReadStatus
+     */
+    select?: Prisma.ChatThreadReadStatusSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ChatThreadReadStatus
+     */
+    omit?: Prisma.ChatThreadReadStatusOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ChatThreadReadStatusInclude<ExtArgs> | null;
+    where?: Prisma.ChatThreadReadStatusWhereInput;
+    orderBy?: Prisma.ChatThreadReadStatusOrderByWithRelationInput | Prisma.ChatThreadReadStatusOrderByWithRelationInput[];
+    cursor?: Prisma.ChatThreadReadStatusWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ChatThreadReadStatusScalarFieldEnum | Prisma.ChatThreadReadStatusScalarFieldEnum[];
 };
 /**
  * ChatThread without action

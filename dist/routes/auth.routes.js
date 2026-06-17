@@ -44,5 +44,7 @@ router.post("/verify-otp", authController.verifyOTP);
 router.get("/me", auth_1.authenticate, authController.getMe);
 router.post("/forgot-password", authController.forgotPassword);
 router.post("/reset-password", authController.resetPassword);
+router.post("/2fa/enable", auth_1.authenticate, authController.enable2FA);
+router.post("/2fa/disable", auth_1.authenticate, authController.disable2FA);
 exports.default = router;
 //# sourceMappingURL=auth.routes.js.map

@@ -9,13 +9,19 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TicketPriority = exports.TicketStatus = exports.AMLStatus = exports.EscrowStatus = exports.LogisticsStatus = exports.InquiryStatus = exports.AuctionStatus = exports.PORStatus = exports.ConsultationStatus = exports.ConsultationType = exports.OrderStatus = exports.ReservationStatus = exports.Availability = exports.Role = void 0;
+exports.TicketPriority = exports.TicketStatus = exports.AMLStatus = exports.EscrowStatus = exports.LogisticsStatus = exports.InquiryStatus = exports.AuctionStatus = exports.PORStatus = exports.ConsultationStatus = exports.ConsultationType = exports.OrderStatus = exports.ReservationStatus = exports.Availability = exports.UserStatus = exports.Role = void 0;
 exports.Role = {
     VISITOR: 'VISITOR',
     COLLECTOR: 'COLLECTOR',
     PRESTIGE: 'PRESTIGE',
     ADVISOR: 'ADVISOR',
-    ADMIN: 'ADMIN'
+    ADMIN: 'ADMIN',
+    SUPPORT: 'SUPPORT'
+};
+exports.UserStatus = {
+    ACTIVE: 'ACTIVE',
+    SUSPENDED: 'SUSPENDED',
+    PENDING: 'PENDING'
 };
 exports.Availability = {
     AVAILABLE: 'AVAILABLE',

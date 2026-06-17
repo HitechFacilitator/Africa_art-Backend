@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as chatService from "../services/chat.service";
 import catchAsync from "../utils/catchAsync";
 import { sseManager } from "../utils/sse";
+import prisma from "../config/db";
 
 export const getThreads = catchAsync(async (req: Request, res: Response) => {
   const data = await chatService.getThreads(req.user!.userId);
@@ -38,9 +39,11 @@ export const getTickets = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const createTicket = catchAsync(async (req: Request, res: Response) => {
+  const dbUser = await prisma.user.findUnique({ where: { id: req.user!.userId } });
   const ticket = await chatService.createTicket(req.user!.userId, {
     ...req.body,
-    clientName: req.body.clientName || "",
+    clientName: req.body.clientName || dbUser?.name || "",
+    clientRole: req.body.clientRole || dbUser?.role || "collector",
   });
   res.status(201).json({ success: true, data: ticket });
 });
@@ -51,9 +54,14 @@ export const updateTicketStatus = catchAsync(async (req: Request, res: Response)
 });
 
 export const addTicketResponse = catchAsync(async (req: Request, res: Response) => {
+  let author = req.body.author;
+  if (!author && req.user) {
+    const dbUser = await prisma.user.findUnique({ where: { id: req.user.userId } });
+    author = dbUser?.name || "Unknown";
+  }
   const response = await chatService.addTicketResponse(
     Number(req.params.id),
-    req.body.author || "Admin",
+    author || "Unknown",
     req.body.text
   );
 

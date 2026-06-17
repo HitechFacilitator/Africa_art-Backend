@@ -44,5 +44,6 @@ router.get("/:id", auth_1.authenticate, userController.getById);
 router.patch("/:id", auth_1.authenticate, userController.update);
 router.delete("/:id", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), userController.deleteOne);
 router.patch("/:id/role", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), userController.updateRole);
+router.post("/change-password", auth_1.authenticate, userController.changePassword);
 exports.default = router;
 //# sourceMappingURL=user.routes.js.map

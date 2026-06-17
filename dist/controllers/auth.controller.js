@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.forgotPassword = exports.getMe = exports.verifyOTP = exports.loginAs = exports.login = exports.register = void 0;
+exports.disable2FA = exports.enable2FA = exports.resetPassword = exports.forgotPassword = exports.getMe = exports.verifyOTP = exports.loginAs = exports.login = exports.register = void 0;
 const authService = __importStar(require("../services/auth.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 exports.register = (0, catchAsync_1.default)(async (req, res) => {
@@ -69,6 +69,15 @@ exports.forgotPassword = (0, catchAsync_1.default)(async (req, res) => {
 exports.resetPassword = (0, catchAsync_1.default)(async (req, res) => {
     const { token, newPassword } = req.body;
     const result = await authService.resetPassword(token, newPassword);
+    res.json({ success: true, data: result });
+});
+exports.enable2FA = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await authService.enable2FA(req.user.userId);
+    res.json({ success: true, data: result });
+});
+exports.disable2FA = (0, catchAsync_1.default)(async (req, res) => {
+    const { password } = req.body;
+    const result = await authService.disable2FA(req.user.userId, password);
     res.json({ success: true, data: result });
 });
 //# sourceMappingURL=auth.controller.js.map

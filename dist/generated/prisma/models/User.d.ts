@@ -25,6 +25,7 @@ export type UserMinAggregateOutputType = {
     password: string | null;
     name: string | null;
     role: $Enums.Role | null;
+    status: $Enums.UserStatus | null;
     avatar: string | null;
     institution: string | null;
     country: string | null;
@@ -40,6 +41,7 @@ export type UserMaxAggregateOutputType = {
     password: string | null;
     name: string | null;
     role: $Enums.Role | null;
+    status: $Enums.UserStatus | null;
     avatar: string | null;
     institution: string | null;
     country: string | null;
@@ -55,6 +57,7 @@ export type UserCountAggregateOutputType = {
     password: number;
     name: number;
     role: number;
+    status: number;
     avatar: number;
     institution: number;
     country: number;
@@ -77,6 +80,7 @@ export type UserMinAggregateInputType = {
     password?: true;
     name?: true;
     role?: true;
+    status?: true;
     avatar?: true;
     institution?: true;
     country?: true;
@@ -92,6 +96,7 @@ export type UserMaxAggregateInputType = {
     password?: true;
     name?: true;
     role?: true;
+    status?: true;
     avatar?: true;
     institution?: true;
     country?: true;
@@ -107,6 +112,7 @@ export type UserCountAggregateInputType = {
     password?: true;
     name?: true;
     role?: true;
+    status?: true;
     avatar?: true;
     institution?: true;
     country?: true;
@@ -199,6 +205,7 @@ export type UserGroupByOutputType = {
     password: string;
     name: string;
     role: $Enums.Role;
+    status: $Enums.UserStatus;
     avatar: string | null;
     institution: string | null;
     country: string | null;
@@ -225,6 +232,7 @@ export type UserWhereInput = {
     password?: Prisma.StringFilter<"User"> | string;
     name?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
     institution?: Prisma.StringNullableFilter<"User"> | string | null;
     country?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -242,6 +250,7 @@ export type UserWhereInput = {
     priceRequests?: Prisma.PriceRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
     chatMessages?: Prisma.ChatMessageListRelationFilter;
+    chatReadStatus?: Prisma.ChatThreadReadStatusListRelationFilter;
     supportTickets?: Prisma.SupportTicketListRelationFilter;
     advisorClients?: Prisma.AdvisorClientListRelationFilter;
     advisorPlacements?: Prisma.AdvisorPlacementListRelationFilter;
@@ -252,6 +261,7 @@ export type UserOrderByWithRelationInput = {
     password?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     institution?: Prisma.SortOrderInput | Prisma.SortOrder;
     country?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -269,6 +279,7 @@ export type UserOrderByWithRelationInput = {
     priceRequests?: Prisma.PriceRequestOrderByRelationAggregateInput;
     notifications?: Prisma.NotificationOrderByRelationAggregateInput;
     chatMessages?: Prisma.ChatMessageOrderByRelationAggregateInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusOrderByRelationAggregateInput;
     supportTickets?: Prisma.SupportTicketOrderByRelationAggregateInput;
     advisorClients?: Prisma.AdvisorClientOrderByRelationAggregateInput;
     advisorPlacements?: Prisma.AdvisorPlacementOrderByRelationAggregateInput;
@@ -283,6 +294,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     password?: Prisma.StringFilter<"User"> | string;
     name?: Prisma.StringFilter<"User"> | string;
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
+    status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
     institution?: Prisma.StringNullableFilter<"User"> | string | null;
     country?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -300,6 +312,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     priceRequests?: Prisma.PriceRequestListRelationFilter;
     notifications?: Prisma.NotificationListRelationFilter;
     chatMessages?: Prisma.ChatMessageListRelationFilter;
+    chatReadStatus?: Prisma.ChatThreadReadStatusListRelationFilter;
     supportTickets?: Prisma.SupportTicketListRelationFilter;
     advisorClients?: Prisma.AdvisorClientListRelationFilter;
     advisorPlacements?: Prisma.AdvisorPlacementListRelationFilter;
@@ -310,6 +323,7 @@ export type UserOrderByWithAggregationInput = {
     password?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
     institution?: Prisma.SortOrderInput | Prisma.SortOrder;
     country?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -333,6 +347,7 @@ export type UserScalarWhereWithAggregatesInput = {
     password?: Prisma.StringWithAggregatesFilter<"User"> | string;
     name?: Prisma.StringWithAggregatesFilter<"User"> | string;
     role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
+    status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     institution?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     country?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
@@ -347,6 +362,7 @@ export type UserCreateInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -364,6 +380,7 @@ export type UserCreateInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -374,6 +391,7 @@ export type UserUncheckedCreateInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -391,6 +409,7 @@ export type UserUncheckedCreateInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -400,6 +419,7 @@ export type UserUpdateInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -417,6 +437,7 @@ export type UserUpdateInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -427,6 +448,7 @@ export type UserUncheckedUpdateInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -444,6 +466,7 @@ export type UserUncheckedUpdateInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -454,6 +477,7 @@ export type UserCreateManyInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -468,6 +492,7 @@ export type UserUpdateManyMutationInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -483,6 +508,7 @@ export type UserUncheckedUpdateManyInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -503,6 +529,7 @@ export type UserCountOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
@@ -521,6 +548,7 @@ export type UserMaxOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
@@ -536,6 +564,7 @@ export type UserMinOrderByAggregateInput = {
     password?: Prisma.SortOrder;
     name?: Prisma.SortOrder;
     role?: Prisma.SortOrder;
+    status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
@@ -561,6 +590,9 @@ export type StringFieldUpdateOperationsInput = {
 };
 export type EnumRoleFieldUpdateOperationsInput = {
     set?: $Enums.Role;
+};
+export type EnumUserStatusFieldUpdateOperationsInput = {
+    set?: $Enums.UserStatus;
 };
 export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null;
@@ -714,6 +746,18 @@ export type UserUpdateOneWithoutChatMessagesNestedInput = {
     connect?: Prisma.UserWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatMessagesInput, Prisma.UserUpdateWithoutChatMessagesInput>, Prisma.UserUncheckedUpdateWithoutChatMessagesInput>;
 };
+export type UserCreateNestedOneWithoutChatReadStatusInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutChatReadStatusInput, Prisma.UserUncheckedCreateWithoutChatReadStatusInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatReadStatusInput;
+    connect?: Prisma.UserWhereUniqueInput;
+};
+export type UserUpdateOneRequiredWithoutChatReadStatusNestedInput = {
+    create?: Prisma.XOR<Prisma.UserCreateWithoutChatReadStatusInput, Prisma.UserUncheckedCreateWithoutChatReadStatusInput>;
+    connectOrCreate?: Prisma.UserCreateOrConnectWithoutChatReadStatusInput;
+    upsert?: Prisma.UserUpsertWithoutChatReadStatusInput;
+    connect?: Prisma.UserWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutChatReadStatusInput, Prisma.UserUpdateWithoutChatReadStatusInput>, Prisma.UserUncheckedUpdateWithoutChatReadStatusInput>;
+};
 export type UserCreateNestedOneWithoutSupportTicketsInput = {
     create?: Prisma.XOR<Prisma.UserCreateWithoutSupportTicketsInput, Prisma.UserUncheckedCreateWithoutSupportTicketsInput>;
     connectOrCreate?: Prisma.UserCreateOrConnectWithoutSupportTicketsInput;
@@ -733,6 +777,7 @@ export type UserCreateWithoutCertificatesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -749,6 +794,7 @@ export type UserCreateWithoutCertificatesInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -759,6 +805,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -775,6 +822,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -797,6 +845,7 @@ export type UserUpdateWithoutCertificatesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -813,6 +862,7 @@ export type UserUpdateWithoutCertificatesInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -823,6 +873,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -839,6 +890,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -848,6 +900,7 @@ export type UserCreateWithoutFavoritesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -864,6 +917,7 @@ export type UserCreateWithoutFavoritesInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -874,6 +928,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -890,6 +945,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -912,6 +968,7 @@ export type UserUpdateWithoutFavoritesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -928,6 +985,7 @@ export type UserUpdateWithoutFavoritesInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -938,6 +996,7 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -954,6 +1013,7 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -963,6 +1023,7 @@ export type UserCreateWithoutReservationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -979,6 +1040,7 @@ export type UserCreateWithoutReservationsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -989,6 +1051,7 @@ export type UserUncheckedCreateWithoutReservationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1005,6 +1068,7 @@ export type UserUncheckedCreateWithoutReservationsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1027,6 +1091,7 @@ export type UserUpdateWithoutReservationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1043,6 +1108,7 @@ export type UserUpdateWithoutReservationsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1053,6 +1119,7 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1069,6 +1136,7 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1078,6 +1146,7 @@ export type UserCreateWithoutOrdersInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1094,6 +1163,7 @@ export type UserCreateWithoutOrdersInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1104,6 +1174,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1120,6 +1191,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1142,6 +1214,7 @@ export type UserUpdateWithoutOrdersInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1158,6 +1231,7 @@ export type UserUpdateWithoutOrdersInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1168,6 +1242,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1184,6 +1259,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1193,6 +1269,7 @@ export type UserCreateWithoutConsultationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1209,6 +1286,7 @@ export type UserCreateWithoutConsultationsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1219,6 +1297,7 @@ export type UserUncheckedCreateWithoutConsultationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1235,6 +1314,7 @@ export type UserUncheckedCreateWithoutConsultationsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1257,6 +1337,7 @@ export type UserUpdateWithoutConsultationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1273,6 +1354,7 @@ export type UserUpdateWithoutConsultationsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1283,6 +1365,7 @@ export type UserUncheckedUpdateWithoutConsultationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1299,6 +1382,7 @@ export type UserUncheckedUpdateWithoutConsultationsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1308,6 +1392,7 @@ export type UserCreateWithoutPriceRequestsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1324,6 +1409,7 @@ export type UserCreateWithoutPriceRequestsInput = {
     auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1334,6 +1420,7 @@ export type UserUncheckedCreateWithoutPriceRequestsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1350,6 +1437,7 @@ export type UserUncheckedCreateWithoutPriceRequestsInput = {
     auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1372,6 +1460,7 @@ export type UserUpdateWithoutPriceRequestsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1388,6 +1477,7 @@ export type UserUpdateWithoutPriceRequestsInput = {
     auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1398,6 +1488,7 @@ export type UserUncheckedUpdateWithoutPriceRequestsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1414,6 +1505,7 @@ export type UserUncheckedUpdateWithoutPriceRequestsInput = {
     auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1423,6 +1515,7 @@ export type UserCreateWithoutAuditLogsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1439,6 +1532,7 @@ export type UserCreateWithoutAuditLogsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1449,6 +1543,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1465,6 +1560,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1487,6 +1583,7 @@ export type UserUpdateWithoutAuditLogsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1503,6 +1600,7 @@ export type UserUpdateWithoutAuditLogsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1513,6 +1611,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1529,6 +1628,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1538,6 +1638,7 @@ export type UserCreateWithoutNotificationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1554,6 +1655,7 @@ export type UserCreateWithoutNotificationsInput = {
     auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1564,6 +1666,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1580,6 +1683,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
     auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1602,6 +1706,7 @@ export type UserUpdateWithoutNotificationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1618,6 +1723,7 @@ export type UserUpdateWithoutNotificationsInput = {
     auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1628,6 +1734,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1644,6 +1751,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
     auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
@@ -1653,6 +1761,7 @@ export type UserCreateWithoutAdvisorClientsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1670,6 +1779,7 @@ export type UserCreateWithoutAdvisorClientsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
 };
@@ -1679,6 +1789,7 @@ export type UserUncheckedCreateWithoutAdvisorClientsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1696,6 +1807,7 @@ export type UserUncheckedCreateWithoutAdvisorClientsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
 };
@@ -1717,6 +1829,7 @@ export type UserUpdateWithoutAdvisorClientsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1734,6 +1847,7 @@ export type UserUpdateWithoutAdvisorClientsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
 };
@@ -1743,6 +1857,7 @@ export type UserUncheckedUpdateWithoutAdvisorClientsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1760,6 +1875,7 @@ export type UserUncheckedUpdateWithoutAdvisorClientsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
 };
@@ -1768,6 +1884,7 @@ export type UserCreateWithoutAdvisorPlacementsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1785,6 +1902,7 @@ export type UserCreateWithoutAdvisorPlacementsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
 };
@@ -1794,6 +1912,7 @@ export type UserUncheckedCreateWithoutAdvisorPlacementsInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1811,6 +1930,7 @@ export type UserUncheckedCreateWithoutAdvisorPlacementsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
 };
@@ -1832,6 +1952,7 @@ export type UserUpdateWithoutAdvisorPlacementsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1849,6 +1970,7 @@ export type UserUpdateWithoutAdvisorPlacementsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
 };
@@ -1858,6 +1980,7 @@ export type UserUncheckedUpdateWithoutAdvisorPlacementsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1875,6 +1998,7 @@ export type UserUncheckedUpdateWithoutAdvisorPlacementsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
 };
@@ -1883,6 +2007,7 @@ export type UserCreateWithoutChatMessagesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1899,6 +2024,7 @@ export type UserCreateWithoutChatMessagesInput = {
     auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
@@ -1909,6 +2035,7 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -1925,6 +2052,7 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
     auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
@@ -1947,6 +2075,7 @@ export type UserUpdateWithoutChatMessagesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1963,6 +2092,7 @@ export type UserUpdateWithoutChatMessagesInput = {
     auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
@@ -1973,6 +2103,7 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1989,15 +2120,17 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
     auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
 };
-export type UserCreateWithoutSupportTicketsInput = {
+export type UserCreateWithoutChatReadStatusInput = {
     email: string;
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -2015,15 +2148,17 @@ export type UserCreateWithoutSupportTicketsInput = {
     priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    supportTickets?: Prisma.SupportTicketCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
 };
-export type UserUncheckedCreateWithoutSupportTicketsInput = {
+export type UserUncheckedCreateWithoutChatReadStatusInput = {
     id?: number;
     email: string;
     password: string;
     name: string;
     role?: $Enums.Role;
+    status?: $Enums.UserStatus;
     avatar?: string | null;
     institution?: string | null;
     country?: string | null;
@@ -2041,6 +2176,130 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
     notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
     chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    supportTickets?: Prisma.SupportTicketUncheckedCreateNestedManyWithoutUserInput;
+    advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
+    advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
+};
+export type UserCreateOrConnectWithoutChatReadStatusInput = {
+    where: Prisma.UserWhereUniqueInput;
+    create: Prisma.XOR<Prisma.UserCreateWithoutChatReadStatusInput, Prisma.UserUncheckedCreateWithoutChatReadStatusInput>;
+};
+export type UserUpsertWithoutChatReadStatusInput = {
+    update: Prisma.XOR<Prisma.UserUpdateWithoutChatReadStatusInput, Prisma.UserUncheckedUpdateWithoutChatReadStatusInput>;
+    create: Prisma.XOR<Prisma.UserCreateWithoutChatReadStatusInput, Prisma.UserUncheckedCreateWithoutChatReadStatusInput>;
+    where?: Prisma.UserWhereInput;
+};
+export type UserUpdateToOneWithWhereWithoutChatReadStatusInput = {
+    where?: Prisma.UserWhereInput;
+    data: Prisma.XOR<Prisma.UserUpdateWithoutChatReadStatusInput, Prisma.UserUncheckedUpdateWithoutChatReadStatusInput>;
+};
+export type UserUpdateWithoutChatReadStatusInput = {
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    favorites?: Prisma.FavoriteUpdateManyWithoutUserNestedInput;
+    reservations?: Prisma.ReservationUpdateManyWithoutUserNestedInput;
+    orders?: Prisma.OrderUpdateManyWithoutUserNestedInput;
+    consultations?: Prisma.ConsultationUpdateManyWithoutUserNestedInput;
+    certificates?: Prisma.CertificateUpdateManyWithoutUserNestedInput;
+    auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput;
+    priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
+    chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    supportTickets?: Prisma.SupportTicketUpdateManyWithoutUserNestedInput;
+    advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
+    advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
+};
+export type UserUncheckedUpdateWithoutChatReadStatusInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    email?: Prisma.StringFieldUpdateOperationsInput | string;
+    password?: Prisma.StringFieldUpdateOperationsInput | string;
+    name?: Prisma.StringFieldUpdateOperationsInput | string;
+    role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
+    avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    twoFactorEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    favorites?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput;
+    reservations?: Prisma.ReservationUncheckedUpdateManyWithoutUserNestedInput;
+    orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput;
+    consultations?: Prisma.ConsultationUncheckedUpdateManyWithoutUserNestedInput;
+    certificates?: Prisma.CertificateUncheckedUpdateManyWithoutUserNestedInput;
+    auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput;
+    priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
+    notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
+    chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    supportTickets?: Prisma.SupportTicketUncheckedUpdateManyWithoutUserNestedInput;
+    advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
+    advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
+};
+export type UserCreateWithoutSupportTicketsInput = {
+    email: string;
+    password: string;
+    name: string;
+    role?: $Enums.Role;
+    status?: $Enums.UserStatus;
+    avatar?: string | null;
+    institution?: string | null;
+    country?: string | null;
+    tier?: string | null;
+    twoFactorEnabled?: boolean;
+    emailVerified?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    favorites?: Prisma.FavoriteCreateNestedManyWithoutUserInput;
+    reservations?: Prisma.ReservationCreateNestedManyWithoutUserInput;
+    orders?: Prisma.OrderCreateNestedManyWithoutUserInput;
+    consultations?: Prisma.ConsultationCreateNestedManyWithoutUserInput;
+    certificates?: Prisma.CertificateCreateNestedManyWithoutUserInput;
+    auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput;
+    priceRequests?: Prisma.PriceRequestCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput;
+    chatMessages?: Prisma.ChatMessageCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusCreateNestedManyWithoutUserInput;
+    advisorClients?: Prisma.AdvisorClientCreateNestedManyWithoutAdvisorInput;
+    advisorPlacements?: Prisma.AdvisorPlacementCreateNestedManyWithoutUserInput;
+};
+export type UserUncheckedCreateWithoutSupportTicketsInput = {
+    id?: number;
+    email: string;
+    password: string;
+    name: string;
+    role?: $Enums.Role;
+    status?: $Enums.UserStatus;
+    avatar?: string | null;
+    institution?: string | null;
+    country?: string | null;
+    tier?: string | null;
+    twoFactorEnabled?: boolean;
+    emailVerified?: boolean;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    favorites?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput;
+    reservations?: Prisma.ReservationUncheckedCreateNestedManyWithoutUserInput;
+    orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput;
+    consultations?: Prisma.ConsultationUncheckedCreateNestedManyWithoutUserInput;
+    certificates?: Prisma.CertificateUncheckedCreateNestedManyWithoutUserInput;
+    auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput;
+    priceRequests?: Prisma.PriceRequestUncheckedCreateNestedManyWithoutUserInput;
+    notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput;
+    chatMessages?: Prisma.ChatMessageUncheckedCreateNestedManyWithoutUserInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedCreateNestedManyWithoutUserInput;
     advisorClients?: Prisma.AdvisorClientUncheckedCreateNestedManyWithoutAdvisorInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedCreateNestedManyWithoutUserInput;
 };
@@ -2062,6 +2321,7 @@ export type UserUpdateWithoutSupportTicketsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2079,6 +2339,7 @@ export type UserUpdateWithoutSupportTicketsInput = {
     priceRequests?: Prisma.PriceRequestUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUpdateManyWithoutUserNestedInput;
 };
@@ -2088,6 +2349,7 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
     password?: Prisma.StringFieldUpdateOperationsInput | string;
     name?: Prisma.StringFieldUpdateOperationsInput | string;
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
+    status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2105,6 +2367,7 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
     priceRequests?: Prisma.PriceRequestUncheckedUpdateManyWithoutUserNestedInput;
     notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput;
     chatMessages?: Prisma.ChatMessageUncheckedUpdateManyWithoutUserNestedInput;
+    chatReadStatus?: Prisma.ChatThreadReadStatusUncheckedUpdateManyWithoutUserNestedInput;
     advisorClients?: Prisma.AdvisorClientUncheckedUpdateManyWithoutAdvisorNestedInput;
     advisorPlacements?: Prisma.AdvisorPlacementUncheckedUpdateManyWithoutUserNestedInput;
 };
@@ -2121,6 +2384,7 @@ export type UserCountOutputType = {
     priceRequests: number;
     notifications: number;
     chatMessages: number;
+    chatReadStatus: number;
     supportTickets: number;
     advisorClients: number;
     advisorPlacements: number;
@@ -2135,6 +2399,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
     priceRequests?: boolean | UserCountOutputTypeCountPriceRequestsArgs;
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs;
     chatMessages?: boolean | UserCountOutputTypeCountChatMessagesArgs;
+    chatReadStatus?: boolean | UserCountOutputTypeCountChatReadStatusArgs;
     supportTickets?: boolean | UserCountOutputTypeCountSupportTicketsArgs;
     advisorClients?: boolean | UserCountOutputTypeCountAdvisorClientsArgs;
     advisorPlacements?: boolean | UserCountOutputTypeCountAdvisorPlacementsArgs;
@@ -2205,6 +2470,12 @@ export type UserCountOutputTypeCountChatMessagesArgs<ExtArgs extends runtime.Typ
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountChatReadStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.ChatThreadReadStatusWhereInput;
+};
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountSupportTicketsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     where?: Prisma.SupportTicketWhereInput;
 };
@@ -2226,6 +2497,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     password?: boolean;
     name?: boolean;
     role?: boolean;
+    status?: boolean;
     avatar?: boolean;
     institution?: boolean;
     country?: boolean;
@@ -2243,6 +2515,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     priceRequests?: boolean | Prisma.User$priceRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
     chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>;
+    chatReadStatus?: boolean | Prisma.User$chatReadStatusArgs<ExtArgs>;
     supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>;
     advisorClients?: boolean | Prisma.User$advisorClientsArgs<ExtArgs>;
     advisorPlacements?: boolean | Prisma.User$advisorPlacementsArgs<ExtArgs>;
@@ -2254,6 +2527,7 @@ export type UserSelectScalar = {
     password?: boolean;
     name?: boolean;
     role?: boolean;
+    status?: boolean;
     avatar?: boolean;
     institution?: boolean;
     country?: boolean;
@@ -2263,7 +2537,7 @@ export type UserSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "avatar" | "institution" | "country" | "tier" | "twoFactorEnabled" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "status" | "avatar" | "institution" | "country" | "tier" | "twoFactorEnabled" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>;
     reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
@@ -2274,6 +2548,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     priceRequests?: boolean | Prisma.User$priceRequestsArgs<ExtArgs>;
     notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>;
     chatMessages?: boolean | Prisma.User$chatMessagesArgs<ExtArgs>;
+    chatReadStatus?: boolean | Prisma.User$chatReadStatusArgs<ExtArgs>;
     supportTickets?: boolean | Prisma.User$supportTicketsArgs<ExtArgs>;
     advisorClients?: boolean | Prisma.User$advisorClientsArgs<ExtArgs>;
     advisorPlacements?: boolean | Prisma.User$advisorPlacementsArgs<ExtArgs>;
@@ -2291,6 +2566,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         priceRequests: Prisma.$PriceRequestPayload<ExtArgs>[];
         notifications: Prisma.$NotificationPayload<ExtArgs>[];
         chatMessages: Prisma.$ChatMessagePayload<ExtArgs>[];
+        chatReadStatus: Prisma.$ChatThreadReadStatusPayload<ExtArgs>[];
         supportTickets: Prisma.$SupportTicketPayload<ExtArgs>[];
         advisorClients: Prisma.$AdvisorClientPayload<ExtArgs>[];
         advisorPlacements: Prisma.$AdvisorPlacementPayload<ExtArgs>[];
@@ -2301,6 +2577,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         password: string;
         name: string;
         role: $Enums.Role;
+        status: $Enums.UserStatus;
         avatar: string | null;
         institution: string | null;
         country: string | null;
@@ -2595,6 +2872,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
     priceRequests<T extends Prisma.User$priceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$priceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PriceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     chatMessages<T extends Prisma.User$chatMessagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
+    chatReadStatus<T extends Prisma.User$chatReadStatusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatReadStatusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChatThreadReadStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     supportTickets<T extends Prisma.User$supportTicketsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$supportTicketsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SupportTicketPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     advisorClients<T extends Prisma.User$advisorClientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$advisorClientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdvisorClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     advisorPlacements<T extends Prisma.User$advisorPlacementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$advisorPlacementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdvisorPlacementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
@@ -2628,6 +2906,7 @@ export interface UserFieldRefs {
     readonly password: Prisma.FieldRef<"User", 'String'>;
     readonly name: Prisma.FieldRef<"User", 'String'>;
     readonly role: Prisma.FieldRef<"User", 'Role'>;
+    readonly status: Prisma.FieldRef<"User", 'UserStatus'>;
     readonly avatar: Prisma.FieldRef<"User", 'String'>;
     readonly institution: Prisma.FieldRef<"User", 'String'>;
     readonly country: Prisma.FieldRef<"User", 'String'>;
@@ -3174,6 +3453,29 @@ export type User$chatMessagesArgs<ExtArgs extends runtime.Types.Extensions.Inter
     take?: number;
     skip?: number;
     distinct?: Prisma.ChatMessageScalarFieldEnum | Prisma.ChatMessageScalarFieldEnum[];
+};
+/**
+ * User.chatReadStatus
+ */
+export type User$chatReadStatusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatThreadReadStatus
+     */
+    select?: Prisma.ChatThreadReadStatusSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the ChatThreadReadStatus
+     */
+    omit?: Prisma.ChatThreadReadStatusOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ChatThreadReadStatusInclude<ExtArgs> | null;
+    where?: Prisma.ChatThreadReadStatusWhereInput;
+    orderBy?: Prisma.ChatThreadReadStatusOrderByWithRelationInput | Prisma.ChatThreadReadStatusOrderByWithRelationInput[];
+    cursor?: Prisma.ChatThreadReadStatusWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.ChatThreadReadStatusScalarFieldEnum | Prisma.ChatThreadReadStatusScalarFieldEnum[];
 };
 /**
  * User.supportTickets

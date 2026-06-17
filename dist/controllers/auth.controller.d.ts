@@ -6,4 +6,6 @@ export declare const verifyOTP: (req: Request, res: Response, next: import("expr
 export declare const getMe: (req: Request, res: Response, next: import("express").NextFunction) => void;
 export declare const forgotPassword: (req: Request, res: Response, next: import("express").NextFunction) => void;
 export declare const resetPassword: (req: Request, res: Response, next: import("express").NextFunction) => void;
+export declare const enable2FA: (req: Request, res: Response, next: import("express").NextFunction) => void;
+export declare const disable2FA: (req: Request, res: Response, next: import("express").NextFunction) => void;
 //# sourceMappingURL=auth.controller.d.ts.map

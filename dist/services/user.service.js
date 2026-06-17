@@ -8,8 +8,10 @@ exports.getById = getById;
 exports.update = update;
 exports.deleteOne = deleteOne;
 exports.updateRole = updateRole;
+exports.changePassword = changePassword;
 const db_1 = __importDefault(require("../config/db"));
 const AppError_1 = require("../utils/AppError");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 function toUserSession(user) {
     return {
         id: `usr-${user.id}`,
@@ -107,5 +109,21 @@ async function updateRole(id, role) {
         data: { role },
         select: { id: true, email: true, name: true, role: true },
     });
+}
+async function changePassword(id, currentPassword, newPassword) {
+    const user = await db_1.default.user.findUnique({ where: { id } });
+    if (!user) {
+        throw new AppError_1.AppError("User not found", 404);
+    }
+    const isValid = await bcrypt_1.default.compare(currentPassword, user.password);
+    if (!isValid) {
+        throw new AppError_1.AppError("Current password is incorrect", 401);
+    }
+    const hashed = await bcrypt_1.default.hash(newPassword, 12);
+    await db_1.default.user.update({
+        where: { id },
+        data: { password: hashed },
+    });
+    return { success: true };
 }
 //# sourceMappingURL=user.service.js.map

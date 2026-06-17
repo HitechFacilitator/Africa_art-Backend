@@ -22,9 +22,9 @@ export declare function getById(id: number): Promise<{
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;

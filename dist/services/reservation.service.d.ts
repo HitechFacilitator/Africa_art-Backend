@@ -4,7 +4,7 @@ export declare function getByUser(userId: number): Promise<({
         artist: {
             id: number;
             name: string;
-        };
+        } | null;
         images: {
             id: number;
             createdAt: Date;
@@ -19,9 +19,9 @@ export declare function getByUser(userId: number): Promise<({
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;
@@ -54,28 +54,28 @@ export declare function getByUser(userId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: ReservationStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: ReservationStatus;
     expiresAt: Date;
 })[]>;
 export declare function create(userId: number, artworkId: number): Promise<{
     userId: number;
     id: number;
+    status: ReservationStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: ReservationStatus;
     expiresAt: Date;
 }>;
 export declare function cancel(id: number, userId: number): Promise<{
     userId: number;
     id: number;
+    status: ReservationStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: ReservationStatus;
     expiresAt: Date;
 }>;
 export declare function expire(): Promise<number>;

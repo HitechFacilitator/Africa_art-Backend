@@ -32,14 +32,35 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const chatController = __importStar(require("../controllers/chat.controller"));
 const auth_1 = require("../middlewares/auth");
+const sse_1 = require("../utils/sse");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = (0, express_1.Router)();
+router.get("/events", (req, res) => {
+    const token = req.query.token;
+    if (!token) {
+        res.status(401).json({ error: "Token required" });
+        return;
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "aduna-secret-key-2026");
+        sse_1.sseManager.addClient(String(decoded.userId), res);
+    }
+    catch {
+        res.status(401).json({ error: "Invalid token" });
+    }
+});
 router.get("/threads", auth_1.authenticate, chatController.getThreads);
 router.post("/threads/:threadId/messages", auth_1.authenticate, chatController.sendMessage);
+router.patch("/threads/:threadId/read", auth_1.authenticate, chatController.markThreadRead);
 router.get("/tickets", auth_1.authenticate, chatController.getTickets);
+router.post("/tickets", auth_1.authenticate, chatController.createTicket);
 router.patch("/tickets/:id/status", auth_1.authenticate, chatController.updateTicketStatus);
 router.post("/tickets/:id/responses", auth_1.authenticate, chatController.addTicketResponse);
 exports.default = router;

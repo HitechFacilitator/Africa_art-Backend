@@ -47,6 +47,7 @@ exports.getAll = (0, catchAsync_1.default)(async (req, res) => {
         artist: req.query.artist,
         origin: req.query.origin,
         availability: req.query.availability,
+        artworkStatus: req.query.artworkStatus,
         isPOR: req.query.isPOR,
         minPrice: req.query.minPrice,
         maxPrice: req.query.maxPrice,

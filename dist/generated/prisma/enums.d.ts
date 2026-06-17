@@ -4,8 +4,15 @@ export declare const Role: {
     readonly PRESTIGE: "PRESTIGE";
     readonly ADVISOR: "ADVISOR";
     readonly ADMIN: "ADMIN";
+    readonly SUPPORT: "SUPPORT";
 };
 export type Role = (typeof Role)[keyof typeof Role];
+export declare const UserStatus: {
+    readonly ACTIVE: "ACTIVE";
+    readonly SUSPENDED: "SUSPENDED";
+    readonly PENDING: "PENDING";
+};
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
 export declare const Availability: {
     readonly AVAILABLE: "AVAILABLE";
     readonly RESERVED: "RESERVED";

@@ -3,6 +3,7 @@ interface ArtworkFilters {
     artist?: string;
     origin?: string;
     availability?: string;
+    artworkStatus?: string;
     isPOR?: string;
     minPrice?: string;
     maxPrice?: string;
@@ -34,6 +35,7 @@ export declare function getAll(filters: ArtworkFilters, page: number, limit: num
             historicalCagr: number;
             yieldIndex: number;
         } | null;
+        certificates: any;
         tier: any;
         status: any;
         provenanceHash: any;
@@ -68,6 +70,7 @@ export declare function getById(id: number): Promise<{
         historicalCagr: number;
         yieldIndex: number;
     } | null;
+    certificates: any;
     tier: any;
     status: any;
     provenanceHash: any;
@@ -100,6 +103,7 @@ export declare function create(data: any): Promise<{
         historicalCagr: number;
         yieldIndex: number;
     } | null;
+    certificates: any;
     tier: any;
     status: any;
     provenanceHash: any;
@@ -132,6 +136,7 @@ export declare function update(id: number, data: any): Promise<{
         historicalCagr: number;
         yieldIndex: number;
     } | null;
+    certificates: any;
     tier: any;
     status: any;
     provenanceHash: any;
@@ -166,6 +171,7 @@ export declare function search(query: string, page: number, limit: number, skip:
             historicalCagr: number;
             yieldIndex: number;
         } | null;
+        certificates: any;
         tier: any;
         status: any;
         provenanceHash: any;

@@ -3,11 +3,11 @@ export declare function getByUser(userId: number): Promise<({
         artist: {
             id: number;
             name: string;
-        };
+        } | null;
         category: {
             id: number;
             name: string;
-        };
+        } | null;
         images: {
             id: number;
             createdAt: Date;
@@ -22,9 +22,9 @@ export declare function getByUser(userId: number): Promise<({
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;
@@ -65,15 +65,15 @@ export declare function add(userId: number, artworkId: number): Promise<{
         artist: {
             id: number;
             name: string;
-        };
+        } | null;
     } & {
         id: number;
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;

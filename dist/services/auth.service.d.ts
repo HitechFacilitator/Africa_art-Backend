@@ -14,10 +14,11 @@ export declare function register(data: {
         role: string;
         avatar: string | undefined;
         institution: string | undefined;
+        twoFactorEnabled: boolean;
     };
     token: string;
 }>;
-export declare function login(email: string, _password: string): Promise<{
+export declare function login(email: string, password: string): Promise<{
     user: {
         id: string;
         email: string;
@@ -25,6 +26,20 @@ export declare function login(email: string, _password: string): Promise<{
         role: string;
         avatar: string | undefined;
         institution: string | undefined;
+        twoFactorEnabled: boolean;
+    };
+    token: string;
+    requiresOTP: boolean;
+    otpCode?: undefined;
+} | {
+    user: {
+        id: string;
+        email: string;
+        name: string;
+        role: string;
+        avatar: string | undefined;
+        institution: string | undefined;
+        twoFactorEnabled: boolean;
     };
     token: string;
     requiresOTP: boolean;
@@ -38,10 +53,11 @@ export declare function loginAs(role: string): Promise<{
         role: string;
         avatar: string | undefined;
         institution: string | undefined;
+        twoFactorEnabled: boolean;
     };
     token: string;
 }>;
-export declare function verifyOTP(email: string, _code: string): Promise<{
+export declare function verifyOTP(email: string, code: string): Promise<{
     user: {
         id: string;
         email: string;
@@ -49,6 +65,7 @@ export declare function verifyOTP(email: string, _code: string): Promise<{
         role: string;
         avatar: string | undefined;
         institution: string | undefined;
+        twoFactorEnabled: boolean;
     };
     token: string;
     success: boolean;
@@ -60,6 +77,15 @@ export declare function getMe(userId: number): Promise<{
     role: string;
     avatar: string | undefined;
     institution: string | undefined;
+    twoFactorEnabled: boolean;
+}>;
+export declare function enable2FA(userId: number): Promise<{
+    success: boolean;
+    twoFactorEnabled: boolean;
+}>;
+export declare function disable2FA(userId: number, password: string): Promise<{
+    success: boolean;
+    twoFactorEnabled: boolean;
 }>;
 export declare function forgotPassword(_email: string): Promise<{
     message: string;

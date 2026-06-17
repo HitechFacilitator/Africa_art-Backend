@@ -49,7 +49,7 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatMessageScalarFieldEnum = exports.ChatThreadScalarFieldEnum = exports.AdvisorActivityScalarFieldEnum = exports.AdvisorPlacementScalarFieldEnum = exports.AdvisorClientScalarFieldEnum = exports.EscrowTransactionScalarFieldEnum = exports.SecurityRecordScalarFieldEnum = exports.ShipmentUpdateScalarFieldEnum = exports.LogisticsShipmentScalarFieldEnum = exports.InquiryMessageScalarFieldEnum = exports.InquiryScalarFieldEnum = exports.AcquisitionProvenanceScalarFieldEnum = exports.AcquisitionScalarFieldEnum = exports.BidScalarFieldEnum = exports.AuctionLotScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.AuditLogScalarFieldEnum = exports.PriceRequestScalarFieldEnum = exports.ConsultationScalarFieldEnum = exports.OrderItemScalarFieldEnum = exports.OrderScalarFieldEnum = exports.ReservationScalarFieldEnum = exports.FavoriteScalarFieldEnum = exports.CertificateScalarFieldEnum = exports.ProvenanceChainScalarFieldEnum = exports.ProvenanceRecordScalarFieldEnum = exports.ArtworkImageScalarFieldEnum = exports.ArtworkScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.ArtistScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
-exports.defineExtension = exports.MemberApplicationOrderByRelevanceFieldEnum = exports.TicketResponseOrderByRelevanceFieldEnum = exports.SupportTicketOrderByRelevanceFieldEnum = exports.ChatMessageOrderByRelevanceFieldEnum = exports.ChatThreadOrderByRelevanceFieldEnum = exports.AdvisorActivityOrderByRelevanceFieldEnum = exports.AdvisorPlacementOrderByRelevanceFieldEnum = exports.AdvisorClientOrderByRelevanceFieldEnum = exports.EscrowTransactionOrderByRelevanceFieldEnum = exports.SecurityRecordOrderByRelevanceFieldEnum = exports.ShipmentUpdateOrderByRelevanceFieldEnum = exports.LogisticsShipmentOrderByRelevanceFieldEnum = exports.InquiryMessageOrderByRelevanceFieldEnum = exports.InquiryOrderByRelevanceFieldEnum = exports.AcquisitionProvenanceOrderByRelevanceFieldEnum = exports.AcquisitionOrderByRelevanceFieldEnum = exports.NotificationOrderByRelevanceFieldEnum = exports.AuditLogOrderByRelevanceFieldEnum = exports.QueryMode = exports.JsonNullValueFilter = exports.PriceRequestOrderByRelevanceFieldEnum = exports.ConsultationOrderByRelevanceFieldEnum = exports.OrderOrderByRelevanceFieldEnum = exports.CertificateOrderByRelevanceFieldEnum = exports.ProvenanceChainOrderByRelevanceFieldEnum = exports.ProvenanceRecordOrderByRelevanceFieldEnum = exports.ArtworkImageOrderByRelevanceFieldEnum = exports.ArtworkOrderByRelevanceFieldEnum = exports.CategoryOrderByRelevanceFieldEnum = exports.ArtistOrderByRelevanceFieldEnum = exports.UserOrderByRelevanceFieldEnum = exports.NullsOrder = exports.NullableJsonNullValueInput = exports.SortOrder = exports.MemberApplicationScalarFieldEnum = exports.TicketResponseScalarFieldEnum = exports.SupportTicketScalarFieldEnum = void 0;
+exports.defineExtension = exports.MemberApplicationOrderByRelevanceFieldEnum = exports.TicketResponseOrderByRelevanceFieldEnum = exports.SupportTicketOrderByRelevanceFieldEnum = exports.ChatMessageOrderByRelevanceFieldEnum = exports.ChatThreadOrderByRelevanceFieldEnum = exports.AdvisorActivityOrderByRelevanceFieldEnum = exports.AdvisorPlacementOrderByRelevanceFieldEnum = exports.AdvisorClientOrderByRelevanceFieldEnum = exports.EscrowTransactionOrderByRelevanceFieldEnum = exports.SecurityRecordOrderByRelevanceFieldEnum = exports.ShipmentUpdateOrderByRelevanceFieldEnum = exports.LogisticsShipmentOrderByRelevanceFieldEnum = exports.InquiryMessageOrderByRelevanceFieldEnum = exports.InquiryOrderByRelevanceFieldEnum = exports.AcquisitionProvenanceOrderByRelevanceFieldEnum = exports.AcquisitionOrderByRelevanceFieldEnum = exports.NotificationOrderByRelevanceFieldEnum = exports.AuditLogOrderByRelevanceFieldEnum = exports.QueryMode = exports.JsonNullValueFilter = exports.PriceRequestOrderByRelevanceFieldEnum = exports.ConsultationOrderByRelevanceFieldEnum = exports.OrderOrderByRelevanceFieldEnum = exports.CertificateOrderByRelevanceFieldEnum = exports.ProvenanceChainOrderByRelevanceFieldEnum = exports.ProvenanceRecordOrderByRelevanceFieldEnum = exports.ArtworkImageOrderByRelevanceFieldEnum = exports.ArtworkOrderByRelevanceFieldEnum = exports.CategoryOrderByRelevanceFieldEnum = exports.ArtistOrderByRelevanceFieldEnum = exports.UserOrderByRelevanceFieldEnum = exports.NullsOrder = exports.NullableJsonNullValueInput = exports.SortOrder = exports.MemberApplicationScalarFieldEnum = exports.TicketResponseScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.ChatThreadReadStatusScalarFieldEnum = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 /**
  * Prisma Errors
@@ -135,6 +135,7 @@ exports.ModelName = {
     AdvisorActivity: 'AdvisorActivity',
     ChatThread: 'ChatThread',
     ChatMessage: 'ChatMessage',
+    ChatThreadReadStatus: 'ChatThreadReadStatus',
     SupportTicket: 'SupportTicket',
     TicketResponse: 'TicketResponse',
     MemberApplication: 'MemberApplication'
@@ -154,6 +155,7 @@ exports.UserScalarFieldEnum = {
     password: 'password',
     name: 'name',
     role: 'role',
+    status: 'status',
     avatar: 'avatar',
     institution: 'institution',
     country: 'country',
@@ -513,6 +515,14 @@ exports.ChatMessageScalarFieldEnum = {
     read: 'read',
     createdAt: 'createdAt'
 };
+exports.ChatThreadReadStatusScalarFieldEnum = {
+    id: 'id',
+    threadId: 'threadId',
+    userId: 'userId',
+    lastReadId: 'lastReadId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
 exports.SupportTicketScalarFieldEnum = {
     id: 'id',
     userId: 'userId',
@@ -520,11 +530,13 @@ exports.SupportTicketScalarFieldEnum = {
     clientRole: 'clientRole',
     subject: 'subject',
     description: 'description',
+    category: 'category',
     status: 'status',
     priority: 'priority',
     createdDate: 'createdDate',
     lastUpdate: 'lastUpdate',
     assignedTo: 'assignedTo',
+    assignedToId: 'assignedToId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -755,6 +767,7 @@ exports.SupportTicketOrderByRelevanceFieldEnum = {
     clientRole: 'clientRole',
     subject: 'subject',
     description: 'description',
+    category: 'category',
     status: 'status',
     priority: 'priority',
     createdDate: 'createdDate',

@@ -262,6 +262,7 @@ export declare const ModelName: {
     readonly AdvisorActivity: "AdvisorActivity";
     readonly ChatThread: "ChatThread";
     readonly ChatMessage: "ChatMessage";
+    readonly ChatThreadReadStatus: "ChatThreadReadStatus";
     readonly SupportTicket: "SupportTicket";
     readonly TicketResponse: "TicketResponse";
     readonly MemberApplication: "MemberApplication";
@@ -277,7 +278,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "artist" | "category" | "artwork" | "artworkImage" | "provenanceRecord" | "provenanceChain" | "certificate" | "favorite" | "reservation" | "order" | "orderItem" | "consultation" | "priceRequest" | "auditLog" | "notification" | "auctionLot" | "bid" | "acquisition" | "acquisitionProvenance" | "inquiry" | "inquiryMessage" | "logisticsShipment" | "shipmentUpdate" | "securityRecord" | "escrowTransaction" | "advisorClient" | "advisorPlacement" | "advisorActivity" | "chatThread" | "chatMessage" | "supportTicket" | "ticketResponse" | "memberApplication";
+        modelProps: "user" | "artist" | "category" | "artwork" | "artworkImage" | "provenanceRecord" | "provenanceChain" | "certificate" | "favorite" | "reservation" | "order" | "orderItem" | "consultation" | "priceRequest" | "auditLog" | "notification" | "auctionLot" | "bid" | "acquisition" | "acquisitionProvenance" | "inquiry" | "inquiryMessage" | "logisticsShipment" | "shipmentUpdate" | "securityRecord" | "escrowTransaction" | "advisorClient" | "advisorPlacement" | "advisorActivity" | "chatThread" | "chatMessage" | "chatThreadReadStatus" | "supportTicket" | "ticketResponse" | "memberApplication";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -2327,6 +2328,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        ChatThreadReadStatus: {
+            payload: Prisma.$ChatThreadReadStatusPayload<ExtArgs>;
+            fields: Prisma.ChatThreadReadStatusFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.ChatThreadReadStatusFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.ChatThreadReadStatusFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                findFirst: {
+                    args: Prisma.ChatThreadReadStatusFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.ChatThreadReadStatusFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                findMany: {
+                    args: Prisma.ChatThreadReadStatusFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>[];
+                };
+                create: {
+                    args: Prisma.ChatThreadReadStatusCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                createMany: {
+                    args: Prisma.ChatThreadReadStatusCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                delete: {
+                    args: Prisma.ChatThreadReadStatusDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                update: {
+                    args: Prisma.ChatThreadReadStatusUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                deleteMany: {
+                    args: Prisma.ChatThreadReadStatusDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.ChatThreadReadStatusUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                upsert: {
+                    args: Prisma.ChatThreadReadStatusUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$ChatThreadReadStatusPayload>;
+                };
+                aggregate: {
+                    args: Prisma.ChatThreadReadStatusAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregateChatThreadReadStatus>;
+                };
+                groupBy: {
+                    args: Prisma.ChatThreadReadStatusGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ChatThreadReadStatusGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.ChatThreadReadStatusCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.ChatThreadReadStatusCountAggregateOutputType> | number;
+                };
+            };
+        };
         SupportTicket: {
             payload: Prisma.$SupportTicketPayload<ExtArgs>;
             fields: Prisma.SupportTicketFieldRefs;
@@ -2565,6 +2632,7 @@ export declare const UserScalarFieldEnum: {
     readonly password: "password";
     readonly name: "name";
     readonly role: "role";
+    readonly status: "status";
     readonly avatar: "avatar";
     readonly institution: "institution";
     readonly country: "country";
@@ -2955,6 +3023,15 @@ export declare const ChatMessageScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum];
+export declare const ChatThreadReadStatusScalarFieldEnum: {
+    readonly id: "id";
+    readonly threadId: "threadId";
+    readonly userId: "userId";
+    readonly lastReadId: "lastReadId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type ChatThreadReadStatusScalarFieldEnum = (typeof ChatThreadReadStatusScalarFieldEnum)[keyof typeof ChatThreadReadStatusScalarFieldEnum];
 export declare const SupportTicketScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -2962,11 +3039,13 @@ export declare const SupportTicketScalarFieldEnum: {
     readonly clientRole: "clientRole";
     readonly subject: "subject";
     readonly description: "description";
+    readonly category: "category";
     readonly status: "status";
     readonly priority: "priority";
     readonly createdDate: "createdDate";
     readonly lastUpdate: "lastUpdate";
     readonly assignedTo: "assignedTo";
+    readonly assignedToId: "assignedToId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -3231,6 +3310,7 @@ export declare const SupportTicketOrderByRelevanceFieldEnum: {
     readonly clientRole: "clientRole";
     readonly subject: "subject";
     readonly description: "description";
+    readonly category: "category";
     readonly status: "status";
     readonly priority: "priority";
     readonly createdDate: "createdDate";
@@ -3268,6 +3348,10 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'Role'
  */
 export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>;
+/**
+ * Reference to a field of type 'UserStatus'
+ */
+export type EnumUserStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserStatus'>;
 /**
  * Reference to a field of type 'Boolean'
  */
@@ -3464,6 +3548,7 @@ export type GlobalOmitConfig = {
     advisorActivity?: Prisma.AdvisorActivityOmit;
     chatThread?: Prisma.ChatThreadOmit;
     chatMessage?: Prisma.ChatMessageOmit;
+    chatThreadReadStatus?: Prisma.ChatThreadReadStatusOmit;
     supportTicket?: Prisma.SupportTicketOmit;
     ticketResponse?: Prisma.TicketResponseOmit;
     memberApplication?: Prisma.MemberApplicationOmit;

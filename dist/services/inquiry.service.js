@@ -28,6 +28,26 @@ async function getByUser(userId) {
     }));
 }
 async function create(userId, data) {
+    const existing = await db_1.default.inquiry.findFirst({
+        where: { userId, artworkTitle: data.artworkTitle },
+        include: { messages: { orderBy: { createdAt: "asc" } } },
+    });
+    if (existing) {
+        return {
+            id: `inq-${existing.id}`,
+            artworkTitle: existing.artworkTitle,
+            artworkYear: existing.artworkYear || "",
+            imageUrl: existing.imageUrl || "",
+            status: existing.status,
+            date: existing.date || existing.createdAt.toISOString(),
+            messages: existing.messages.map(m => ({
+                sender: m.sender,
+                text: m.text || "",
+                timestamp: m.timestamp || "",
+            })),
+            existing: true,
+        };
+    }
     const inquiry = await db_1.default.inquiry.create({
         data: {
             userId,

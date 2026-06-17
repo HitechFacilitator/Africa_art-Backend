@@ -43,4 +43,7 @@ export declare function updateRole(id: number, role: Role): Promise<{
     email: string;
     name: string;
 }>;
+export declare function changePassword(id: number, currentPassword: string, newPassword: string): Promise<{
+    success: boolean;
+}>;
 //# sourceMappingURL=user.service.d.ts.map

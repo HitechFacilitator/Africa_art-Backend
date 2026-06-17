@@ -459,6 +459,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.chatThreadReadStatus`: Exposes CRUD operations for the **ChatThreadReadStatus** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more ChatThreadReadStatuses
+      * const chatThreadReadStatuses = await prisma.chatThreadReadStatus.findMany()
+      * ```
+      */
+    get chatThreadReadStatus(): Prisma.ChatThreadReadStatusDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.supportTicket`: Exposes CRUD operations for the **SupportTicket** model.
       * Example usage:
       * ```ts

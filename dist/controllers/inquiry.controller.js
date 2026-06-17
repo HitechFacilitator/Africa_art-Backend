@@ -39,6 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addMessage = exports.create = exports.getByUser = void 0;
 const inquiryService = __importStar(require("../services/inquiry.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const sse_1 = require("../utils/sse");
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
     const data = await inquiryService.getByUser(req.user.userId);
     res.json({ success: true, data });
@@ -49,6 +50,10 @@ exports.create = (0, catchAsync_1.default)(async (req, res) => {
 });
 exports.addMessage = (0, catchAsync_1.default)(async (req, res) => {
     const message = await inquiryService.addMessage(Number(req.params.id), req.body.sender, req.body.text);
+    sse_1.sseManager.broadcast("inquiry-update", {
+        inquiryId: Number(req.params.id),
+        message,
+    });
     res.status(201).json({ success: true, data: message });
 });
 //# sourceMappingURL=inquiry.controller.js.map

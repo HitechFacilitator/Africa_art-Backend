@@ -316,19 +316,21 @@ export type CategoryMinOrderByAggregateInput = {
 export type CategorySumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
 };
-export type CategoryScalarRelationFilter = {
-    is?: Prisma.CategoryWhereInput;
-    isNot?: Prisma.CategoryWhereInput;
+export type CategoryNullableScalarRelationFilter = {
+    is?: Prisma.CategoryWhereInput | null;
+    isNot?: Prisma.CategoryWhereInput | null;
 };
 export type CategoryCreateNestedOneWithoutArtworksInput = {
     create?: Prisma.XOR<Prisma.CategoryCreateWithoutArtworksInput, Prisma.CategoryUncheckedCreateWithoutArtworksInput>;
     connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutArtworksInput;
     connect?: Prisma.CategoryWhereUniqueInput;
 };
-export type CategoryUpdateOneRequiredWithoutArtworksNestedInput = {
+export type CategoryUpdateOneWithoutArtworksNestedInput = {
     create?: Prisma.XOR<Prisma.CategoryCreateWithoutArtworksInput, Prisma.CategoryUncheckedCreateWithoutArtworksInput>;
     connectOrCreate?: Prisma.CategoryCreateOrConnectWithoutArtworksInput;
     upsert?: Prisma.CategoryUpsertWithoutArtworksInput;
+    disconnect?: Prisma.CategoryWhereInput | boolean;
+    delete?: Prisma.CategoryWhereInput | boolean;
     connect?: Prisma.CategoryWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.CategoryUpdateToOneWithWhereWithoutArtworksInput, Prisma.CategoryUpdateWithoutArtworksInput>, Prisma.CategoryUncheckedUpdateWithoutArtworksInput>;
 };

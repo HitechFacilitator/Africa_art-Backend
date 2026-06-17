@@ -382,9 +382,9 @@ export type ArtistMinOrderByAggregateInput = {
 export type ArtistSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
 };
-export type ArtistScalarRelationFilter = {
-    is?: Prisma.ArtistWhereInput;
-    isNot?: Prisma.ArtistWhereInput;
+export type ArtistNullableScalarRelationFilter = {
+    is?: Prisma.ArtistWhereInput | null;
+    isNot?: Prisma.ArtistWhereInput | null;
 };
 export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null;
@@ -394,10 +394,12 @@ export type ArtistCreateNestedOneWithoutArtworksInput = {
     connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutArtworksInput;
     connect?: Prisma.ArtistWhereUniqueInput;
 };
-export type ArtistUpdateOneRequiredWithoutArtworksNestedInput = {
+export type ArtistUpdateOneWithoutArtworksNestedInput = {
     create?: Prisma.XOR<Prisma.ArtistCreateWithoutArtworksInput, Prisma.ArtistUncheckedCreateWithoutArtworksInput>;
     connectOrCreate?: Prisma.ArtistCreateOrConnectWithoutArtworksInput;
     upsert?: Prisma.ArtistUpsertWithoutArtworksInput;
+    disconnect?: Prisma.ArtistWhereInput | boolean;
+    delete?: Prisma.ArtistWhereInput | boolean;
     connect?: Prisma.ArtistWhereUniqueInput;
     update?: Prisma.XOR<Prisma.XOR<Prisma.ArtistUpdateToOneWithWhereWithoutArtworksInput, Prisma.ArtistUpdateWithoutArtworksInput>, Prisma.ArtistUncheckedUpdateWithoutArtworksInput>;
 };

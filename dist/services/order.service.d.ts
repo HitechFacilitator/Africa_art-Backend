@@ -5,7 +5,7 @@ export declare function getByUser(userId: number): Promise<({
             artist: {
                 id: number;
                 name: string;
-            };
+            } | null;
             images: {
                 id: number;
                 createdAt: Date;
@@ -20,9 +20,9 @@ export declare function getByUser(userId: number): Promise<({
             tier: string | null;
             createdAt: Date;
             updatedAt: Date;
-            artistId: number;
+            artistId: number | null;
             description: string;
-            categoryId: number;
+            categoryId: number | null;
             origin: string;
             title: string;
             region: string | null;
@@ -62,10 +62,10 @@ export declare function getByUser(userId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: OrderStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: OrderStatus;
     totalAmount: import("@prisma/client-runtime-utils").Decimal;
 })[]>;
 export declare function getAll(page: number, limit: number, skip: number): Promise<{
@@ -91,10 +91,10 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
     } & {
         userId: number;
         id: number;
+        status: OrderStatus;
         createdAt: Date;
         updatedAt: Date;
         notes: string | null;
-        status: OrderStatus;
         totalAmount: import("@prisma/client-runtime-utils").Decimal;
     })[];
     total: number;
@@ -111,7 +111,7 @@ export declare function getById(id: number): Promise<{
             artist: {
                 id: number;
                 name: string;
-            };
+            } | null;
             images: {
                 id: number;
                 createdAt: Date;
@@ -126,9 +126,9 @@ export declare function getById(id: number): Promise<{
             tier: string | null;
             createdAt: Date;
             updatedAt: Date;
-            artistId: number;
+            artistId: number | null;
             description: string;
-            categoryId: number;
+            categoryId: number | null;
             origin: string;
             title: string;
             region: string | null;
@@ -168,10 +168,10 @@ export declare function getById(id: number): Promise<{
 } & {
     userId: number;
     id: number;
+    status: OrderStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: OrderStatus;
     totalAmount: import("@prisma/client-runtime-utils").Decimal;
 }>;
 export declare function create(userId: number, artworkIds: number[], notes?: string): Promise<{
@@ -190,19 +190,19 @@ export declare function create(userId: number, artworkIds: number[], notes?: str
 } & {
     userId: number;
     id: number;
+    status: OrderStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: OrderStatus;
     totalAmount: import("@prisma/client-runtime-utils").Decimal;
 }>;
 export declare function updateStatus(id: number, status: OrderStatus): Promise<{
     userId: number;
     id: number;
+    status: OrderStatus;
     createdAt: Date;
     updatedAt: Date;
     notes: string | null;
-    status: OrderStatus;
     totalAmount: import("@prisma/client-runtime-utils").Decimal;
 }>;
 //# sourceMappingURL=order.service.d.ts.map

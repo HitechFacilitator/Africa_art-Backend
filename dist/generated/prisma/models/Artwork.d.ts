@@ -389,8 +389,8 @@ export type ArtworkGroupByOutputType = {
     provenanceHash: string | null;
     acquiredYear: number | null;
     acquiredMethod: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId: number | null;
+    categoryId: number | null;
     createdAt: Date;
     updatedAt: Date;
     _count: ArtworkCountAggregateOutputType | null;
@@ -437,12 +437,12 @@ export type ArtworkWhereInput = {
     provenanceHash?: Prisma.StringNullableFilter<"Artwork"> | string | null;
     acquiredYear?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     acquiredMethod?: Prisma.StringNullableFilter<"Artwork"> | string | null;
-    artistId?: Prisma.IntFilter<"Artwork"> | number;
-    categoryId?: Prisma.IntFilter<"Artwork"> | number;
+    artistId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
+    categoryId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
-    artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
-    category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>;
+    artist?: Prisma.XOR<Prisma.ArtistNullableScalarRelationFilter, Prisma.ArtistWhereInput> | null;
+    category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null;
     images?: Prisma.ArtworkImageListRelationFilter;
     provenance?: Prisma.ProvenanceRecordListRelationFilter;
     provenanceChain?: Prisma.ProvenanceChainListRelationFilter;
@@ -485,8 +485,8 @@ export type ArtworkOrderByWithRelationInput = {
     provenanceHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     acquiredYear?: Prisma.SortOrderInput | Prisma.SortOrder;
     acquiredMethod?: Prisma.SortOrderInput | Prisma.SortOrder;
-    artistId?: Prisma.SortOrder;
-    categoryId?: Prisma.SortOrder;
+    artistId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     artist?: Prisma.ArtistOrderByWithRelationInput;
@@ -537,12 +537,12 @@ export type ArtworkWhereUniqueInput = Prisma.AtLeast<{
     provenanceHash?: Prisma.StringNullableFilter<"Artwork"> | string | null;
     acquiredYear?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     acquiredMethod?: Prisma.StringNullableFilter<"Artwork"> | string | null;
-    artistId?: Prisma.IntFilter<"Artwork"> | number;
-    categoryId?: Prisma.IntFilter<"Artwork"> | number;
+    artistId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
+    categoryId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
-    artist?: Prisma.XOR<Prisma.ArtistScalarRelationFilter, Prisma.ArtistWhereInput>;
-    category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>;
+    artist?: Prisma.XOR<Prisma.ArtistNullableScalarRelationFilter, Prisma.ArtistWhereInput> | null;
+    category?: Prisma.XOR<Prisma.CategoryNullableScalarRelationFilter, Prisma.CategoryWhereInput> | null;
     images?: Prisma.ArtworkImageListRelationFilter;
     provenance?: Prisma.ProvenanceRecordListRelationFilter;
     provenanceChain?: Prisma.ProvenanceChainListRelationFilter;
@@ -585,8 +585,8 @@ export type ArtworkOrderByWithAggregationInput = {
     provenanceHash?: Prisma.SortOrderInput | Prisma.SortOrder;
     acquiredYear?: Prisma.SortOrderInput | Prisma.SortOrder;
     acquiredMethod?: Prisma.SortOrderInput | Prisma.SortOrder;
-    artistId?: Prisma.SortOrder;
-    categoryId?: Prisma.SortOrder;
+    artistId?: Prisma.SortOrderInput | Prisma.SortOrder;
+    categoryId?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.ArtworkCountOrderByAggregateInput;
@@ -630,8 +630,8 @@ export type ArtworkScalarWhereWithAggregatesInput = {
     provenanceHash?: Prisma.StringNullableWithAggregatesFilter<"Artwork"> | string | null;
     acquiredYear?: Prisma.IntNullableWithAggregatesFilter<"Artwork"> | number | null;
     acquiredMethod?: Prisma.StringNullableWithAggregatesFilter<"Artwork"> | string | null;
-    artistId?: Prisma.IntWithAggregatesFilter<"Artwork"> | number;
-    categoryId?: Prisma.IntWithAggregatesFilter<"Artwork"> | number;
+    artistId?: Prisma.IntNullableWithAggregatesFilter<"Artwork"> | number | null;
+    categoryId?: Prisma.IntNullableWithAggregatesFilter<"Artwork"> | number | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Artwork"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Artwork"> | Date | string;
 };
@@ -668,8 +668,8 @@ export type ArtworkCreateInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -712,8 +712,8 @@ export type ArtworkUncheckedCreateInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -759,8 +759,8 @@ export type ArtworkUpdateInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -803,8 +803,8 @@ export type ArtworkUncheckedUpdateInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -849,8 +849,8 @@ export type ArtworkCreateManyInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -920,8 +920,8 @@ export type ArtworkUncheckedUpdateManyInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -1309,7 +1309,7 @@ export type ArtworkCreateWithoutArtistInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -1352,7 +1352,7 @@ export type ArtworkUncheckedCreateWithoutArtistInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    categoryId: number;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -1421,8 +1421,8 @@ export type ArtworkScalarWhereInput = {
     provenanceHash?: Prisma.StringNullableFilter<"Artwork"> | string | null;
     acquiredYear?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     acquiredMethod?: Prisma.StringNullableFilter<"Artwork"> | string | null;
-    artistId?: Prisma.IntFilter<"Artwork"> | number;
-    categoryId?: Prisma.IntFilter<"Artwork"> | number;
+    artistId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
+    categoryId?: Prisma.IntNullableFilter<"Artwork"> | number | null;
     createdAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Artwork"> | Date | string;
 };
@@ -1459,7 +1459,7 @@ export type ArtworkCreateWithoutCategoryInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -1502,7 +1502,7 @@ export type ArtworkUncheckedCreateWithoutCategoryInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
+    artistId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -1569,8 +1569,8 @@ export type ArtworkCreateWithoutImagesInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
     certificates?: Prisma.CertificateCreateNestedManyWithoutArtworkInput;
@@ -1612,8 +1612,8 @@ export type ArtworkUncheckedCreateWithoutImagesInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     provenance?: Prisma.ProvenanceRecordUncheckedCreateNestedManyWithoutArtworkInput;
@@ -1671,8 +1671,8 @@ export type ArtworkUpdateWithoutImagesInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
     certificates?: Prisma.CertificateUpdateManyWithoutArtworkNestedInput;
@@ -1714,8 +1714,8 @@ export type ArtworkUncheckedUpdateWithoutImagesInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     provenance?: Prisma.ProvenanceRecordUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -1760,8 +1760,8 @@ export type ArtworkCreateWithoutProvenanceInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
     certificates?: Prisma.CertificateCreateNestedManyWithoutArtworkInput;
@@ -1803,8 +1803,8 @@ export type ArtworkUncheckedCreateWithoutProvenanceInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -1862,8 +1862,8 @@ export type ArtworkUpdateWithoutProvenanceInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
     certificates?: Prisma.CertificateUpdateManyWithoutArtworkNestedInput;
@@ -1905,8 +1905,8 @@ export type ArtworkUncheckedUpdateWithoutProvenanceInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -1951,8 +1951,8 @@ export type ArtworkCreateWithoutProvenanceChainInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     certificates?: Prisma.CertificateCreateNestedManyWithoutArtworkInput;
@@ -1994,8 +1994,8 @@ export type ArtworkUncheckedCreateWithoutProvenanceChainInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -2053,8 +2053,8 @@ export type ArtworkUpdateWithoutProvenanceChainInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     certificates?: Prisma.CertificateUpdateManyWithoutArtworkNestedInput;
@@ -2096,8 +2096,8 @@ export type ArtworkUncheckedUpdateWithoutProvenanceChainInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -2142,8 +2142,8 @@ export type ArtworkCreateWithoutCertificatesInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -2185,8 +2185,8 @@ export type ArtworkUncheckedCreateWithoutCertificatesInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -2244,8 +2244,8 @@ export type ArtworkUpdateWithoutCertificatesInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -2287,8 +2287,8 @@ export type ArtworkUncheckedUpdateWithoutCertificatesInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -2333,8 +2333,8 @@ export type ArtworkCreateWithoutFavoritesInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -2376,8 +2376,8 @@ export type ArtworkUncheckedCreateWithoutFavoritesInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -2435,8 +2435,8 @@ export type ArtworkUpdateWithoutFavoritesInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -2478,8 +2478,8 @@ export type ArtworkUncheckedUpdateWithoutFavoritesInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -2524,8 +2524,8 @@ export type ArtworkCreateWithoutReservationsInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -2567,8 +2567,8 @@ export type ArtworkUncheckedCreateWithoutReservationsInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -2626,8 +2626,8 @@ export type ArtworkUpdateWithoutReservationsInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -2669,8 +2669,8 @@ export type ArtworkUncheckedUpdateWithoutReservationsInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -2715,8 +2715,8 @@ export type ArtworkCreateWithoutOrderItemsInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -2758,8 +2758,8 @@ export type ArtworkUncheckedCreateWithoutOrderItemsInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -2817,8 +2817,8 @@ export type ArtworkUpdateWithoutOrderItemsInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -2860,8 +2860,8 @@ export type ArtworkUncheckedUpdateWithoutOrderItemsInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -2906,8 +2906,8 @@ export type ArtworkCreateWithoutPriceRequestsInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -2949,8 +2949,8 @@ export type ArtworkUncheckedCreateWithoutPriceRequestsInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -3008,8 +3008,8 @@ export type ArtworkUpdateWithoutPriceRequestsInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -3051,8 +3051,8 @@ export type ArtworkUncheckedUpdateWithoutPriceRequestsInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -3097,8 +3097,8 @@ export type ArtworkCreateWithoutAuctionLotsInput = {
     acquiredMethod?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
-    artist: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
-    category: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
+    artist?: Prisma.ArtistCreateNestedOneWithoutArtworksInput;
+    category?: Prisma.CategoryCreateNestedOneWithoutArtworksInput;
     images?: Prisma.ArtworkImageCreateNestedManyWithoutArtworkInput;
     provenance?: Prisma.ProvenanceRecordCreateNestedManyWithoutArtworkInput;
     provenanceChain?: Prisma.ProvenanceChainCreateNestedManyWithoutArtworkInput;
@@ -3140,8 +3140,8 @@ export type ArtworkUncheckedCreateWithoutAuctionLotsInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
-    categoryId: number;
+    artistId?: number | null;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     images?: Prisma.ArtworkImageUncheckedCreateNestedManyWithoutArtworkInput;
@@ -3199,8 +3199,8 @@ export type ArtworkUpdateWithoutAuctionLotsInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -3242,8 +3242,8 @@ export type ArtworkUncheckedUpdateWithoutAuctionLotsInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -3287,7 +3287,7 @@ export type ArtworkCreateManyArtistInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    categoryId: number;
+    categoryId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -3324,7 +3324,7 @@ export type ArtworkUpdateWithoutArtistInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    category?: Prisma.CategoryUpdateOneRequiredWithoutArtworksNestedInput;
+    category?: Prisma.CategoryUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -3367,7 +3367,7 @@ export type ArtworkUncheckedUpdateWithoutArtistInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -3412,7 +3412,7 @@ export type ArtworkUncheckedUpdateManyWithoutArtistInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    categoryId?: Prisma.IntFieldUpdateOperationsInput | number;
+    categoryId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -3448,7 +3448,7 @@ export type ArtworkCreateManyCategoryInput = {
     provenanceHash?: string | null;
     acquiredYear?: number | null;
     acquiredMethod?: string | null;
-    artistId: number;
+    artistId?: number | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -3485,7 +3485,7 @@ export type ArtworkUpdateWithoutCategoryInput = {
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
-    artist?: Prisma.ArtistUpdateOneRequiredWithoutArtworksNestedInput;
+    artist?: Prisma.ArtistUpdateOneWithoutArtworksNestedInput;
     images?: Prisma.ArtworkImageUpdateManyWithoutArtworkNestedInput;
     provenance?: Prisma.ProvenanceRecordUpdateManyWithoutArtworkNestedInput;
     provenanceChain?: Prisma.ProvenanceChainUpdateManyWithoutArtworkNestedInput;
@@ -3528,7 +3528,7 @@ export type ArtworkUncheckedUpdateWithoutCategoryInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     images?: Prisma.ArtworkImageUncheckedUpdateManyWithoutArtworkNestedInput;
@@ -3573,7 +3573,7 @@ export type ArtworkUncheckedUpdateManyWithoutCategoryInput = {
     provenanceHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     acquiredYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     acquiredMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
-    artistId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artistId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -3701,8 +3701,8 @@ export type ArtworkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     categoryId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
-    artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
-    category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>;
+    artist?: boolean | Prisma.Artwork$artistArgs<ExtArgs>;
+    category?: boolean | Prisma.Artwork$categoryArgs<ExtArgs>;
     images?: boolean | Prisma.Artwork$imagesArgs<ExtArgs>;
     provenance?: boolean | Prisma.Artwork$provenanceArgs<ExtArgs>;
     provenanceChain?: boolean | Prisma.Artwork$provenanceChainArgs<ExtArgs>;
@@ -3753,8 +3753,8 @@ export type ArtworkSelectScalar = {
 };
 export type ArtworkOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "origin" | "region" | "tribe" | "era" | "historicalPeriod" | "material" | "dimensions" | "weight" | "condition" | "availability" | "price" | "isPOR" | "imageUrl" | "blurDataURL" | "scarcityIndex" | "preservationStatus" | "appreciationRate" | "isHero" | "historicalStory" | "investmentThesis" | "estimatedValue" | "historicalCagr" | "yieldIndex" | "tier" | "artworkStatus" | "provenanceHash" | "acquiredYear" | "acquiredMethod" | "artistId" | "categoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["artwork"]>;
 export type ArtworkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    artist?: boolean | Prisma.ArtistDefaultArgs<ExtArgs>;
-    category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>;
+    artist?: boolean | Prisma.Artwork$artistArgs<ExtArgs>;
+    category?: boolean | Prisma.Artwork$categoryArgs<ExtArgs>;
     images?: boolean | Prisma.Artwork$imagesArgs<ExtArgs>;
     provenance?: boolean | Prisma.Artwork$provenanceArgs<ExtArgs>;
     provenanceChain?: boolean | Prisma.Artwork$provenanceChainArgs<ExtArgs>;
@@ -3769,8 +3769,8 @@ export type ArtworkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type $ArtworkPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Artwork";
     objects: {
-        artist: Prisma.$ArtistPayload<ExtArgs>;
-        category: Prisma.$CategoryPayload<ExtArgs>;
+        artist: Prisma.$ArtistPayload<ExtArgs> | null;
+        category: Prisma.$CategoryPayload<ExtArgs> | null;
         images: Prisma.$ArtworkImagePayload<ExtArgs>[];
         provenance: Prisma.$ProvenanceRecordPayload<ExtArgs>[];
         provenanceChain: Prisma.$ProvenanceChainPayload<ExtArgs>[];
@@ -3813,8 +3813,8 @@ export type $ArtworkPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         provenanceHash: string | null;
         acquiredYear: number | null;
         acquiredMethod: string | null;
-        artistId: number;
-        categoryId: number;
+        artistId: number | null;
+        categoryId: number | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["artwork"]>;
@@ -4094,8 +4094,8 @@ export interface ArtworkDelegate<ExtArgs extends runtime.Types.Extensions.Intern
  */
 export interface Prisma__ArtworkClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise";
-    artist<T extends Prisma.ArtistDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ArtistDefaultArgs<ExtArgs>>): Prisma.Prisma__ArtistClient<runtime.Types.Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
-    category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    artist<T extends Prisma.Artwork$artistArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$artistArgs<ExtArgs>>): Prisma.Prisma__ArtistClient<runtime.Types.Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
+    category<T extends Prisma.Artwork$categoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$categoryArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>;
     images<T extends Prisma.Artwork$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ArtworkImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     provenance<T extends Prisma.Artwork$provenanceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$provenanceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProvenanceRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     provenanceChain<T extends Prisma.Artwork$provenanceChainArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Artwork$provenanceChainArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProvenanceChainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
@@ -4496,6 +4496,42 @@ export type ArtworkDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
      * Limit how many Artworks to delete.
      */
     limit?: number;
+};
+/**
+ * Artwork.artist
+ */
+export type Artwork$artistArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Artist
+     */
+    select?: Prisma.ArtistSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Artist
+     */
+    omit?: Prisma.ArtistOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.ArtistInclude<ExtArgs> | null;
+    where?: Prisma.ArtistWhereInput;
+};
+/**
+ * Artwork.category
+ */
+export type Artwork$categoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: Prisma.CategorySelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: Prisma.CategoryOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.CategoryInclude<ExtArgs> | null;
+    where?: Prisma.CategoryWhereInput;
 };
 /**
  * Artwork.images

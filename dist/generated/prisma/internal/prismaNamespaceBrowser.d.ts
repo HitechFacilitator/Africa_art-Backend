@@ -57,6 +57,7 @@ export declare const ModelName: {
     readonly AdvisorActivity: "AdvisorActivity";
     readonly ChatThread: "ChatThread";
     readonly ChatMessage: "ChatMessage";
+    readonly ChatThreadReadStatus: "ChatThreadReadStatus";
     readonly SupportTicket: "SupportTicket";
     readonly TicketResponse: "TicketResponse";
     readonly MemberApplication: "MemberApplication";
@@ -75,6 +76,7 @@ export declare const UserScalarFieldEnum: {
     readonly password: "password";
     readonly name: "name";
     readonly role: "role";
+    readonly status: "status";
     readonly avatar: "avatar";
     readonly institution: "institution";
     readonly country: "country";
@@ -465,6 +467,15 @@ export declare const ChatMessageScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum];
+export declare const ChatThreadReadStatusScalarFieldEnum: {
+    readonly id: "id";
+    readonly threadId: "threadId";
+    readonly userId: "userId";
+    readonly lastReadId: "lastReadId";
+    readonly createdAt: "createdAt";
+    readonly updatedAt: "updatedAt";
+};
+export type ChatThreadReadStatusScalarFieldEnum = (typeof ChatThreadReadStatusScalarFieldEnum)[keyof typeof ChatThreadReadStatusScalarFieldEnum];
 export declare const SupportTicketScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -472,11 +483,13 @@ export declare const SupportTicketScalarFieldEnum: {
     readonly clientRole: "clientRole";
     readonly subject: "subject";
     readonly description: "description";
+    readonly category: "category";
     readonly status: "status";
     readonly priority: "priority";
     readonly createdDate: "createdDate";
     readonly lastUpdate: "lastUpdate";
     readonly assignedTo: "assignedTo";
+    readonly assignedToId: "assignedToId";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -741,6 +754,7 @@ export declare const SupportTicketOrderByRelevanceFieldEnum: {
     readonly clientRole: "clientRole";
     readonly subject: "subject";
     readonly description: "description";
+    readonly category: "category";
     readonly status: "status";
     readonly priority: "priority";
     readonly createdDate: "createdDate";

@@ -13,10 +13,10 @@ export declare function getByArtwork(artworkId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: PORStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: PORStatus;
     message: string | null;
     response: string | null;
 })[]>;
@@ -25,7 +25,7 @@ export declare function getByUser(userId: number): Promise<({
         artist: {
             id: number;
             name: string;
-        };
+        } | null;
         images: {
             id: number;
             createdAt: Date;
@@ -40,9 +40,9 @@ export declare function getByUser(userId: number): Promise<({
         tier: string | null;
         createdAt: Date;
         updatedAt: Date;
-        artistId: number;
+        artistId: number | null;
         description: string;
-        categoryId: number;
+        categoryId: number | null;
         origin: string;
         title: string;
         region: string | null;
@@ -75,10 +75,10 @@ export declare function getByUser(userId: number): Promise<({
 } & {
     userId: number;
     id: number;
+    status: PORStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: PORStatus;
     message: string | null;
     response: string | null;
 })[]>;
@@ -97,10 +97,10 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
     } & {
         userId: number;
         id: number;
+        status: PORStatus;
         createdAt: Date;
         updatedAt: Date;
         artworkId: number;
-        status: PORStatus;
         message: string | null;
         response: string | null;
     })[];
@@ -109,30 +109,30 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
 export declare function create(userId: number, artworkId: number, message?: string): Promise<{
     userId: number;
     id: number;
+    status: PORStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: PORStatus;
     message: string | null;
     response: string | null;
 }>;
 export declare function respond(id: number, response: string): Promise<{
     userId: number;
     id: number;
+    status: PORStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: PORStatus;
     message: string | null;
     response: string | null;
 }>;
 export declare function close(id: number): Promise<{
     userId: number;
     id: number;
+    status: PORStatus;
     createdAt: Date;
     updatedAt: Date;
     artworkId: number;
-    status: PORStatus;
     message: string | null;
     response: string | null;
 }>;

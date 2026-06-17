@@ -29,6 +29,7 @@ export type * from './models/AdvisorPlacement';
 export type * from './models/AdvisorActivity';
 export type * from './models/ChatThread';
 export type * from './models/ChatMessage';
+export type * from './models/ChatThreadReadStatus';
 export type * from './models/SupportTicket';
 export type * from './models/TicketResponse';
 export type * from './models/MemberApplication';

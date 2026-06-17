@@ -158,6 +158,11 @@ export type ChatThread = Prisma.ChatThreadModel;
  */
 export type ChatMessage = Prisma.ChatMessageModel;
 /**
+ * Model ChatThreadReadStatus
+ *
+ */
+export type ChatThreadReadStatus = Prisma.ChatThreadReadStatusModel;
+/**
  * Model SupportTicket
  *
  */

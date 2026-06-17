@@ -36,27 +36,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTicketResponse = exports.updateTicketStatus = exports.getTickets = exports.sendMessage = exports.getThreads = void 0;
+exports.addTicketResponse = exports.updateTicketStatus = exports.createTicket = exports.getTickets = exports.markThreadRead = exports.sendMessage = exports.getThreads = void 0;
 const chatService = __importStar(require("../services/chat.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
-exports.getThreads = (0, catchAsync_1.default)(async (_req, res) => {
-    const data = await chatService.getThreads();
+const sse_1 = require("../utils/sse");
+const db_1 = __importDefault(require("../config/db"));
+exports.getThreads = (0, catchAsync_1.default)(async (req, res) => {
+    const data = await chatService.getThreads(req.user.userId);
     res.json({ success: true, data });
 });
 exports.sendMessage = (0, catchAsync_1.default)(async (req, res) => {
-    const message = await chatService.sendMessage(Number(req.params.threadId), req.body);
+    const message = await chatService.sendMessage(Number(req.params.threadId), {
+        ...req.body,
+        userId: req.user.userId,
+    });
+    sse_1.sseManager.sendToThread(Number(req.params.threadId), "new-message", { threadId: Number(req.params.threadId), message }, String(req.user.userId));
     res.status(201).json({ success: true, data: message });
 });
-exports.getTickets = (0, catchAsync_1.default)(async (_req, res) => {
-    const data = await chatService.getTickets();
+exports.markThreadRead = (0, catchAsync_1.default)(async (req, res) => {
+    const result = await chatService.markThreadRead(Number(req.params.threadId), req.user.userId);
+    res.json({ success: true, data: result });
+});
+exports.getTickets = (0, catchAsync_1.default)(async (req, res) => {
+    const data = await chatService.getTickets(req.user.userId, req.user.role);
     res.json({ success: true, data });
+});
+exports.createTicket = (0, catchAsync_1.default)(async (req, res) => {
+    const dbUser = await db_1.default.user.findUnique({ where: { id: req.user.userId } });
+    const ticket = await chatService.createTicket(req.user.userId, {
+        ...req.body,
+        clientName: req.body.clientName || dbUser?.name || "",
+        clientRole: req.body.clientRole || dbUser?.role || "collector",
+    });
+    res.status(201).json({ success: true, data: ticket });
 });
 exports.updateTicketStatus = (0, catchAsync_1.default)(async (req, res) => {
     await chatService.updateTicketStatus(Number(req.params.id), req.body.status);
     res.json({ success: true, message: "Ticket status updated" });
 });
 exports.addTicketResponse = (0, catchAsync_1.default)(async (req, res) => {
-    const response = await chatService.addTicketResponse(Number(req.params.id), req.body.author, req.body.text);
+    let author = req.body.author;
+    if (!author && req.user) {
+        const dbUser = await db_1.default.user.findUnique({ where: { id: req.user.userId } });
+        author = dbUser?.name || "Unknown";
+    }
+    const response = await chatService.addTicketResponse(Number(req.params.id), author || "Unknown", req.body.text);
+    sse_1.sseManager.broadcast("ticket-update", {
+        ticketId: Number(req.params.id),
+        response,
+    });
     res.status(201).json({ success: true, data: response });
 });
 //# sourceMappingURL=chat.controller.js.map
