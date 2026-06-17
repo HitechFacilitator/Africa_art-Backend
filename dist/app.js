@@ -42,21 +42,34 @@ app.use((0, cors_1.default)({
     credentials: true,
 }));
 app.use((0, morgan_1.default)("dev"));
-const generalLimiter = (0, express_rate_limit_1.default)({
-    windowMs: 15 * 60 * 1000,
-    max: 200,
-    message: { success: false, message: "Too many requests, please try again later" },
-});
+// Auth rate limiter — only for login/register/otp (prevent brute force)
 const authLimiter = (0, express_rate_limit_1.default)({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: 20,
     message: { success: false, message: "Too many auth attempts, please try again later" },
+    standardHeaders: true,
+    legacyHeaders: false,
+    keyGenerator: (req) => req.ip || "unknown",
 });
-app.use("/api/", generalLimiter);
-app.use("/api/v1/auth/login", authLimiter);
-app.use("/api/v1/auth/register", authLimiter);
+// General rate limiter — generous for normal multi-user usage
+const generalLimiter = (0, express_rate_limit_1.default)({
+    windowMs: 15 * 60 * 1000,
+    max: 2000,
+    message: { success: false, message: "Too many requests, please try again later" },
+    standardHeaders: true,
+    legacyHeaders: false,
+    keyGenerator: (req) => req.ip || "unknown",
+    // Skip rate limiting for SSE endpoints (long-lived connections)
+    skip: (req) => req.originalUrl.includes("/chat/events"),
+});
 app.use(express_1.default.json({ limit: "10mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
+// Auth routes — tighter rate limit on login/register only
+app.use("/api/v1/auth/login", authLimiter);
+app.use("/api/v1/auth/register", authLimiter);
+app.use("/api/v1/auth/verify-otp", authLimiter);
+// All API routes — generous rate limit
+app.use("/api/", generalLimiter);
 // Core routes
 app.use("/api/v1/auth", auth_routes_1.default);
 app.use("/api/v1/users", user_routes_1.default);

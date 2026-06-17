@@ -96,7 +96,7 @@ async function markThreadRead(threadId, userId) {
 }
 async function getTickets(userId, role) {
     const where = {};
-    if (role === "support" || role === "admin") {
+    if (role.toLowerCase() === "support" || role.toLowerCase() === "admin") {
         // Support and admin see all tickets
     }
     else {
@@ -169,7 +169,7 @@ async function deleteTicket(id, userId, role) {
     const ticket = await db_1.default.supportTicket.findUnique({ where: { id } });
     if (!ticket)
         throw new Error("Ticket not found");
-    if (role !== "support" && role !== "admin" && ticket.userId !== userId) {
+    if (role.toLowerCase() !== "support" && role.toLowerCase() !== "admin" && ticket.userId !== userId) {
         throw new Error("Not authorized to delete this ticket");
     }
     await db_1.default.ticketResponse.deleteMany({ where: { ticketId: id } });

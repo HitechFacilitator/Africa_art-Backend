@@ -32,12 +32,16 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const consultationController = __importStar(require("../controllers/consultation.controller"));
 const auth_1 = require("../middlewares/auth");
 const role_1 = require("../middlewares/role");
 const client_1 = require("../generated/prisma/client");
+const db_1 = __importDefault(require("../config/db"));
 const router = (0, express_1.Router)();
 router.get("/", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), consultationController.getAll);
 router.get("/my", auth_1.authenticate, consultationController.getByUser);
@@ -45,5 +49,21 @@ router.post("/", auth_1.authenticate, consultationController.create);
 router.patch("/:id/confirm", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), consultationController.confirm);
 router.patch("/:id/complete", auth_1.authenticate, consultationController.complete);
 router.patch("/:id/cancel", auth_1.authenticate, consultationController.cancel);
+router.get("/advisors", auth_1.authenticate, async (req, res) => {
+    const advisors = await db_1.default.user.findMany({
+        where: { role: client_1.Role.ADVISOR },
+        select: { id: true, name: true, email: true, institution: true, avatar: true },
+    });
+    res.json({
+        success: true,
+        data: advisors.map(a => ({
+            id: `usr-${a.id}`,
+            name: a.name,
+            email: a.email,
+            institution: a.institution || "",
+            avatar: a.avatar || "",
+        })),
+    });
+});
 exports.default = router;
 //# sourceMappingURL=consultation.routes.js.map
