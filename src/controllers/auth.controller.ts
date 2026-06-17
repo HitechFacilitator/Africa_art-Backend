@@ -40,3 +40,14 @@ export const resetPassword = catchAsync(async (req: Request, res: Response) => {
   const result = await authService.resetPassword(token, newPassword);
   res.json({ success: true, data: result });
 });
+
+export const enable2FA = catchAsync(async (req: Request, res: Response) => {
+  const result = await authService.enable2FA(req.user!.userId);
+  res.json({ success: true, data: result });
+});
+
+export const disable2FA = catchAsync(async (req: Request, res: Response) => {
+  const { password } = req.body;
+  const result = await authService.disable2FA(req.user!.userId, password);
+  res.json({ success: true, data: result });
+});

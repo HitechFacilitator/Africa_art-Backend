@@ -11,5 +11,7 @@ router.post("/verify-otp", authController.verifyOTP);
 router.get("/me", authenticate, authController.getMe);
 router.post("/forgot-password", authController.forgotPassword);
 router.post("/reset-password", authController.resetPassword);
+router.post("/2fa/enable", authenticate, authController.enable2FA);
+router.post("/2fa/disable", authenticate, authController.disable2FA);
 
 export default router;

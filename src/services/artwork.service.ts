@@ -40,6 +40,18 @@ function toFrontendArtwork(artwork: any) {
       historicalCagr: artwork.historicalCagr ? Number(artwork.historicalCagr) : 10.2,
       yieldIndex: artwork.yieldIndex ? Number(artwork.yieldIndex) : 85,
     } : null,
+    certificates: (artwork.certificates || []).map((c: any) => ({
+      id: c.id,
+      certificateNumber: c.certificateNumber,
+      title: c.title,
+      issuedDate: c.issuedDate?.toISOString?.() || "",
+      expiryDate: c.expiryDate?.toISOString?.() || null,
+      isValid: c.isValid,
+      blockchainHash: c.blockchainHash || "",
+      status: c.status || (c.isValid ? "VALID" : "REVOKED"),
+      authenticationLevel: c.authenticationLevel || "Level IV",
+      certifyingBody: c.certifyingBody || "Aduna Gallery",
+    })),
     // Extra fields for admin
     tier: artwork.tier || "Standard",
     status: artwork.artworkStatus || "Live",

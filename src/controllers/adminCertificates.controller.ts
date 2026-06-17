@@ -8,7 +8,11 @@ export const getAll = catchAsync(async (_req: Request, res: Response) => {
 });
 
 export const create = catchAsync(async (req: Request, res: Response) => {
-  const cert = await service.create(req.body);
+  const cert = await service.create({
+    ...req.body,
+    artworkId: req.body.artworkId ? Number(req.body.artworkId) : undefined,
+    userId: req.user!.userId,
+  });
   res.status(201).json({ success: true, data: cert });
 });
 
