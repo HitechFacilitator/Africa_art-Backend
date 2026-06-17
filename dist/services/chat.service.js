@@ -13,34 +13,39 @@ exports.deleteTicket = deleteTicket;
 exports.addTicketResponse = addTicketResponse;
 const db_1 = __importDefault(require("../config/db"));
 async function getThreads(userId, role) {
-    let threads;
+    let threadIds;
     if (role.toLowerCase() === "admin") {
         // Admin sees all threads
-        threads = await db_1.default.chatThread.findMany({
-            include: {
-                messages: { orderBy: { createdAt: "asc" } },
-                readStatuses: { where: { userId } },
-            },
-            orderBy: { updatedAt: "desc" },
-        });
+        const allThreads = await db_1.default.chatThread.findMany({ select: { id: true } });
+        threadIds = allThreads.map(t => t.id);
     }
     else {
-        // All other users (including support) only see threads they participate in
-        const participantThreadIds = await db_1.default.chatMessage.findMany({
+        // All users: threads where they have messages
+        const messageThreadIds = await db_1.default.chatMessage.findMany({
             where: { userId },
             select: { threadId: true },
             distinct: ["threadId"],
-        });
-        const threadIds = participantThreadIds.map(m => m.threadId);
-        threads = await db_1.default.chatThread.findMany({
-            where: { id: { in: threadIds } },
-            include: {
-                messages: { orderBy: { createdAt: "asc" } },
-                readStatuses: { where: { userId } },
+        }).then(msgs => msgs.map(m => m.threadId));
+        // Also threads where they are listed as participant
+        const participantThreads = await db_1.default.chatThread.findMany({
+            where: {
+                OR: [
+                    { clientUserId: userId },
+                    { advisorUserId: userId },
+                ],
             },
-            orderBy: { updatedAt: "desc" },
-        });
+            select: { id: true },
+        }).then(threads => threads.map(t => t.id));
+        threadIds = [...new Set([...messageThreadIds, ...participantThreads])];
     }
+    const threads = await db_1.default.chatThread.findMany({
+        where: { id: { in: threadIds } },
+        include: {
+            messages: { orderBy: { createdAt: "asc" } },
+            readStatuses: { where: { userId } },
+        },
+        orderBy: { updatedAt: "desc" },
+    });
     return threads.map(t => {
         const readStatus = t.readStatuses[0];
         const lastReadId = readStatus?.lastReadId || 0;

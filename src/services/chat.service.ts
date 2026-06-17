@@ -1,35 +1,42 @@
 import prisma from "../config/db";
 
 export async function getThreads(userId: number, role: string) {
-  let threads;
+  let threadIds: number[];
 
   if (role.toLowerCase() === "admin") {
     // Admin sees all threads
-    threads = await prisma.chatThread.findMany({
-      include: {
-        messages: { orderBy: { createdAt: "asc" } },
-        readStatuses: { where: { userId } },
-      },
-      orderBy: { updatedAt: "desc" },
-    });
+    const allThreads = await prisma.chatThread.findMany({ select: { id: true } });
+    threadIds = allThreads.map(t => t.id);
   } else {
-    // All other users (including support) only see threads they participate in
-    const participantThreadIds = await prisma.chatMessage.findMany({
+    // All users: threads where they have messages
+    const messageThreadIds = await prisma.chatMessage.findMany({
       where: { userId },
       select: { threadId: true },
       distinct: ["threadId"],
-    });
-    const threadIds = participantThreadIds.map(m => m.threadId);
+    }).then(msgs => msgs.map(m => m.threadId));
 
-    threads = await prisma.chatThread.findMany({
-      where: { id: { in: threadIds } },
-      include: {
-        messages: { orderBy: { createdAt: "asc" } },
-        readStatuses: { where: { userId } },
+    // Also threads where they are listed as participant
+    const participantThreads = await prisma.chatThread.findMany({
+      where: {
+        OR: [
+          { clientUserId: userId },
+          { advisorUserId: userId },
+        ],
       },
-      orderBy: { updatedAt: "desc" },
-    });
+      select: { id: true },
+    }).then(threads => threads.map(t => t.id));
+
+    threadIds = [...new Set([...messageThreadIds, ...participantThreads])];
   }
+
+  const threads = await prisma.chatThread.findMany({
+    where: { id: { in: threadIds } },
+    include: {
+      messages: { orderBy: { createdAt: "asc" } },
+      readStatuses: { where: { userId } },
+    },
+    orderBy: { updatedAt: "desc" },
+  });
 
   return threads.map(t => {
     const readStatus = t.readStatuses[0];
