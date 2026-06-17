@@ -9,6 +9,7 @@ exports.markThreadRead = markThreadRead;
 exports.getTickets = getTickets;
 exports.createTicket = createTicket;
 exports.updateTicketStatus = updateTicketStatus;
+exports.deleteTicket = deleteTicket;
 exports.addTicketResponse = addTicketResponse;
 const db_1 = __importDefault(require("../config/db"));
 async function getThreads(userId) {
@@ -163,6 +164,17 @@ async function updateTicketStatus(id, status) {
             lastUpdate: new Date().toISOString().split("T")[0],
         },
     });
+}
+async function deleteTicket(id, userId, role) {
+    const ticket = await db_1.default.supportTicket.findUnique({ where: { id } });
+    if (!ticket)
+        throw new Error("Ticket not found");
+    if (role !== "support" && role !== "admin" && ticket.userId !== userId) {
+        throw new Error("Not authorized to delete this ticket");
+    }
+    await db_1.default.ticketResponse.deleteMany({ where: { ticketId: id } });
+    await db_1.default.supportTicket.delete({ where: { id } });
+    return { success: true };
 }
 async function addTicketResponse(id, author, text) {
     const response = await db_1.default.ticketResponse.create({

@@ -15,12 +15,23 @@ export const sendMessage = catchAsync(async (req: Request, res: Response) => {
     userId: req.user!.userId,
   });
 
-  sseManager.sendToThread(
-    Number(req.params.threadId),
-    "new-message",
-    { threadId: Number(req.params.threadId), message },
-    String(req.user!.userId)
-  );
+  const participantMessages = await prisma.chatMessage.findMany({
+    where: { threadId: Number(req.params.threadId), userId: { not: null } },
+    select: { userId: true },
+    distinct: ["userId"],
+  });
+
+  const recipientIds = participantMessages
+    .map((m) => m.userId)
+    .filter((id): id is number => id !== null && id !== req.user!.userId)
+    .map(String);
+
+  if (recipientIds.length > 0) {
+    sseManager.sendToUsers(recipientIds, "new-message", {
+      threadId: Number(req.params.threadId),
+      message,
+    });
+  }
 
   res.status(201).json({ success: true, data: message });
 });
@@ -71,4 +82,9 @@ export const addTicketResponse = catchAsync(async (req: Request, res: Response) 
   });
 
   res.status(201).json({ success: true, data: response });
+});
+
+export const deleteTicket = catchAsync(async (req: Request, res: Response) => {
+  await chatService.deleteTicket(Number(req.params.id), req.user!.userId, req.user!.role);
+  res.json({ success: true, message: "Ticket deleted" });
 });

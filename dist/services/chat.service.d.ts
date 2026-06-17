@@ -76,6 +76,9 @@ export declare function createTicket(userId: number, data: {
     responses: never[];
 }>;
 export declare function updateTicketStatus(id: number, status: string): Promise<void>;
+export declare function deleteTicket(id: number, userId: number, role: string): Promise<{
+    success: boolean;
+}>;
 export declare function addTicketResponse(id: number, author: string, text: string): Promise<{
     author: string;
     text: string;

@@ -182,6 +182,19 @@ export async function updateTicketStatus(id: number, status: string) {
   });
 }
 
+export async function deleteTicket(id: number, userId: number, role: string) {
+  const ticket = await prisma.supportTicket.findUnique({ where: { id } });
+  if (!ticket) throw new Error("Ticket not found");
+
+  if (role !== "support" && role !== "admin" && ticket.userId !== userId) {
+    throw new Error("Not authorized to delete this ticket");
+  }
+
+  await prisma.ticketResponse.deleteMany({ where: { ticketId: id } });
+  await prisma.supportTicket.delete({ where: { id } });
+  return { success: true };
+}
+
 export async function addTicketResponse(id: number, author: string, text: string) {
   const response = await prisma.ticketResponse.create({
     data: {

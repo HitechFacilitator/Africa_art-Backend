@@ -63,5 +63,6 @@ router.get("/tickets", auth_1.authenticate, chatController.getTickets);
 router.post("/tickets", auth_1.authenticate, chatController.createTicket);
 router.patch("/tickets/:id/status", auth_1.authenticate, chatController.updateTicketStatus);
 router.post("/tickets/:id/responses", auth_1.authenticate, chatController.addTicketResponse);
+router.delete("/tickets/:id", auth_1.authenticate, chatController.deleteTicket);
 exports.default = router;
 //# sourceMappingURL=chat.routes.js.map

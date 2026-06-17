@@ -49,13 +49,14 @@ class SSEManager {
     });
   }
 
-  sendToThread(threadId: number, event: string, data: unknown, excludeUserId?: string) {
+  sendToUsers(userIds: string[], event: string, data: unknown) {
     const payload = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
-    this.clients.forEach((clients, userId) => {
-      if (userId !== excludeUserId) {
-        clients.forEach((c) => c.res.write(payload));
+    for (const userId of userIds) {
+      const userClients = this.clients.get(userId);
+      if (userClients) {
+        userClients.forEach((c) => c.res.write(payload));
       }
-    });
+    }
   }
 }
 

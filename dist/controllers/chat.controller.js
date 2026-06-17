@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addTicketResponse = exports.updateTicketStatus = exports.createTicket = exports.getTickets = exports.markThreadRead = exports.sendMessage = exports.getThreads = void 0;
+exports.deleteTicket = exports.addTicketResponse = exports.updateTicketStatus = exports.createTicket = exports.getTickets = exports.markThreadRead = exports.sendMessage = exports.getThreads = void 0;
 const chatService = __importStar(require("../services/chat.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const sse_1 = require("../utils/sse");
@@ -50,7 +50,21 @@ exports.sendMessage = (0, catchAsync_1.default)(async (req, res) => {
         ...req.body,
         userId: req.user.userId,
     });
-    sse_1.sseManager.sendToThread(Number(req.params.threadId), "new-message", { threadId: Number(req.params.threadId), message }, String(req.user.userId));
+    const participantMessages = await db_1.default.chatMessage.findMany({
+        where: { threadId: Number(req.params.threadId), userId: { not: null } },
+        select: { userId: true },
+        distinct: ["userId"],
+    });
+    const recipientIds = participantMessages
+        .map((m) => m.userId)
+        .filter((id) => id !== null && id !== req.user.userId)
+        .map(String);
+    if (recipientIds.length > 0) {
+        sse_1.sseManager.sendToUsers(recipientIds, "new-message", {
+            threadId: Number(req.params.threadId),
+            message,
+        });
+    }
     res.status(201).json({ success: true, data: message });
 });
 exports.markThreadRead = (0, catchAsync_1.default)(async (req, res) => {
@@ -86,5 +100,9 @@ exports.addTicketResponse = (0, catchAsync_1.default)(async (req, res) => {
         response,
     });
     res.status(201).json({ success: true, data: response });
+});
+exports.deleteTicket = (0, catchAsync_1.default)(async (req, res) => {
+    await chatService.deleteTicket(Number(req.params.id), req.user.userId, req.user.role);
+    res.json({ success: true, message: "Ticket deleted" });
 });
 //# sourceMappingURL=chat.controller.js.map

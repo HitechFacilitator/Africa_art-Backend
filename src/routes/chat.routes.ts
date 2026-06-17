@@ -27,5 +27,6 @@ router.get("/tickets", authenticate, chatController.getTickets);
 router.post("/tickets", authenticate, chatController.createTicket);
 router.patch("/tickets/:id/status", authenticate, chatController.updateTicketStatus);
 router.post("/tickets/:id/responses", authenticate, chatController.addTicketResponse);
+router.delete("/tickets/:id", authenticate, chatController.deleteTicket);
 
 export default router;
