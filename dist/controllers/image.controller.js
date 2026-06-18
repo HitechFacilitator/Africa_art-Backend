@@ -39,12 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.reorder = exports.setPrimary = exports.deleteOne = exports.upload = void 0;
 const imageService = __importStar(require("../services/image.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const parseId_1 = require("../utils/parseId");
 exports.upload = (0, catchAsync_1.default)(async (req, res) => {
     if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
         res.status(400).json({ success: false, message: "No files uploaded" });
         return;
     }
-    const images = await imageService.upload(Number(req.params.id), req.files);
+    const images = await imageService.upload((0, parseId_1.parseNumericId)(req.params.id), req.files);
     res.status(201).json({ success: true, data: images });
 });
 exports.deleteOne = (0, catchAsync_1.default)(async (req, res) => {

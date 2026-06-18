@@ -40,8 +40,9 @@ exports.close = exports.respond = exports.create = exports.getAll = exports.getB
 const porService = __importStar(require("../services/por.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const pagination_1 = require("../utils/pagination");
+const parseId_1 = require("../utils/parseId");
 exports.getByArtwork = (0, catchAsync_1.default)(async (req, res) => {
-    const requests = await porService.getByArtwork(Number(req.params.artworkId));
+    const requests = await porService.getByArtwork((0, parseId_1.parseNumericId)(req.params.artworkId));
     res.json({ success: true, data: requests });
 });
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
@@ -58,7 +59,7 @@ exports.getAll = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 exports.create = (0, catchAsync_1.default)(async (req, res) => {
-    const request = await porService.create(req.user.userId, Number(req.params.artworkId), req.body.message);
+    const request = await porService.create(req.user.userId, (0, parseId_1.parseNumericId)(req.params.artworkId), req.body.message);
     res.status(201).json({ success: true, data: request });
 });
 exports.respond = (0, catchAsync_1.default)(async (req, res) => {

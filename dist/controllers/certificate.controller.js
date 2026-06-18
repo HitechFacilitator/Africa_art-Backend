@@ -39,8 +39,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOne = exports.verify = exports.create = exports.getById = exports.getByUser = exports.getByArtwork = void 0;
 const certificateService = __importStar(require("../services/certificate.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const parseId_1 = require("../utils/parseId");
 exports.getByArtwork = (0, catchAsync_1.default)(async (req, res) => {
-    const certs = await certificateService.getByArtwork(Number(req.params.artworkId));
+    const certs = await certificateService.getByArtwork((0, parseId_1.parseNumericId)(req.params.artworkId));
     res.json({ success: true, data: certs });
 });
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {

@@ -10,6 +10,20 @@ export declare function getByUser(userId: number): Promise<{
     status: ConsultationStatus;
     notes: string;
 }[]>;
+export declare function getByAdvisor(advisorId: number): Promise<{
+    id: string;
+    expertName: string;
+    expertTitle: string;
+    expertAvatar: string;
+    date: string;
+    timeSlot: string;
+    topic: string;
+    status: ConsultationStatus;
+    notes: string;
+    clientName: string;
+    clientEmail: string;
+    type: ConsultationType;
+}[]>;
 export declare function getAll(page: number, limit: number, skip: number): Promise<{
     data: ({
         user: {
@@ -44,6 +58,7 @@ export declare function create(userId: number, data: {
     expertName?: string;
     expertTitle?: string;
     expertAvatar?: string;
+    advisorId?: number;
 }): Promise<{
     userId: number;
     id: number;

@@ -21,6 +21,38 @@ export async function getByUser(userId: number) {
   }));
 }
 
+export async function getByAdvisor(advisorId: number) {
+  const user = await prisma.user.findUnique({ where: { id: advisorId } });
+  const consultations = await prisma.consultation.findMany({
+    where: {
+      OR: [
+        { advisorId },
+        ...(user?.name ? [{ expertName: user.name }] : []),
+        ...(user?.name ? [{ expertName: { contains: user.name } } as any] : []),
+      ],
+    },
+    include: {
+      user: { select: { id: true, name: true, email: true } },
+    },
+    orderBy: { date: "desc" },
+  });
+
+  return consultations.map(c => ({
+    id: `cons-${c.id}`,
+    expertName: c.expertName || "",
+    expertTitle: c.expertTitle || "",
+    expertAvatar: c.expertAvatar || "",
+    date: c.date.toISOString().split("T")[0],
+    timeSlot: c.timeSlot || "",
+    topic: c.topic || "",
+    status: c.status,
+    notes: c.notes || "",
+    clientName: c.user?.name || "",
+    clientEmail: c.user?.email || "",
+    type: c.type,
+  }));
+}
+
 export async function getAll(page: number, limit: number, skip: number) {
   const [data, total] = await Promise.all([
     prisma.consultation.findMany({
@@ -37,15 +69,34 @@ export async function getAll(page: number, limit: number, skip: number) {
   return { data, total };
 }
 
-export async function create(userId: number, data: { type: string; date: string; notes?: string; topic?: string; timeSlot?: string; expertName?: string; expertTitle?: string; expertAvatar?: string }) {
+export async function create(userId: number, data: { type: string; date: string; notes?: string; topic?: string; timeSlot?: string; expertName?: string; expertTitle?: string; expertAvatar?: string; advisorId?: number }) {
   const dateObj = new Date(data.date);
   if (isNaN(dateObj.getTime())) {
     throw new AppError("Invalid date", 400);
   }
 
+  let advisorId = data.advisorId;
+  if (!advisorId && data.expertName) {
+    const advisor = await prisma.user.findFirst({
+      where: { role: "ADVISOR" as any, name: data.expertName },
+    });
+    if (advisor) {
+      advisorId = advisor.id;
+    } else {
+      const advisorByInstitution = await prisma.user.findFirst({
+        where: {
+          role: "ADVISOR" as any,
+          name: { contains: data.expertName.split(" (")[0] },
+        },
+      });
+      if (advisorByInstitution) advisorId = advisorByInstitution.id;
+    }
+  }
+
   return prisma.consultation.create({
     data: {
       userId,
+      advisorId,
       type: data.type as ConsultationType,
       date: dateObj,
       notes: data.notes,

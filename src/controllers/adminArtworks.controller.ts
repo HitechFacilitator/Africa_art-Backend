@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as adminArtworksService from "../services/adminArtworks.service";
 import catchAsync from "../utils/catchAsync";
 import { getPaginationParams } from "../utils/pagination";
+import { parseNumericId } from "../utils/parseId";
 
 export const getAll = catchAsync(async (req: Request, res: Response) => {
   const { page, limit, skip } = getPaginationParams(req.query as { page?: string; limit?: string });
@@ -15,7 +16,7 @@ export const getAll = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getById = catchAsync(async (req: Request, res: Response) => {
-  const result = await adminArtworksService.getById(Number(req.params.id));
+  const result = await adminArtworksService.getById(parseNumericId(req.params.id));
   res.json({ success: true, data: result });
 });
 
@@ -25,16 +26,16 @@ export const create = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const update = catchAsync(async (req: Request, res: Response) => {
-  const result = await adminArtworksService.update(Number(req.params.id), req.body);
+  const result = await adminArtworksService.update(parseNumericId(req.params.id), req.body);
   res.json({ success: true, data: result });
 });
 
 export const updateStatus = catchAsync(async (req: Request, res: Response) => {
-  const result = await adminArtworksService.updateStatus(Number(req.params.id), req.body.status);
+  const result = await adminArtworksService.updateStatus(parseNumericId(req.params.id), req.body.status);
   res.json({ success: true, data: result });
 });
 
 export const remove = catchAsync(async (req: Request, res: Response) => {
-  await adminArtworksService.remove(Number(req.params.id));
+  await adminArtworksService.remove(parseNumericId(req.params.id));
   res.json({ success: true, message: "Artwork deleted" });
 });

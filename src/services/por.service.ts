@@ -6,7 +6,7 @@ export async function getByArtwork(artworkId: number) {
   return prisma.priceRequest.findMany({
     where: { artworkId },
     include: {
-      user: { select: { id: true, firstName: true, lastName: true, email: true } },
+      user: { select: { id: true, name: true, email: true } },
       artwork: { select: { id: true, title: true } },
     },
     orderBy: { createdAt: "desc" },
@@ -35,7 +35,7 @@ export async function getAll(page: number, limit: number, skip: number) {
       take: limit,
       orderBy: { createdAt: "desc" },
       include: {
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: { select: { id: true, name: true, email: true } },
         artwork: { select: { id: true, title: true } },
       },
     }),
@@ -53,6 +53,13 @@ export async function create(userId: number, artworkId: number, message?: string
 
   if (!artwork.isPOR) {
     throw new AppError("Artwork is not price-on-request", 400);
+  }
+
+  const existing = await prisma.priceRequest.findFirst({
+    where: { userId, artworkId },
+  });
+  if (existing) {
+    throw new AppError("You have already submitted an inquiry for this artwork", 409);
   }
 
   return prisma.priceRequest.create({

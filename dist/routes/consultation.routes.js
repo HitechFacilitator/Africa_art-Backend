@@ -45,6 +45,7 @@ const db_1 = __importDefault(require("../config/db"));
 const router = (0, express_1.Router)();
 router.get("/", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), consultationController.getAll);
 router.get("/my", auth_1.authenticate, consultationController.getByUser);
+router.get("/advisor", auth_1.authenticate, consultationController.getByAdvisor);
 router.post("/", auth_1.authenticate, consultationController.create);
 router.patch("/:id/confirm", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), consultationController.confirm);
 router.patch("/:id/complete", auth_1.authenticate, consultationController.complete);

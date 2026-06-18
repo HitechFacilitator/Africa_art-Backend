@@ -39,12 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOne = exports.create = exports.getByArtwork = void 0;
 const provenanceService = __importStar(require("../services/provenance.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const parseId_1 = require("../utils/parseId");
 exports.getByArtwork = (0, catchAsync_1.default)(async (req, res) => {
-    const records = await provenanceService.getByArtwork(Number(req.params.artworkId));
+    const records = await provenanceService.getByArtwork((0, parseId_1.parseNumericId)(req.params.artworkId));
     res.json({ success: true, data: records });
 });
 exports.create = (0, catchAsync_1.default)(async (req, res) => {
-    const record = await provenanceService.create(Number(req.params.artworkId), req.body);
+    const record = await provenanceService.create((0, parseId_1.parseNumericId)(req.params.artworkId), req.body);
     res.status(201).json({ success: true, data: record });
 });
 exports.deleteOne = (0, catchAsync_1.default)(async (req, res) => {

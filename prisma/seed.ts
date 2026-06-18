@@ -21,7 +21,7 @@ async function main() {
   // Create users matching frontend mock data
   const julian = await prisma.user.upsert({
     where: { email: "julian.doe@adunagallery.com" },
-    update: {},
+    update: { password },
     create: {
       email: "julian.doe@adunagallery.com",
       password,
@@ -35,7 +35,7 @@ async function main() {
 
   const amara = await prisma.user.upsert({
     where: { email: "amara.nkosi@adunagallery.com" },
-    update: {},
+    update: { password },
     create: {
       email: "amara.nkosi@adunagallery.com",
       password,
@@ -49,7 +49,7 @@ async function main() {
 
   const fatima = await prisma.user.upsert({
     where: { email: "dr.fatima@louvre.fr" },
-    update: {},
+    update: { password },
     create: {
       email: "dr.fatima@louvre.fr",
       password,
@@ -63,7 +63,7 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@adunagallery.com" },
-    update: {},
+    update: { password },
     create: {
       email: "admin@adunagallery.com",
       password,
@@ -77,7 +77,7 @@ async function main() {
 
   const support = await prisma.user.upsert({
     where: { email: "support@adunagallery.com" },
-    update: {},
+    update: { password },
     create: {
       email: "support@adunagallery.com",
       password,
@@ -91,7 +91,7 @@ async function main() {
 
   const visitor = await prisma.user.upsert({
     where: { email: "visitor@example.com" },
-    update: {},
+    update: { password },
     create: {
       email: "visitor@example.com",
       password,
@@ -524,6 +524,40 @@ async function main() {
   });
 
   console.log(`Consultations: 3 total`);
+
+  // ─── Consultations for Dr. Fatima Benali (advisor) ──────────────
+  await prisma.consultation.create({
+    data: {
+      userId: julian.id,
+      advisorId: fatima.id,
+      expertName: "Dr. Fatima Benali",
+      expertTitle: "Senior Advisor — African Antiquities",
+      expertAvatar: "FB",
+      type: "ACQUISITION_ADVICE",
+      status: "CONFIRMED",
+      date: new Date("2026-06-25"),
+      timeSlot: "14:00 - 15:30 GMT",
+      topic: "Benin Bronze Provenance Verification",
+      notes: "Review provenance documentation for the Benin Bronze Head before final acquisition.",
+    },
+  });
+  await prisma.consultation.create({
+    data: {
+      userId: amara.id,
+      advisorId: fatima.id,
+      expertName: "Dr. Fatima Benali",
+      expertTitle: "Senior Advisor — African Antiquities",
+      expertAvatar: "FB",
+      type: "COLLECTION_REVIEW",
+      status: "PENDING",
+      date: new Date("2026-07-10"),
+      timeSlot: "09:00 - 10:00 GMT",
+      topic: "Contemporary African Art Collection Strategy",
+      notes: "Annual review of collection acquisitions and market positioning.",
+    },
+  });
+
+  console.log(`Consultations: 5 total (including advisor-linked)`);
 
   // ─── Additional logistics shipments ────────────────────────────
   const ship2 = await prisma.logisticsShipment.create({

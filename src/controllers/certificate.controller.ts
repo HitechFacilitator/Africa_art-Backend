@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import * as certificateService from "../services/certificate.service";
 import catchAsync from "../utils/catchAsync";
+import { parseNumericId } from "../utils/parseId";
 
 export const getByArtwork = catchAsync(async (req: Request, res: Response) => {
-  const certs = await certificateService.getByArtwork(Number(req.params.artworkId));
+  const certs = await certificateService.getByArtwork(parseNumericId(req.params.artworkId));
   res.json({ success: true, data: certs });
 });
 

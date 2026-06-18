@@ -1,7 +1,14 @@
 import prisma from "../config/db";
 
 export async function getConsultations(advisorId?: number) {
-  const where = advisorId ? { advisorId } : {};
+  const user = advisorId ? await prisma.user.findUnique({ where: { id: advisorId } }) : null;
+  const where = advisorId ? {
+    OR: [
+      { advisorId },
+      ...(user?.name ? [{ expertName: user.name }] : []),
+      ...(user?.name ? [{ expertName: { contains: user.name } } as any] : []),
+    ],
+  } : {};
   const consultations = await prisma.consultation.findMany({
     where,
     include: { user: true },

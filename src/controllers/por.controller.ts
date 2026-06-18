@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import * as porService from "../services/por.service";
 import catchAsync from "../utils/catchAsync";
 import { getPaginationParams } from "../utils/pagination";
+import { parseNumericId } from "../utils/parseId";
 
 export const getByArtwork = catchAsync(async (req: Request, res: Response) => {
-  const requests = await porService.getByArtwork(Number(req.params.artworkId));
+  const requests = await porService.getByArtwork(parseNumericId(req.params.artworkId));
   res.json({ success: true, data: requests });
 });
 
@@ -24,7 +25,7 @@ export const getAll = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const create = catchAsync(async (req: Request, res: Response) => {
-  const request = await porService.create(req.user!.userId, Number(req.params.artworkId), req.body.message);
+  const request = await porService.create(req.user!.userId, parseNumericId(req.params.artworkId), req.body.message);
   res.status(201).json({ success: true, data: request });
 });
 

@@ -3,8 +3,7 @@ export declare function getByArtwork(artworkId: number): Promise<({
     user: {
         id: number;
         email: string;
-        firstName: never;
-        lastName: never;
+        name: string;
     };
     artwork: {
         id: number;
@@ -87,8 +86,7 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
         user: {
             id: number;
             email: string;
-            firstName: never;
-            lastName: never;
+            name: string;
         };
         artwork: {
             id: number;

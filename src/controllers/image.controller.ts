@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import * as imageService from "../services/image.service";
 import catchAsync from "../utils/catchAsync";
+import { parseNumericId } from "../utils/parseId";
 
 export const upload = catchAsync(async (req: Request, res: Response) => {
   if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
     res.status(400).json({ success: false, message: "No files uploaded" });
     return;
   }
-  const images = await imageService.upload(Number(req.params.id), req.files as Express.Multer.File[]);
+  const images = await imageService.upload(parseNumericId(req.params.id), req.files as Express.Multer.File[]);
   res.status(201).json({ success: true, data: images });
 });
 

@@ -39,16 +39,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.remove = exports.add = exports.getByUser = void 0;
 const favoriteService = __importStar(require("../services/favorite.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const parseId_1 = require("../utils/parseId");
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
     const favorites = await favoriteService.getByUser(req.user.userId);
     res.json({ success: true, data: favorites });
 });
 exports.add = (0, catchAsync_1.default)(async (req, res) => {
-    const favorite = await favoriteService.add(req.user.userId, Number(req.params.artworkId));
+    const favorite = await favoriteService.add(req.user.userId, (0, parseId_1.parseNumericId)(req.params.artworkId));
     res.status(201).json({ success: true, data: favorite });
 });
 exports.remove = (0, catchAsync_1.default)(async (req, res) => {
-    await favoriteService.remove(req.user.userId, Number(req.params.artworkId));
+    await favoriteService.remove(req.user.userId, (0, parseId_1.parseNumericId)(req.params.artworkId));
     res.json({ success: true, message: "Removed from favorites" });
 });
 //# sourceMappingURL=favorite.controller.js.map

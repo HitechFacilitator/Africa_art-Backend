@@ -137,11 +137,16 @@ async function markThreadRead(threadId, userId) {
     });
     if (!lastMessage)
         return { success: true };
-    await db_1.default.chatThreadReadStatus.upsert({
-        where: { threadId_userId: { threadId, userId } },
-        update: { lastReadId: lastMessage.id },
-        create: { threadId, userId, lastReadId: lastMessage.id },
-    });
+    try {
+        await db_1.default.chatThreadReadStatus.upsert({
+            where: { threadId_userId: { threadId, userId } },
+            update: { lastReadId: lastMessage.id },
+            create: { threadId, userId, lastReadId: lastMessage.id },
+        });
+    }
+    catch {
+        // Concurrent upsert race — safe to ignore, read status is approximate
+    }
     await db_1.default.chatMessage.updateMany({
         where: { threadId, userId: { not: userId } },
         data: { read: true },

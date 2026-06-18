@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getByUser = getByUser;
+exports.getByAdvisor = getByAdvisor;
 exports.getAll = getAll;
 exports.create = create;
 exports.confirm = confirm;
@@ -29,6 +30,36 @@ async function getByUser(userId) {
         notes: c.notes || "",
     }));
 }
+async function getByAdvisor(advisorId) {
+    const user = await db_1.default.user.findUnique({ where: { id: advisorId } });
+    const consultations = await db_1.default.consultation.findMany({
+        where: {
+            OR: [
+                { advisorId },
+                ...(user?.name ? [{ expertName: user.name }] : []),
+                ...(user?.name ? [{ expertName: { contains: user.name } }] : []),
+            ],
+        },
+        include: {
+            user: { select: { id: true, name: true, email: true } },
+        },
+        orderBy: { date: "desc" },
+    });
+    return consultations.map(c => ({
+        id: `cons-${c.id}`,
+        expertName: c.expertName || "",
+        expertTitle: c.expertTitle || "",
+        expertAvatar: c.expertAvatar || "",
+        date: c.date.toISOString().split("T")[0],
+        timeSlot: c.timeSlot || "",
+        topic: c.topic || "",
+        status: c.status,
+        notes: c.notes || "",
+        clientName: c.user?.name || "",
+        clientEmail: c.user?.email || "",
+        type: c.type,
+    }));
+}
 async function getAll(page, limit, skip) {
     const [data, total] = await Promise.all([
         db_1.default.consultation.findMany({
@@ -48,9 +79,29 @@ async function create(userId, data) {
     if (isNaN(dateObj.getTime())) {
         throw new AppError_1.AppError("Invalid date", 400);
     }
+    let advisorId = data.advisorId;
+    if (!advisorId && data.expertName) {
+        const advisor = await db_1.default.user.findFirst({
+            where: { role: "ADVISOR", name: data.expertName },
+        });
+        if (advisor) {
+            advisorId = advisor.id;
+        }
+        else {
+            const advisorByInstitution = await db_1.default.user.findFirst({
+                where: {
+                    role: "ADVISOR",
+                    name: { contains: data.expertName.split(" (")[0] },
+                },
+            });
+            if (advisorByInstitution)
+                advisorId = advisorByInstitution.id;
+        }
+    }
     return db_1.default.consultation.create({
         data: {
             userId,
+            advisorId,
             type: data.type,
             date: dateObj,
             notes: data.notes,

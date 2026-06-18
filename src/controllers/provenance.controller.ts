@@ -1,14 +1,15 @@
 import { Request, Response } from "express";
 import * as provenanceService from "../services/provenance.service";
 import catchAsync from "../utils/catchAsync";
+import { parseNumericId } from "../utils/parseId";
 
 export const getByArtwork = catchAsync(async (req: Request, res: Response) => {
-  const records = await provenanceService.getByArtwork(Number(req.params.artworkId));
+  const records = await provenanceService.getByArtwork(parseNumericId(req.params.artworkId));
   res.json({ success: true, data: records });
 });
 
 export const create = catchAsync(async (req: Request, res: Response) => {
-  const record = await provenanceService.create(Number(req.params.artworkId), req.body);
+  const record = await provenanceService.create(parseNumericId(req.params.artworkId), req.body);
   res.status(201).json({ success: true, data: record });
 });
 

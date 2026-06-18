@@ -9,6 +9,7 @@ const router = Router();
 
 router.get("/", authenticate, authorize(Role.ADMIN), consultationController.getAll);
 router.get("/my", authenticate, consultationController.getByUser);
+router.get("/advisor", authenticate, consultationController.getByAdvisor);
 router.post("/", authenticate, consultationController.create);
 router.patch("/:id/confirm", authenticate, authorize(Role.ADMIN), consultationController.confirm);
 router.patch("/:id/complete", authenticate, consultationController.complete);

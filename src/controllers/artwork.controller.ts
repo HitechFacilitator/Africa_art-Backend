@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as artworkService from "../services/artwork.service";
 import catchAsync from "../utils/catchAsync";
 import { getPaginationParams } from "../utils/pagination";
+import { parseNumericId } from "../utils/parseId";
 
 export const getAll = catchAsync(async (req: Request, res: Response) => {
   const { page, limit, skip } = getPaginationParams(req.query as { page?: string; limit?: string });
@@ -39,7 +40,7 @@ export const search = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getById = catchAsync(async (req: Request, res: Response) => {
-  const artwork = await artworkService.getById(Number(req.params.id));
+  const artwork = await artworkService.getById(parseNumericId(req.params.id));
   res.json({ success: true, data: artwork });
 });
 
@@ -49,11 +50,11 @@ export const create = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const update = catchAsync(async (req: Request, res: Response) => {
-  const artwork = await artworkService.update(Number(req.params.id), req.body);
+  const artwork = await artworkService.update(parseNumericId(req.params.id), req.body);
   res.json({ success: true, data: artwork });
 });
 
 export const deleteOne = catchAsync(async (req: Request, res: Response) => {
-  await artworkService.deleteOne(Number(req.params.id));
+  await artworkService.deleteOne(parseNumericId(req.params.id));
   res.json({ success: true, message: "Artwork deleted" });
 });

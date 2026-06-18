@@ -8,6 +8,11 @@ export const getByUser = catchAsync(async (req: Request, res: Response) => {
   res.json({ success: true, data: consultations });
 });
 
+export const getByAdvisor = catchAsync(async (req: Request, res: Response) => {
+  const consultations = await consultationService.getByAdvisor(req.user!.userId);
+  res.json({ success: true, data: consultations });
+});
+
 export const getAll = catchAsync(async (req: Request, res: Response) => {
   const { page, limit, skip } = getPaginationParams(req.query as { page?: string; limit?: string });
   const result = await consultationService.getAll(page, limit, skip);

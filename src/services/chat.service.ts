@@ -142,11 +142,15 @@ export async function markThreadRead(threadId: number, userId: number) {
 
   if (!lastMessage) return { success: true };
 
-  await prisma.chatThreadReadStatus.upsert({
-    where: { threadId_userId: { threadId, userId } },
-    update: { lastReadId: lastMessage.id },
-    create: { threadId, userId, lastReadId: lastMessage.id },
-  });
+  try {
+    await prisma.chatThreadReadStatus.upsert({
+      where: { threadId_userId: { threadId, userId } },
+      update: { lastReadId: lastMessage.id },
+      create: { threadId, userId, lastReadId: lastMessage.id },
+    });
+  } catch {
+    // Concurrent upsert race — safe to ignore, read status is approximate
+  }
 
   await prisma.chatMessage.updateMany({
     where: { threadId, userId: { not: userId } },

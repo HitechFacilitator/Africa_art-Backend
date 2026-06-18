@@ -39,12 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.expire = exports.cancel = exports.create = exports.getByUser = void 0;
 const reservationService = __importStar(require("../services/reservation.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
+const parseId_1 = require("../utils/parseId");
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
     const reservations = await reservationService.getByUser(req.user.userId);
     res.json({ success: true, data: reservations });
 });
 exports.create = (0, catchAsync_1.default)(async (req, res) => {
-    const reservation = await reservationService.create(req.user.userId, Number(req.params.artworkId));
+    const reservation = await reservationService.create(req.user.userId, (0, parseId_1.parseNumericId)(req.params.artworkId));
     res.status(201).json({ success: true, data: reservation });
 });
 exports.cancel = (0, catchAsync_1.default)(async (req, res) => {

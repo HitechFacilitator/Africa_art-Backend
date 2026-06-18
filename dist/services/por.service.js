@@ -16,7 +16,7 @@ async function getByArtwork(artworkId) {
     return db_1.default.priceRequest.findMany({
         where: { artworkId },
         include: {
-            user: { select: { id: true, firstName: true, lastName: true, email: true } },
+            user: { select: { id: true, name: true, email: true } },
             artwork: { select: { id: true, title: true } },
         },
         orderBy: { createdAt: "desc" },
@@ -43,7 +43,7 @@ async function getAll(page, limit, skip) {
             take: limit,
             orderBy: { createdAt: "desc" },
             include: {
-                user: { select: { id: true, firstName: true, lastName: true, email: true } },
+                user: { select: { id: true, name: true, email: true } },
                 artwork: { select: { id: true, title: true } },
             },
         }),
@@ -58,6 +58,12 @@ async function create(userId, artworkId, message) {
     }
     if (!artwork.isPOR) {
         throw new AppError_1.AppError("Artwork is not price-on-request", 400);
+    }
+    const existing = await db_1.default.priceRequest.findFirst({
+        where: { userId, artworkId },
+    });
+    if (existing) {
+        throw new AppError_1.AppError("You have already submitted an inquiry for this artwork", 409);
     }
     return db_1.default.priceRequest.create({
         data: { userId, artworkId, message },

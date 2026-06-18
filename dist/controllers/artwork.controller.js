@@ -40,6 +40,7 @@ exports.deleteOne = exports.update = exports.create = exports.getById = exports.
 const artworkService = __importStar(require("../services/artwork.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const pagination_1 = require("../utils/pagination");
+const parseId_1 = require("../utils/parseId");
 exports.getAll = (0, catchAsync_1.default)(async (req, res) => {
     const { page, limit, skip } = (0, pagination_1.getPaginationParams)(req.query);
     const filters = {
@@ -74,7 +75,7 @@ exports.search = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 exports.getById = (0, catchAsync_1.default)(async (req, res) => {
-    const artwork = await artworkService.getById(Number(req.params.id));
+    const artwork = await artworkService.getById((0, parseId_1.parseNumericId)(req.params.id));
     res.json({ success: true, data: artwork });
 });
 exports.create = (0, catchAsync_1.default)(async (req, res) => {
@@ -82,11 +83,11 @@ exports.create = (0, catchAsync_1.default)(async (req, res) => {
     res.status(201).json({ success: true, data: artwork });
 });
 exports.update = (0, catchAsync_1.default)(async (req, res) => {
-    const artwork = await artworkService.update(Number(req.params.id), req.body);
+    const artwork = await artworkService.update((0, parseId_1.parseNumericId)(req.params.id), req.body);
     res.json({ success: true, data: artwork });
 });
 exports.deleteOne = (0, catchAsync_1.default)(async (req, res) => {
-    await artworkService.deleteOne(Number(req.params.id));
+    await artworkService.deleteOne((0, parseId_1.parseNumericId)(req.params.id));
     res.json({ success: true, message: "Artwork deleted" });
 });
 //# sourceMappingURL=artwork.controller.js.map

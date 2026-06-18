@@ -9,7 +9,14 @@ exports.getPlacements = getPlacements;
 exports.getActivities = getActivities;
 const db_1 = __importDefault(require("../config/db"));
 async function getConsultations(advisorId) {
-    const where = advisorId ? { advisorId } : {};
+    const user = advisorId ? await db_1.default.user.findUnique({ where: { id: advisorId } }) : null;
+    const where = advisorId ? {
+        OR: [
+            { advisorId },
+            ...(user?.name ? [{ expertName: user.name }] : []),
+            ...(user?.name ? [{ expertName: { contains: user.name } }] : []),
+        ],
+    } : {};
     const consultations = await db_1.default.consultation.findMany({
         where,
         include: { user: true },

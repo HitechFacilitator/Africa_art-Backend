@@ -36,12 +36,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancel = exports.complete = exports.confirm = exports.create = exports.getAll = exports.getByUser = void 0;
+exports.cancel = exports.complete = exports.confirm = exports.create = exports.getAll = exports.getByAdvisor = exports.getByUser = void 0;
 const consultationService = __importStar(require("../services/consultation.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const pagination_1 = require("../utils/pagination");
 exports.getByUser = (0, catchAsync_1.default)(async (req, res) => {
     const consultations = await consultationService.getByUser(req.user.userId);
+    res.json({ success: true, data: consultations });
+});
+exports.getByAdvisor = (0, catchAsync_1.default)(async (req, res) => {
+    const consultations = await consultationService.getByAdvisor(req.user.userId);
     res.json({ success: true, data: consultations });
 });
 exports.getAll = (0, catchAsync_1.default)(async (req, res) => {
