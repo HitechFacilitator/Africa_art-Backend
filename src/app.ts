@@ -31,6 +31,7 @@ import adminUsersRoutes from "./routes/adminUsers.routes";
 import adminCertificatesRoutes from "./routes/adminCertificates.routes";
 import advisorRoutes from "./routes/advisor.routes";
 import chatRoutes from "./routes/chat.routes";
+import eventsRoutes from "./routes/events.routes";
 
 const app = express();
 
@@ -59,7 +60,7 @@ const generalLimiter = rateLimit({
   message: { success: false, message: "Too many requests, please try again later" },
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req) => req.originalUrl.includes("/chat/events"),
+  skip: (req) => req.originalUrl.includes("/chat/events") || req.originalUrl.includes("/events?token"),
 });
 
 app.use(express.json({ limit: "10mb" }));
@@ -108,6 +109,9 @@ app.use("/api/v1/advisor", advisorRoutes);
 
 // Chat/Support routes
 app.use("/api/v1/chat", chatRoutes);
+
+// General SSE events route (consultations, inquiries, POR)
+app.use("/api/v1/events", eventsRoutes);
 
 app.get("/api/v1/health", (_req, res) => {
   res.json({ success: true, message: "Africa Art API is running" });

@@ -13,6 +13,7 @@ export async function getByUser(userId: number) {
     artworkYear: inq.artworkYear || "",
     imageUrl: inq.imageUrl || "",
     status: inq.status,
+    category: inq.category || "General",
     date: inq.date || inq.createdAt.toISOString(),
     messages: inq.messages.map(m => ({
       sender: m.sender,
@@ -27,6 +28,7 @@ export async function create(userId: number, data: {
   artworkYear?: string;
   imageUrl?: string;
   status?: string;
+  category?: string;
   messages?: { sender: string; text: string; timestamp?: string }[];
 }) {
   const existing = await prisma.inquiry.findFirst({
@@ -41,6 +43,7 @@ export async function create(userId: number, data: {
       artworkYear: existing.artworkYear || "",
       imageUrl: existing.imageUrl || "",
       status: existing.status,
+      category: existing.category || "General",
       date: existing.date || existing.createdAt.toISOString(),
       messages: existing.messages.map(m => ({
         sender: m.sender,
@@ -58,6 +61,7 @@ export async function create(userId: number, data: {
       artworkYear: data.artworkYear,
       imageUrl: data.imageUrl,
       status: data.status || "Received",
+      category: data.category || "General",
       date: new Date().toISOString(),
       messages: data.messages ? {
         create: data.messages.map(m => ({
@@ -76,6 +80,7 @@ export async function create(userId: number, data: {
     artworkYear: inquiry.artworkYear || "",
     imageUrl: inquiry.imageUrl || "",
     status: inquiry.status,
+    category: inquiry.category || "General",
     date: inquiry.date || inquiry.createdAt.toISOString(),
     messages: inquiry.messages.map(m => ({
       sender: m.sender,

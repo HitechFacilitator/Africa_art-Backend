@@ -29,7 +29,12 @@ export const create = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const confirm = catchAsync(async (req: Request, res: Response) => {
-  const consultation = await consultationService.confirm(Number(req.params.id), Number(req.body.advisorId));
+  const consultation = await consultationService.confirm(Number(req.params.id), req.user!.userId);
+  res.json({ success: true, data: consultation });
+});
+
+export const reject = catchAsync(async (req: Request, res: Response) => {
+  const consultation = await consultationService.reject(Number(req.params.id), req.body.reason);
   res.json({ success: true, data: consultation });
 });
 

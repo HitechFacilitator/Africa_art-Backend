@@ -51,6 +51,9 @@ enum ConsultationType {
   ACQUISITION_ADVICE
   INVESTMENT_ADVICE
   COLLECTION_REVIEW
+  VIDEO
+  PHONE
+  IN_PERSON
 }
 
 enum ConsultationStatus {
@@ -58,11 +61,12 @@ enum ConsultationStatus {
   CONFIRMED
   COMPLETED
   CANCELLED
+  REJECTED
 }
 
 enum PORStatus {
   PENDING
-  RESPONDED
+  IN_DISCUSSION
   CLOSED
 }
 
@@ -336,22 +340,26 @@ model OrderItem {
 }
 
 model Consultation {
-  id        Int                @id @default(autoincrement())
-  userId    Int
-  user      User               @relation(fields: [userId], references: [id])
-  advisorId Int?
-  expertName String?
-  expertTitle String?
-  expertAvatar String?
-  type      ConsultationType
-  status    ConsultationStatus @default(PENDING)
-  date      DateTime
-  timeSlot  String?
-  topic     String?
-  notes     String?
-
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
+  id              Int                @id @default(autoincrement())
+  userId          Int
+  user            User               @relation(fields: [userId], references: [id])
+  advisorId       Int?
+  expertName      String?
+  expertTitle     String?
+  expertAvatar    String?
+  type            ConsultationType
+  status          ConsultationStatus @default(PENDING)
+  date            DateTime
+  timeSlot        String?
+  topic           String?
+  notes           String?
+  rejectionReason String?
+  clientName      String?
+  clientEmail     String?
+  currentCollection String?
+  meetingFormat   String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }
 
 model PriceRequest {
@@ -363,6 +371,8 @@ model PriceRequest {
   message   String?
   status    PORStatus @default(PENDING)
   response  String?
+
+  messages  PorMessage[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -462,6 +472,7 @@ model Inquiry {
   imageUrl      String?  @db.Text
   status        String   @default("Received")
   date          String?
+  category      String?  @default("General")
 
   messages      InquiryMessage[]
 
@@ -474,6 +485,18 @@ model InquiryMessage {
   inquiryId Int
   inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
   sender    String
+  text      String
+  timestamp String?
+
+  createdAt DateTime @default(now())
+}
+
+model PorMessage {
+  id        Int      @id @default(autoincrement())
+  porId     Int
+  por       PriceRequest @relation(fields: [porId], references: [id], onDelete: Cascade)
+  sender    String
+  senderId  Int?
   text      String
   timestamp String?
 

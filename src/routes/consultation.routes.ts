@@ -11,9 +11,10 @@ router.get("/", authenticate, authorize(Role.ADMIN), consultationController.getA
 router.get("/my", authenticate, consultationController.getByUser);
 router.get("/advisor", authenticate, consultationController.getByAdvisor);
 router.post("/", authenticate, consultationController.create);
-router.patch("/:id/confirm", authenticate, authorize(Role.ADMIN), consultationController.confirm);
-router.patch("/:id/complete", authenticate, consultationController.complete);
-router.patch("/:id/cancel", authenticate, consultationController.cancel);
+router.patch("/:id/confirm", authenticate, authorize(Role.ADMIN, Role.ADVISOR), consultationController.confirm);
+router.patch("/:id/reject", authenticate, authorize(Role.ADMIN, Role.ADVISOR), consultationController.reject);
+router.patch("/:id/complete", authenticate, authorize(Role.ADMIN, Role.ADVISOR), consultationController.complete);
+router.patch("/:id/cancel", authenticate, authorize(Role.ADMIN, Role.ADVISOR), consultationController.cancel);
 
 router.get("/advisors", authenticate, async (req, res) => {
   const advisors = await prisma.user.findMany({

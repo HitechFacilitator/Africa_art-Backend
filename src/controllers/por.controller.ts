@@ -38,3 +38,18 @@ export const close = catchAsync(async (req: Request, res: Response) => {
   const request = await porService.close(Number(req.params.id));
   res.json({ success: true, data: request });
 });
+
+export const addMessage = catchAsync(async (req: Request, res: Response) => {
+  const message = await porService.addMessage(
+    Number(req.params.id),
+    req.user!.role === "ADMIN" ? "admin" : "collector",
+    req.user!.userId,
+    req.body.text
+  );
+  res.status(201).json({ success: true, data: message });
+});
+
+export const changeStatus = catchAsync(async (req: Request, res: Response) => {
+  const request = await porService.changeStatus(Number(req.params.id), req.body.status);
+  res.json({ success: true, data: request });
+});
