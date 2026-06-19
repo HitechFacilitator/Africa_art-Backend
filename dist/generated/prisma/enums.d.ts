@@ -40,6 +40,9 @@ export declare const ConsultationType: {
     readonly ACQUISITION_ADVICE: "ACQUISITION_ADVICE";
     readonly INVESTMENT_ADVICE: "INVESTMENT_ADVICE";
     readonly COLLECTION_REVIEW: "COLLECTION_REVIEW";
+    readonly VIDEO: "VIDEO";
+    readonly PHONE: "PHONE";
+    readonly IN_PERSON: "IN_PERSON";
 };
 export type ConsultationType = (typeof ConsultationType)[keyof typeof ConsultationType];
 export declare const ConsultationStatus: {
@@ -47,11 +50,12 @@ export declare const ConsultationStatus: {
     readonly CONFIRMED: "CONFIRMED";
     readonly COMPLETED: "COMPLETED";
     readonly CANCELLED: "CANCELLED";
+    readonly REJECTED: "REJECTED";
 };
 export type ConsultationStatus = (typeof ConsultationStatus)[keyof typeof ConsultationStatus];
 export declare const PORStatus: {
     readonly PENDING: "PENDING";
-    readonly RESPONDED: "RESPONDED";
+    readonly IN_DISCUSSION: "IN_DISCUSSION";
     readonly CLOSED: "CLOSED";
 };
 export type PORStatus = (typeof PORStatus)[keyof typeof PORStatus];

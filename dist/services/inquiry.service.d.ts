@@ -4,6 +4,7 @@ export declare function getByUser(userId: number): Promise<{
     artworkYear: string;
     imageUrl: string;
     status: string;
+    category: string;
     date: string;
     messages: {
         sender: string;
@@ -16,6 +17,7 @@ export declare function create(userId: number, data: {
     artworkYear?: string;
     imageUrl?: string;
     status?: string;
+    category?: string;
     messages?: {
         sender: string;
         text: string;
@@ -27,6 +29,7 @@ export declare function create(userId: number, data: {
     artworkYear: string;
     imageUrl: string;
     status: string;
+    category: string;
     date: string;
     messages: {
         sender: string;
@@ -40,6 +43,7 @@ export declare function create(userId: number, data: {
     artworkYear: string;
     imageUrl: string;
     status: string;
+    category: string;
     date: string;
     messages: {
         sender: string;

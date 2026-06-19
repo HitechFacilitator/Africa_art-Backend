@@ -5,4 +5,6 @@ export declare const getAll: (req: Request, res: Response, next: import("express
 export declare const create: (req: Request, res: Response, next: import("express").NextFunction) => void;
 export declare const respond: (req: Request, res: Response, next: import("express").NextFunction) => void;
 export declare const close: (req: Request, res: Response, next: import("express").NextFunction) => void;
+export declare const addMessage: (req: Request, res: Response, next: import("express").NextFunction) => void;
+export declare const changeStatus: (req: Request, res: Response, next: import("express").NextFunction) => void;
 //# sourceMappingURL=por.controller.d.ts.map

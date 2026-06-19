@@ -48,6 +48,7 @@ export declare const ModelName: {
     readonly AcquisitionProvenance: "AcquisitionProvenance";
     readonly Inquiry: "Inquiry";
     readonly InquiryMessage: "InquiryMessage";
+    readonly PorMessage: "PorMessage";
     readonly LogisticsShipment: "LogisticsShipment";
     readonly ShipmentUpdate: "ShipmentUpdate";
     readonly SecurityRecord: "SecurityRecord";
@@ -241,6 +242,11 @@ export declare const ConsultationScalarFieldEnum: {
     readonly timeSlot: "timeSlot";
     readonly topic: "topic";
     readonly notes: "notes";
+    readonly rejectionReason: "rejectionReason";
+    readonly clientName: "clientName";
+    readonly clientEmail: "clientEmail";
+    readonly currentCollection: "currentCollection";
+    readonly meetingFormat: "meetingFormat";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -334,6 +340,7 @@ export declare const InquiryScalarFieldEnum: {
     readonly imageUrl: "imageUrl";
     readonly status: "status";
     readonly date: "date";
+    readonly category: "category";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -347,6 +354,16 @@ export declare const InquiryMessageScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type InquiryMessageScalarFieldEnum = (typeof InquiryMessageScalarFieldEnum)[keyof typeof InquiryMessageScalarFieldEnum];
+export declare const PorMessageScalarFieldEnum: {
+    readonly id: "id";
+    readonly porId: "porId";
+    readonly sender: "sender";
+    readonly senderId: "senderId";
+    readonly text: "text";
+    readonly timestamp: "timestamp";
+    readonly createdAt: "createdAt";
+};
+export type PorMessageScalarFieldEnum = (typeof PorMessageScalarFieldEnum)[keyof typeof PorMessageScalarFieldEnum];
 export declare const LogisticsShipmentScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -615,6 +632,11 @@ export declare const ConsultationOrderByRelevanceFieldEnum: {
     readonly timeSlot: "timeSlot";
     readonly topic: "topic";
     readonly notes: "notes";
+    readonly rejectionReason: "rejectionReason";
+    readonly clientName: "clientName";
+    readonly clientEmail: "clientEmail";
+    readonly currentCollection: "currentCollection";
+    readonly meetingFormat: "meetingFormat";
 };
 export type ConsultationOrderByRelevanceFieldEnum = (typeof ConsultationOrderByRelevanceFieldEnum)[keyof typeof ConsultationOrderByRelevanceFieldEnum];
 export declare const PriceRequestOrderByRelevanceFieldEnum: {
@@ -664,6 +686,7 @@ export declare const InquiryOrderByRelevanceFieldEnum: {
     readonly imageUrl: "imageUrl";
     readonly status: "status";
     readonly date: "date";
+    readonly category: "category";
 };
 export type InquiryOrderByRelevanceFieldEnum = (typeof InquiryOrderByRelevanceFieldEnum)[keyof typeof InquiryOrderByRelevanceFieldEnum];
 export declare const InquiryMessageOrderByRelevanceFieldEnum: {
@@ -672,6 +695,12 @@ export declare const InquiryMessageOrderByRelevanceFieldEnum: {
     readonly timestamp: "timestamp";
 };
 export type InquiryMessageOrderByRelevanceFieldEnum = (typeof InquiryMessageOrderByRelevanceFieldEnum)[keyof typeof InquiryMessageOrderByRelevanceFieldEnum];
+export declare const PorMessageOrderByRelevanceFieldEnum: {
+    readonly sender: "sender";
+    readonly text: "text";
+    readonly timestamp: "timestamp";
+};
+export type PorMessageOrderByRelevanceFieldEnum = (typeof PorMessageOrderByRelevanceFieldEnum)[keyof typeof PorMessageOrderByRelevanceFieldEnum];
 export declare const LogisticsShipmentOrderByRelevanceFieldEnum: {
     readonly artworkTitle: "artworkTitle";
     readonly carrier: "carrier";

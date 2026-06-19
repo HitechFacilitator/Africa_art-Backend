@@ -28,6 +28,7 @@ export type InquiryMinAggregateOutputType = {
     imageUrl: string | null;
     status: string | null;
     date: string | null;
+    category: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -39,6 +40,7 @@ export type InquiryMaxAggregateOutputType = {
     imageUrl: string | null;
     status: string | null;
     date: string | null;
+    category: string | null;
     createdAt: Date | null;
     updatedAt: Date | null;
 };
@@ -50,6 +52,7 @@ export type InquiryCountAggregateOutputType = {
     imageUrl: number;
     status: number;
     date: number;
+    category: number;
     createdAt: number;
     updatedAt: number;
     _all: number;
@@ -70,6 +73,7 @@ export type InquiryMinAggregateInputType = {
     imageUrl?: true;
     status?: true;
     date?: true;
+    category?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -81,6 +85,7 @@ export type InquiryMaxAggregateInputType = {
     imageUrl?: true;
     status?: true;
     date?: true;
+    category?: true;
     createdAt?: true;
     updatedAt?: true;
 };
@@ -92,6 +97,7 @@ export type InquiryCountAggregateInputType = {
     imageUrl?: true;
     status?: true;
     date?: true;
+    category?: true;
     createdAt?: true;
     updatedAt?: true;
     _all?: true;
@@ -180,6 +186,7 @@ export type InquiryGroupByOutputType = {
     imageUrl: string | null;
     status: string;
     date: string | null;
+    category: string | null;
     createdAt: Date;
     updatedAt: Date;
     _count: InquiryCountAggregateOutputType | null;
@@ -202,6 +209,7 @@ export type InquiryWhereInput = {
     imageUrl?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
     status?: Prisma.StringFilter<"Inquiry"> | string;
     date?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
+    category?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Inquiry"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Inquiry"> | Date | string;
     messages?: Prisma.InquiryMessageListRelationFilter;
@@ -214,6 +222,7 @@ export type InquiryOrderByWithRelationInput = {
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     date?: Prisma.SortOrderInput | Prisma.SortOrder;
+    category?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     messages?: Prisma.InquiryMessageOrderByRelationAggregateInput;
@@ -230,6 +239,7 @@ export type InquiryWhereUniqueInput = Prisma.AtLeast<{
     imageUrl?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
     status?: Prisma.StringFilter<"Inquiry"> | string;
     date?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
+    category?: Prisma.StringNullableFilter<"Inquiry"> | string | null;
     createdAt?: Prisma.DateTimeFilter<"Inquiry"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Inquiry"> | Date | string;
     messages?: Prisma.InquiryMessageListRelationFilter;
@@ -242,6 +252,7 @@ export type InquiryOrderByWithAggregationInput = {
     imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder;
     status?: Prisma.SortOrder;
     date?: Prisma.SortOrderInput | Prisma.SortOrder;
+    category?: Prisma.SortOrderInput | Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
     _count?: Prisma.InquiryCountOrderByAggregateInput;
@@ -261,6 +272,7 @@ export type InquiryScalarWhereWithAggregatesInput = {
     imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Inquiry"> | string | null;
     status?: Prisma.StringWithAggregatesFilter<"Inquiry"> | string;
     date?: Prisma.StringNullableWithAggregatesFilter<"Inquiry"> | string | null;
+    category?: Prisma.StringNullableWithAggregatesFilter<"Inquiry"> | string | null;
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"Inquiry"> | Date | string;
     updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Inquiry"> | Date | string;
 };
@@ -271,6 +283,7 @@ export type InquiryCreateInput = {
     imageUrl?: string | null;
     status?: string;
     date?: string | null;
+    category?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     messages?: Prisma.InquiryMessageCreateNestedManyWithoutInquiryInput;
@@ -283,6 +296,7 @@ export type InquiryUncheckedCreateInput = {
     imageUrl?: string | null;
     status?: string;
     date?: string | null;
+    category?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     messages?: Prisma.InquiryMessageUncheckedCreateNestedManyWithoutInquiryInput;
@@ -294,6 +308,7 @@ export type InquiryUpdateInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     messages?: Prisma.InquiryMessageUpdateManyWithoutInquiryNestedInput;
@@ -306,6 +321,7 @@ export type InquiryUncheckedUpdateInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     messages?: Prisma.InquiryMessageUncheckedUpdateManyWithoutInquiryNestedInput;
@@ -318,6 +334,7 @@ export type InquiryCreateManyInput = {
     imageUrl?: string | null;
     status?: string;
     date?: string | null;
+    category?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -328,6 +345,7 @@ export type InquiryUpdateManyMutationInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -339,6 +357,7 @@ export type InquiryUncheckedUpdateManyInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -355,6 +374,7 @@ export type InquiryCountOrderByAggregateInput = {
     imageUrl?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     date?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -370,6 +390,7 @@ export type InquiryMaxOrderByAggregateInput = {
     imageUrl?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     date?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -381,6 +402,7 @@ export type InquiryMinOrderByAggregateInput = {
     imageUrl?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     date?: Prisma.SortOrder;
+    category?: Prisma.SortOrder;
     createdAt?: Prisma.SortOrder;
     updatedAt?: Prisma.SortOrder;
 };
@@ -411,6 +433,7 @@ export type InquiryCreateWithoutMessagesInput = {
     imageUrl?: string | null;
     status?: string;
     date?: string | null;
+    category?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -422,6 +445,7 @@ export type InquiryUncheckedCreateWithoutMessagesInput = {
     imageUrl?: string | null;
     status?: string;
     date?: string | null;
+    category?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
 };
@@ -445,6 +469,7 @@ export type InquiryUpdateWithoutMessagesInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -456,6 +481,7 @@ export type InquiryUncheckedUpdateWithoutMessagesInput = {
     imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     status?: Prisma.StringFieldUpdateOperationsInput | string;
     date?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -491,6 +517,7 @@ export type InquirySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     imageUrl?: boolean;
     status?: boolean;
     date?: boolean;
+    category?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     messages?: boolean | Prisma.Inquiry$messagesArgs<ExtArgs>;
@@ -504,10 +531,11 @@ export type InquirySelectScalar = {
     imageUrl?: boolean;
     status?: boolean;
     date?: boolean;
+    category?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type InquiryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "artworkTitle" | "artworkYear" | "imageUrl" | "status" | "date" | "createdAt" | "updatedAt", ExtArgs["result"]["inquiry"]>;
+export type InquiryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "artworkTitle" | "artworkYear" | "imageUrl" | "status" | "date" | "category" | "createdAt" | "updatedAt", ExtArgs["result"]["inquiry"]>;
 export type InquiryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     messages?: boolean | Prisma.Inquiry$messagesArgs<ExtArgs>;
     _count?: boolean | Prisma.InquiryCountOutputTypeDefaultArgs<ExtArgs>;
@@ -525,6 +553,7 @@ export type $InquiryPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
         imageUrl: string | null;
         status: string;
         date: string | null;
+        category: string | null;
         createdAt: Date;
         updatedAt: Date;
     }, ExtArgs["result"]["inquiry"]>;
@@ -837,6 +866,7 @@ export interface InquiryFieldRefs {
     readonly imageUrl: Prisma.FieldRef<"Inquiry", 'String'>;
     readonly status: Prisma.FieldRef<"Inquiry", 'String'>;
     readonly date: Prisma.FieldRef<"Inquiry", 'String'>;
+    readonly category: Prisma.FieldRef<"Inquiry", 'String'>;
     readonly createdAt: Prisma.FieldRef<"Inquiry", 'DateTime'>;
     readonly updatedAt: Prisma.FieldRef<"Inquiry", 'DateTime'>;
 }

@@ -19,6 +19,7 @@ async function getByUser(userId) {
         artworkYear: inq.artworkYear || "",
         imageUrl: inq.imageUrl || "",
         status: inq.status,
+        category: inq.category || "General",
         date: inq.date || inq.createdAt.toISOString(),
         messages: inq.messages.map(m => ({
             sender: m.sender,
@@ -39,6 +40,7 @@ async function create(userId, data) {
             artworkYear: existing.artworkYear || "",
             imageUrl: existing.imageUrl || "",
             status: existing.status,
+            category: existing.category || "General",
             date: existing.date || existing.createdAt.toISOString(),
             messages: existing.messages.map(m => ({
                 sender: m.sender,
@@ -55,6 +57,7 @@ async function create(userId, data) {
             artworkYear: data.artworkYear,
             imageUrl: data.imageUrl,
             status: data.status || "Received",
+            category: data.category || "General",
             date: new Date().toISOString(),
             messages: data.messages ? {
                 create: data.messages.map(m => ({
@@ -72,6 +75,7 @@ async function create(userId, data) {
         artworkYear: inquiry.artworkYear || "",
         imageUrl: inquiry.imageUrl || "",
         status: inquiry.status,
+        category: inquiry.category || "General",
         date: inquiry.date || inquiry.createdAt.toISOString(),
         messages: inquiry.messages.map(m => ({
             sender: m.sender,

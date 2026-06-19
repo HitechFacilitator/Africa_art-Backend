@@ -14,12 +14,12 @@ export declare function verifyAll(): Promise<void>;
 export declare function log(userId: number | null, action: string, resource: string, resourceId?: number, metadata?: Record<string, unknown>, txHash?: string): Promise<{
     userId: number | null;
     id: number;
+    timestamp: Date;
     action: string;
     resource: string;
     resourceId: number | null;
     metadata: import("@prisma/client/runtime/client").JsonValue | null;
     txHash: string | null;
     signed: boolean;
-    timestamp: Date;
 }>;
 //# sourceMappingURL=adminAudit.service.d.ts.map

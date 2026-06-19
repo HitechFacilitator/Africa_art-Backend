@@ -253,6 +253,7 @@ export declare const ModelName: {
     readonly AcquisitionProvenance: "AcquisitionProvenance";
     readonly Inquiry: "Inquiry";
     readonly InquiryMessage: "InquiryMessage";
+    readonly PorMessage: "PorMessage";
     readonly LogisticsShipment: "LogisticsShipment";
     readonly ShipmentUpdate: "ShipmentUpdate";
     readonly SecurityRecord: "SecurityRecord";
@@ -278,7 +279,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         omit: GlobalOmitOptions;
     };
     meta: {
-        modelProps: "user" | "artist" | "category" | "artwork" | "artworkImage" | "provenanceRecord" | "provenanceChain" | "certificate" | "favorite" | "reservation" | "order" | "orderItem" | "consultation" | "priceRequest" | "auditLog" | "notification" | "auctionLot" | "bid" | "acquisition" | "acquisitionProvenance" | "inquiry" | "inquiryMessage" | "logisticsShipment" | "shipmentUpdate" | "securityRecord" | "escrowTransaction" | "advisorClient" | "advisorPlacement" | "advisorActivity" | "chatThread" | "chatMessage" | "chatThreadReadStatus" | "supportTicket" | "ticketResponse" | "memberApplication";
+        modelProps: "user" | "artist" | "category" | "artwork" | "artworkImage" | "provenanceRecord" | "provenanceChain" | "certificate" | "favorite" | "reservation" | "order" | "orderItem" | "consultation" | "priceRequest" | "auditLog" | "notification" | "auctionLot" | "bid" | "acquisition" | "acquisitionProvenance" | "inquiry" | "inquiryMessage" | "porMessage" | "logisticsShipment" | "shipmentUpdate" | "securityRecord" | "escrowTransaction" | "advisorClient" | "advisorPlacement" | "advisorActivity" | "chatThread" | "chatMessage" | "chatThreadReadStatus" | "supportTicket" | "ticketResponse" | "memberApplication";
         txIsolationLevel: TransactionIsolationLevel;
     };
     model: {
@@ -1734,6 +1735,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
                 };
             };
         };
+        PorMessage: {
+            payload: Prisma.$PorMessagePayload<ExtArgs>;
+            fields: Prisma.PorMessageFieldRefs;
+            operations: {
+                findUnique: {
+                    args: Prisma.PorMessageFindUniqueArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload> | null;
+                };
+                findUniqueOrThrow: {
+                    args: Prisma.PorMessageFindUniqueOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                findFirst: {
+                    args: Prisma.PorMessageFindFirstArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload> | null;
+                };
+                findFirstOrThrow: {
+                    args: Prisma.PorMessageFindFirstOrThrowArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                findMany: {
+                    args: Prisma.PorMessageFindManyArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>[];
+                };
+                create: {
+                    args: Prisma.PorMessageCreateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                createMany: {
+                    args: Prisma.PorMessageCreateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                delete: {
+                    args: Prisma.PorMessageDeleteArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                update: {
+                    args: Prisma.PorMessageUpdateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                deleteMany: {
+                    args: Prisma.PorMessageDeleteManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                updateMany: {
+                    args: Prisma.PorMessageUpdateManyArgs<ExtArgs>;
+                    result: BatchPayload;
+                };
+                upsert: {
+                    args: Prisma.PorMessageUpsertArgs<ExtArgs>;
+                    result: runtime.Types.Utils.PayloadToResult<Prisma.$PorMessagePayload>;
+                };
+                aggregate: {
+                    args: Prisma.PorMessageAggregateArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.AggregatePorMessage>;
+                };
+                groupBy: {
+                    args: Prisma.PorMessageGroupByArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PorMessageGroupByOutputType>[];
+                };
+                count: {
+                    args: Prisma.PorMessageCountArgs<ExtArgs>;
+                    result: runtime.Types.Utils.Optional<Prisma.PorMessageCountAggregateOutputType> | number;
+                };
+            };
+        };
         LogisticsShipment: {
             payload: Prisma.$LogisticsShipmentPayload<ExtArgs>;
             fields: Prisma.LogisticsShipmentFieldRefs;
@@ -2797,6 +2864,11 @@ export declare const ConsultationScalarFieldEnum: {
     readonly timeSlot: "timeSlot";
     readonly topic: "topic";
     readonly notes: "notes";
+    readonly rejectionReason: "rejectionReason";
+    readonly clientName: "clientName";
+    readonly clientEmail: "clientEmail";
+    readonly currentCollection: "currentCollection";
+    readonly meetingFormat: "meetingFormat";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -2890,6 +2962,7 @@ export declare const InquiryScalarFieldEnum: {
     readonly imageUrl: "imageUrl";
     readonly status: "status";
     readonly date: "date";
+    readonly category: "category";
     readonly createdAt: "createdAt";
     readonly updatedAt: "updatedAt";
 };
@@ -2903,6 +2976,16 @@ export declare const InquiryMessageScalarFieldEnum: {
     readonly createdAt: "createdAt";
 };
 export type InquiryMessageScalarFieldEnum = (typeof InquiryMessageScalarFieldEnum)[keyof typeof InquiryMessageScalarFieldEnum];
+export declare const PorMessageScalarFieldEnum: {
+    readonly id: "id";
+    readonly porId: "porId";
+    readonly sender: "sender";
+    readonly senderId: "senderId";
+    readonly text: "text";
+    readonly timestamp: "timestamp";
+    readonly createdAt: "createdAt";
+};
+export type PorMessageScalarFieldEnum = (typeof PorMessageScalarFieldEnum)[keyof typeof PorMessageScalarFieldEnum];
 export declare const LogisticsShipmentScalarFieldEnum: {
     readonly id: "id";
     readonly userId: "userId";
@@ -3171,6 +3254,11 @@ export declare const ConsultationOrderByRelevanceFieldEnum: {
     readonly timeSlot: "timeSlot";
     readonly topic: "topic";
     readonly notes: "notes";
+    readonly rejectionReason: "rejectionReason";
+    readonly clientName: "clientName";
+    readonly clientEmail: "clientEmail";
+    readonly currentCollection: "currentCollection";
+    readonly meetingFormat: "meetingFormat";
 };
 export type ConsultationOrderByRelevanceFieldEnum = (typeof ConsultationOrderByRelevanceFieldEnum)[keyof typeof ConsultationOrderByRelevanceFieldEnum];
 export declare const PriceRequestOrderByRelevanceFieldEnum: {
@@ -3220,6 +3308,7 @@ export declare const InquiryOrderByRelevanceFieldEnum: {
     readonly imageUrl: "imageUrl";
     readonly status: "status";
     readonly date: "date";
+    readonly category: "category";
 };
 export type InquiryOrderByRelevanceFieldEnum = (typeof InquiryOrderByRelevanceFieldEnum)[keyof typeof InquiryOrderByRelevanceFieldEnum];
 export declare const InquiryMessageOrderByRelevanceFieldEnum: {
@@ -3228,6 +3317,12 @@ export declare const InquiryMessageOrderByRelevanceFieldEnum: {
     readonly timestamp: "timestamp";
 };
 export type InquiryMessageOrderByRelevanceFieldEnum = (typeof InquiryMessageOrderByRelevanceFieldEnum)[keyof typeof InquiryMessageOrderByRelevanceFieldEnum];
+export declare const PorMessageOrderByRelevanceFieldEnum: {
+    readonly sender: "sender";
+    readonly text: "text";
+    readonly timestamp: "timestamp";
+};
+export type PorMessageOrderByRelevanceFieldEnum = (typeof PorMessageOrderByRelevanceFieldEnum)[keyof typeof PorMessageOrderByRelevanceFieldEnum];
 export declare const LogisticsShipmentOrderByRelevanceFieldEnum: {
     readonly artworkTitle: "artworkTitle";
     readonly carrier: "carrier";
@@ -3541,6 +3636,7 @@ export type GlobalOmitConfig = {
     acquisitionProvenance?: Prisma.AcquisitionProvenanceOmit;
     inquiry?: Prisma.InquiryOmit;
     inquiryMessage?: Prisma.InquiryMessageOmit;
+    porMessage?: Prisma.PorMessageOmit;
     logisticsShipment?: Prisma.LogisticsShipmentOmit;
     shipmentUpdate?: Prisma.ShipmentUpdateOmit;
     securityRecord?: Prisma.SecurityRecordOmit;

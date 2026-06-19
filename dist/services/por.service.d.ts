@@ -9,6 +9,15 @@ export declare function getByArtwork(artworkId: number): Promise<({
         id: number;
         title: string;
     };
+    messages: {
+        id: number;
+        createdAt: Date;
+        porId: number;
+        sender: string;
+        senderId: number | null;
+        text: string;
+        timestamp: string | null;
+    }[];
 } & {
     userId: number;
     id: number;
@@ -19,12 +28,15 @@ export declare function getByArtwork(artworkId: number): Promise<({
     message: string | null;
     response: string | null;
 })[]>;
-export declare function getByUser(userId: number): Promise<({
+export declare function getByUser(userId: number): Promise<{
+    id: string;
+    artworkId: number;
+    message: string;
+    status: PORStatus;
+    response: string;
     artwork: {
-        artist: {
-            id: number;
-            name: string;
-        } | null;
+        id: number;
+        title: string;
         images: {
             id: number;
             createdAt: Date;
@@ -34,53 +46,16 @@ export declare function getByUser(userId: number): Promise<({
             order: number;
             artworkId: number;
         }[];
-    } & {
+    } | undefined;
+    messages: {
         id: number;
-        tier: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        artistId: number | null;
-        description: string;
-        categoryId: number | null;
-        origin: string;
-        title: string;
-        region: string | null;
-        tribe: string | null;
-        era: string | null;
-        historicalPeriod: string | null;
-        material: string;
-        dimensions: string;
-        weight: string | null;
-        condition: string;
-        availability: import("../generated/prisma/enums").Availability;
-        price: import("@prisma/client-runtime-utils").Decimal | null;
-        isPOR: boolean;
-        imageUrl: string | null;
-        blurDataURL: string | null;
-        scarcityIndex: number | null;
-        preservationStatus: string | null;
-        appreciationRate: string | null;
-        isHero: boolean;
-        historicalStory: string | null;
-        investmentThesis: string | null;
-        estimatedValue: import("@prisma/client-runtime-utils").Decimal | null;
-        historicalCagr: import("@prisma/client-runtime-utils").Decimal | null;
-        yieldIndex: import("@prisma/client-runtime-utils").Decimal | null;
-        artworkStatus: string | null;
-        provenanceHash: string | null;
-        acquiredYear: number | null;
-        acquiredMethod: string | null;
-    };
-} & {
-    userId: number;
-    id: number;
-    status: PORStatus;
-    createdAt: Date;
-    updatedAt: Date;
-    artworkId: number;
-    message: string | null;
-    response: string | null;
-})[]>;
+        sender: string;
+        senderId: number | null;
+        text: string;
+        timestamp: string;
+    }[];
+    createdAt: string;
+}[]>;
 export declare function getAll(page: number, limit: number, skip: number): Promise<{
     data: ({
         user: {
@@ -92,6 +67,15 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
             id: number;
             title: string;
         };
+        messages: {
+            id: number;
+            createdAt: Date;
+            porId: number;
+            sender: string;
+            senderId: number | null;
+            text: string;
+            timestamp: string | null;
+        }[];
     } & {
         userId: number;
         id: number;
@@ -124,6 +108,16 @@ export declare function respond(id: number, response: string): Promise<{
     message: string | null;
     response: string | null;
 }>;
+export declare function changeStatus(id: number, newStatus: string): Promise<{
+    userId: number;
+    id: number;
+    status: PORStatus;
+    createdAt: Date;
+    updatedAt: Date;
+    artworkId: number;
+    message: string | null;
+    response: string | null;
+}>;
 export declare function close(id: number): Promise<{
     userId: number;
     id: number;
@@ -133,5 +127,12 @@ export declare function close(id: number): Promise<{
     artworkId: number;
     message: string | null;
     response: string | null;
+}>;
+export declare function addMessage(porId: number, sender: string, senderId: number, text: string): Promise<{
+    id: number;
+    sender: string;
+    senderId: number | null;
+    text: string;
+    timestamp: string;
 }>;
 //# sourceMappingURL=por.service.d.ts.map

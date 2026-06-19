@@ -203,6 +203,7 @@ export type PriceRequestWhereInput = {
     updatedAt?: Prisma.DateTimeFilter<"PriceRequest"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>;
+    messages?: Prisma.PorMessageListRelationFilter;
 };
 export type PriceRequestOrderByWithRelationInput = {
     id?: Prisma.SortOrder;
@@ -215,6 +216,7 @@ export type PriceRequestOrderByWithRelationInput = {
     updatedAt?: Prisma.SortOrder;
     user?: Prisma.UserOrderByWithRelationInput;
     artwork?: Prisma.ArtworkOrderByWithRelationInput;
+    messages?: Prisma.PorMessageOrderByRelationAggregateInput;
     _relevance?: Prisma.PriceRequestOrderByRelevanceInput;
 };
 export type PriceRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -231,6 +233,7 @@ export type PriceRequestWhereUniqueInput = Prisma.AtLeast<{
     updatedAt?: Prisma.DateTimeFilter<"PriceRequest"> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
     artwork?: Prisma.XOR<Prisma.ArtworkScalarRelationFilter, Prisma.ArtworkWhereInput>;
+    messages?: Prisma.PorMessageListRelationFilter;
 }, "id">;
 export type PriceRequestOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
@@ -268,6 +271,7 @@ export type PriceRequestCreateInput = {
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutPriceRequestsInput;
     artwork: Prisma.ArtworkCreateNestedOneWithoutPriceRequestsInput;
+    messages?: Prisma.PorMessageCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestUncheckedCreateInput = {
     id?: number;
@@ -278,6 +282,7 @@ export type PriceRequestUncheckedCreateInput = {
     response?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    messages?: Prisma.PorMessageUncheckedCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestUpdateInput = {
     message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -287,6 +292,7 @@ export type PriceRequestUpdateInput = {
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutPriceRequestsNestedInput;
     artwork?: Prisma.ArtworkUpdateOneRequiredWithoutPriceRequestsNestedInput;
+    messages?: Prisma.PorMessageUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestUncheckedUpdateInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -297,6 +303,7 @@ export type PriceRequestUncheckedUpdateInput = {
     response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    messages?: Prisma.PorMessageUncheckedUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestCreateManyInput = {
     id?: number;
@@ -378,6 +385,10 @@ export type PriceRequestSumOrderByAggregateInput = {
     userId?: Prisma.SortOrder;
     artworkId?: Prisma.SortOrder;
 };
+export type PriceRequestScalarRelationFilter = {
+    is?: Prisma.PriceRequestWhereInput;
+    isNot?: Prisma.PriceRequestWhereInput;
+};
 export type PriceRequestCreateNestedManyWithoutUserInput = {
     create?: Prisma.XOR<Prisma.PriceRequestCreateWithoutUserInput, Prisma.PriceRequestUncheckedCreateWithoutUserInput> | Prisma.PriceRequestCreateWithoutUserInput[] | Prisma.PriceRequestUncheckedCreateWithoutUserInput[];
     connectOrCreate?: Prisma.PriceRequestCreateOrConnectWithoutUserInput | Prisma.PriceRequestCreateOrConnectWithoutUserInput[];
@@ -457,6 +468,18 @@ export type PriceRequestUncheckedUpdateManyWithoutArtworkNestedInput = {
 export type EnumPORStatusFieldUpdateOperationsInput = {
     set?: $Enums.PORStatus;
 };
+export type PriceRequestCreateNestedOneWithoutMessagesInput = {
+    create?: Prisma.XOR<Prisma.PriceRequestCreateWithoutMessagesInput, Prisma.PriceRequestUncheckedCreateWithoutMessagesInput>;
+    connectOrCreate?: Prisma.PriceRequestCreateOrConnectWithoutMessagesInput;
+    connect?: Prisma.PriceRequestWhereUniqueInput;
+};
+export type PriceRequestUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: Prisma.XOR<Prisma.PriceRequestCreateWithoutMessagesInput, Prisma.PriceRequestUncheckedCreateWithoutMessagesInput>;
+    connectOrCreate?: Prisma.PriceRequestCreateOrConnectWithoutMessagesInput;
+    upsert?: Prisma.PriceRequestUpsertWithoutMessagesInput;
+    connect?: Prisma.PriceRequestWhereUniqueInput;
+    update?: Prisma.XOR<Prisma.XOR<Prisma.PriceRequestUpdateToOneWithWhereWithoutMessagesInput, Prisma.PriceRequestUpdateWithoutMessagesInput>, Prisma.PriceRequestUncheckedUpdateWithoutMessagesInput>;
+};
 export type PriceRequestCreateWithoutUserInput = {
     message?: string | null;
     status?: $Enums.PORStatus;
@@ -464,6 +487,7 @@ export type PriceRequestCreateWithoutUserInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     artwork: Prisma.ArtworkCreateNestedOneWithoutPriceRequestsInput;
+    messages?: Prisma.PorMessageCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestUncheckedCreateWithoutUserInput = {
     id?: number;
@@ -473,6 +497,7 @@ export type PriceRequestUncheckedCreateWithoutUserInput = {
     response?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    messages?: Prisma.PorMessageUncheckedCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestCreateOrConnectWithoutUserInput = {
     where: Prisma.PriceRequestWhereUniqueInput;
@@ -515,6 +540,7 @@ export type PriceRequestCreateWithoutArtworkInput = {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     user: Prisma.UserCreateNestedOneWithoutPriceRequestsInput;
+    messages?: Prisma.PorMessageCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestUncheckedCreateWithoutArtworkInput = {
     id?: number;
@@ -524,6 +550,7 @@ export type PriceRequestUncheckedCreateWithoutArtworkInput = {
     response?: string | null;
     createdAt?: Date | string;
     updatedAt?: Date | string;
+    messages?: Prisma.PorMessageUncheckedCreateNestedManyWithoutPorInput;
 };
 export type PriceRequestCreateOrConnectWithoutArtworkInput = {
     where: Prisma.PriceRequestWhereUniqueInput;
@@ -546,6 +573,57 @@ export type PriceRequestUpdateManyWithWhereWithoutArtworkInput = {
     where: Prisma.PriceRequestScalarWhereInput;
     data: Prisma.XOR<Prisma.PriceRequestUpdateManyMutationInput, Prisma.PriceRequestUncheckedUpdateManyWithoutArtworkInput>;
 };
+export type PriceRequestCreateWithoutMessagesInput = {
+    message?: string | null;
+    status?: $Enums.PORStatus;
+    response?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    user: Prisma.UserCreateNestedOneWithoutPriceRequestsInput;
+    artwork: Prisma.ArtworkCreateNestedOneWithoutPriceRequestsInput;
+};
+export type PriceRequestUncheckedCreateWithoutMessagesInput = {
+    id?: number;
+    userId: number;
+    artworkId: number;
+    message?: string | null;
+    status?: $Enums.PORStatus;
+    response?: string | null;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+};
+export type PriceRequestCreateOrConnectWithoutMessagesInput = {
+    where: Prisma.PriceRequestWhereUniqueInput;
+    create: Prisma.XOR<Prisma.PriceRequestCreateWithoutMessagesInput, Prisma.PriceRequestUncheckedCreateWithoutMessagesInput>;
+};
+export type PriceRequestUpsertWithoutMessagesInput = {
+    update: Prisma.XOR<Prisma.PriceRequestUpdateWithoutMessagesInput, Prisma.PriceRequestUncheckedUpdateWithoutMessagesInput>;
+    create: Prisma.XOR<Prisma.PriceRequestCreateWithoutMessagesInput, Prisma.PriceRequestUncheckedCreateWithoutMessagesInput>;
+    where?: Prisma.PriceRequestWhereInput;
+};
+export type PriceRequestUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: Prisma.PriceRequestWhereInput;
+    data: Prisma.XOR<Prisma.PriceRequestUpdateWithoutMessagesInput, Prisma.PriceRequestUncheckedUpdateWithoutMessagesInput>;
+};
+export type PriceRequestUpdateWithoutMessagesInput = {
+    message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    status?: Prisma.EnumPORStatusFieldUpdateOperationsInput | $Enums.PORStatus;
+    response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    user?: Prisma.UserUpdateOneRequiredWithoutPriceRequestsNestedInput;
+    artwork?: Prisma.ArtworkUpdateOneRequiredWithoutPriceRequestsNestedInput;
+};
+export type PriceRequestUncheckedUpdateWithoutMessagesInput = {
+    id?: Prisma.IntFieldUpdateOperationsInput | number;
+    userId?: Prisma.IntFieldUpdateOperationsInput | number;
+    artworkId?: Prisma.IntFieldUpdateOperationsInput | number;
+    message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    status?: Prisma.EnumPORStatusFieldUpdateOperationsInput | $Enums.PORStatus;
+    response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
 export type PriceRequestCreateManyUserInput = {
     id?: number;
     artworkId: number;
@@ -562,6 +640,7 @@ export type PriceRequestUpdateWithoutUserInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     artwork?: Prisma.ArtworkUpdateOneRequiredWithoutPriceRequestsNestedInput;
+    messages?: Prisma.PorMessageUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestUncheckedUpdateWithoutUserInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -571,6 +650,7 @@ export type PriceRequestUncheckedUpdateWithoutUserInput = {
     response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    messages?: Prisma.PorMessageUncheckedUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -597,6 +677,7 @@ export type PriceRequestUpdateWithoutArtworkInput = {
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     user?: Prisma.UserUpdateOneRequiredWithoutPriceRequestsNestedInput;
+    messages?: Prisma.PorMessageUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestUncheckedUpdateWithoutArtworkInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -606,6 +687,7 @@ export type PriceRequestUncheckedUpdateWithoutArtworkInput = {
     response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+    messages?: Prisma.PorMessageUncheckedUpdateManyWithoutPorNestedInput;
 };
 export type PriceRequestUncheckedUpdateManyWithoutArtworkInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
@@ -615,6 +697,30 @@ export type PriceRequestUncheckedUpdateManyWithoutArtworkInput = {
     response?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+/**
+ * Count Type PriceRequestCountOutputType
+ */
+export type PriceRequestCountOutputType = {
+    messages: number;
+};
+export type PriceRequestCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    messages?: boolean | PriceRequestCountOutputTypeCountMessagesArgs;
+};
+/**
+ * PriceRequestCountOutputType without action
+ */
+export type PriceRequestCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PriceRequestCountOutputType
+     */
+    select?: Prisma.PriceRequestCountOutputTypeSelect<ExtArgs> | null;
+};
+/**
+ * PriceRequestCountOutputType without action
+ */
+export type PriceRequestCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: Prisma.PorMessageWhereInput;
 };
 export type PriceRequestSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
     id?: boolean;
@@ -627,6 +733,8 @@ export type PriceRequestSelect<ExtArgs extends runtime.Types.Extensions.Internal
     updatedAt?: boolean;
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>;
+    messages?: boolean | Prisma.PriceRequest$messagesArgs<ExtArgs>;
+    _count?: boolean | Prisma.PriceRequestCountOutputTypeDefaultArgs<ExtArgs>;
 }, ExtArgs["result"]["priceRequest"]>;
 export type PriceRequestSelectScalar = {
     id?: boolean;
@@ -642,12 +750,15 @@ export type PriceRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type PriceRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user?: boolean | Prisma.UserDefaultArgs<ExtArgs>;
     artwork?: boolean | Prisma.ArtworkDefaultArgs<ExtArgs>;
+    messages?: boolean | Prisma.PriceRequest$messagesArgs<ExtArgs>;
+    _count?: boolean | Prisma.PriceRequestCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type $PriceRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "PriceRequest";
     objects: {
         user: Prisma.$UserPayload<ExtArgs>;
         artwork: Prisma.$ArtworkPayload<ExtArgs>;
+        messages: Prisma.$PorMessagePayload<ExtArgs>[];
     };
     scalars: runtime.Types.Extensions.GetPayloadResult<{
         id: number;
@@ -937,6 +1048,7 @@ export interface Prisma__PriceRequestClient<T, Null = never, ExtArgs extends run
     readonly [Symbol.toStringTag]: "PrismaPromise";
     user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
     artwork<T extends Prisma.ArtworkDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ArtworkDefaultArgs<ExtArgs>>): Prisma.Prisma__ArtworkClient<runtime.Types.Result.GetResult<Prisma.$ArtworkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>;
+    messages<T extends Prisma.PriceRequest$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PriceRequest$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PorMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1301,6 +1413,29 @@ export type PriceRequestDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
      * Limit how many PriceRequests to delete.
      */
     limit?: number;
+};
+/**
+ * PriceRequest.messages
+ */
+export type PriceRequest$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PorMessage
+     */
+    select?: Prisma.PorMessageSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the PorMessage
+     */
+    omit?: Prisma.PorMessageOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: Prisma.PorMessageInclude<ExtArgs> | null;
+    where?: Prisma.PorMessageWhereInput;
+    orderBy?: Prisma.PorMessageOrderByWithRelationInput | Prisma.PorMessageOrderByWithRelationInput[];
+    cursor?: Prisma.PorMessageWhereUniqueInput;
+    take?: number;
+    skip?: number;
+    distinct?: Prisma.PorMessageScalarFieldEnum | Prisma.PorMessageScalarFieldEnum[];
 };
 /**
  * PriceRequest without action

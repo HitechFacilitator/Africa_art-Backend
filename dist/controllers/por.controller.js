@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.close = exports.respond = exports.create = exports.getAll = exports.getByUser = exports.getByArtwork = void 0;
+exports.changeStatus = exports.addMessage = exports.close = exports.respond = exports.create = exports.getAll = exports.getByUser = exports.getByArtwork = void 0;
 const porService = __importStar(require("../services/por.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const pagination_1 = require("../utils/pagination");
@@ -68,6 +68,14 @@ exports.respond = (0, catchAsync_1.default)(async (req, res) => {
 });
 exports.close = (0, catchAsync_1.default)(async (req, res) => {
     const request = await porService.close(Number(req.params.id));
+    res.json({ success: true, data: request });
+});
+exports.addMessage = (0, catchAsync_1.default)(async (req, res) => {
+    const message = await porService.addMessage(Number(req.params.id), req.user.role === "ADMIN" ? "admin" : "collector", req.user.userId, req.body.text);
+    res.status(201).json({ success: true, data: message });
+});
+exports.changeStatus = (0, catchAsync_1.default)(async (req, res) => {
+    const request = await porService.changeStatus(Number(req.params.id), req.body.status);
     res.json({ success: true, data: request });
 });
 //# sourceMappingURL=por.controller.js.map

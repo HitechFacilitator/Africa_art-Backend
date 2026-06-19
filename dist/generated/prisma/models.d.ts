@@ -20,6 +20,7 @@ export type * from './models/Acquisition';
 export type * from './models/AcquisitionProvenance';
 export type * from './models/Inquiry';
 export type * from './models/InquiryMessage';
+export type * from './models/PorMessage';
 export type * from './models/LogisticsShipment';
 export type * from './models/ShipmentUpdate';
 export type * from './models/SecurityRecord';

@@ -360,6 +360,17 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
+     * `prisma.porMessage`: Exposes CRUD operations for the **PorMessage** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more PorMessages
+      * const porMessages = await prisma.porMessage.findMany()
+      * ```
+      */
+    get porMessage(): Prisma.PorMessageDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
      * `prisma.logisticsShipment`: Exposes CRUD operations for the **LogisticsShipment** model.
       * Example usage:
       * ```ts

@@ -48,8 +48,8 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArtworkImageOrderByRelevanceFieldEnum = exports.ArtworkOrderByRelevanceFieldEnum = exports.CategoryOrderByRelevanceFieldEnum = exports.ArtistOrderByRelevanceFieldEnum = exports.UserOrderByRelevanceFieldEnum = exports.NullsOrder = exports.NullableJsonNullValueInput = exports.SortOrder = exports.MemberApplicationScalarFieldEnum = exports.TicketResponseScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.ChatThreadReadStatusScalarFieldEnum = exports.ChatMessageScalarFieldEnum = exports.ChatThreadScalarFieldEnum = exports.AdvisorActivityScalarFieldEnum = exports.AdvisorPlacementScalarFieldEnum = exports.AdvisorClientScalarFieldEnum = exports.EscrowTransactionScalarFieldEnum = exports.SecurityRecordScalarFieldEnum = exports.ShipmentUpdateScalarFieldEnum = exports.LogisticsShipmentScalarFieldEnum = exports.InquiryMessageScalarFieldEnum = exports.InquiryScalarFieldEnum = exports.AcquisitionProvenanceScalarFieldEnum = exports.AcquisitionScalarFieldEnum = exports.BidScalarFieldEnum = exports.AuctionLotScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.AuditLogScalarFieldEnum = exports.PriceRequestScalarFieldEnum = exports.ConsultationScalarFieldEnum = exports.OrderItemScalarFieldEnum = exports.OrderScalarFieldEnum = exports.ReservationScalarFieldEnum = exports.FavoriteScalarFieldEnum = exports.CertificateScalarFieldEnum = exports.ProvenanceChainScalarFieldEnum = exports.ProvenanceRecordScalarFieldEnum = exports.ArtworkImageScalarFieldEnum = exports.ArtworkScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.ArtistScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
-exports.MemberApplicationOrderByRelevanceFieldEnum = exports.TicketResponseOrderByRelevanceFieldEnum = exports.SupportTicketOrderByRelevanceFieldEnum = exports.ChatMessageOrderByRelevanceFieldEnum = exports.ChatThreadOrderByRelevanceFieldEnum = exports.AdvisorActivityOrderByRelevanceFieldEnum = exports.AdvisorPlacementOrderByRelevanceFieldEnum = exports.AdvisorClientOrderByRelevanceFieldEnum = exports.EscrowTransactionOrderByRelevanceFieldEnum = exports.SecurityRecordOrderByRelevanceFieldEnum = exports.ShipmentUpdateOrderByRelevanceFieldEnum = exports.LogisticsShipmentOrderByRelevanceFieldEnum = exports.InquiryMessageOrderByRelevanceFieldEnum = exports.InquiryOrderByRelevanceFieldEnum = exports.AcquisitionProvenanceOrderByRelevanceFieldEnum = exports.AcquisitionOrderByRelevanceFieldEnum = exports.NotificationOrderByRelevanceFieldEnum = exports.AuditLogOrderByRelevanceFieldEnum = exports.QueryMode = exports.JsonNullValueFilter = exports.PriceRequestOrderByRelevanceFieldEnum = exports.ConsultationOrderByRelevanceFieldEnum = exports.OrderOrderByRelevanceFieldEnum = exports.CertificateOrderByRelevanceFieldEnum = exports.ProvenanceChainOrderByRelevanceFieldEnum = exports.ProvenanceRecordOrderByRelevanceFieldEnum = void 0;
+exports.ArtworkOrderByRelevanceFieldEnum = exports.CategoryOrderByRelevanceFieldEnum = exports.ArtistOrderByRelevanceFieldEnum = exports.UserOrderByRelevanceFieldEnum = exports.NullsOrder = exports.NullableJsonNullValueInput = exports.SortOrder = exports.MemberApplicationScalarFieldEnum = exports.TicketResponseScalarFieldEnum = exports.SupportTicketScalarFieldEnum = exports.ChatThreadReadStatusScalarFieldEnum = exports.ChatMessageScalarFieldEnum = exports.ChatThreadScalarFieldEnum = exports.AdvisorActivityScalarFieldEnum = exports.AdvisorPlacementScalarFieldEnum = exports.AdvisorClientScalarFieldEnum = exports.EscrowTransactionScalarFieldEnum = exports.SecurityRecordScalarFieldEnum = exports.ShipmentUpdateScalarFieldEnum = exports.LogisticsShipmentScalarFieldEnum = exports.PorMessageScalarFieldEnum = exports.InquiryMessageScalarFieldEnum = exports.InquiryScalarFieldEnum = exports.AcquisitionProvenanceScalarFieldEnum = exports.AcquisitionScalarFieldEnum = exports.BidScalarFieldEnum = exports.AuctionLotScalarFieldEnum = exports.NotificationScalarFieldEnum = exports.AuditLogScalarFieldEnum = exports.PriceRequestScalarFieldEnum = exports.ConsultationScalarFieldEnum = exports.OrderItemScalarFieldEnum = exports.OrderScalarFieldEnum = exports.ReservationScalarFieldEnum = exports.FavoriteScalarFieldEnum = exports.CertificateScalarFieldEnum = exports.ProvenanceChainScalarFieldEnum = exports.ProvenanceRecordScalarFieldEnum = exports.ArtworkImageScalarFieldEnum = exports.ArtworkScalarFieldEnum = exports.CategoryScalarFieldEnum = exports.ArtistScalarFieldEnum = exports.UserScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.MemberApplicationOrderByRelevanceFieldEnum = exports.TicketResponseOrderByRelevanceFieldEnum = exports.SupportTicketOrderByRelevanceFieldEnum = exports.ChatMessageOrderByRelevanceFieldEnum = exports.ChatThreadOrderByRelevanceFieldEnum = exports.AdvisorActivityOrderByRelevanceFieldEnum = exports.AdvisorPlacementOrderByRelevanceFieldEnum = exports.AdvisorClientOrderByRelevanceFieldEnum = exports.EscrowTransactionOrderByRelevanceFieldEnum = exports.SecurityRecordOrderByRelevanceFieldEnum = exports.ShipmentUpdateOrderByRelevanceFieldEnum = exports.LogisticsShipmentOrderByRelevanceFieldEnum = exports.PorMessageOrderByRelevanceFieldEnum = exports.InquiryMessageOrderByRelevanceFieldEnum = exports.InquiryOrderByRelevanceFieldEnum = exports.AcquisitionProvenanceOrderByRelevanceFieldEnum = exports.AcquisitionOrderByRelevanceFieldEnum = exports.NotificationOrderByRelevanceFieldEnum = exports.AuditLogOrderByRelevanceFieldEnum = exports.QueryMode = exports.JsonNullValueFilter = exports.PriceRequestOrderByRelevanceFieldEnum = exports.ConsultationOrderByRelevanceFieldEnum = exports.OrderOrderByRelevanceFieldEnum = exports.CertificateOrderByRelevanceFieldEnum = exports.ProvenanceChainOrderByRelevanceFieldEnum = exports.ProvenanceRecordOrderByRelevanceFieldEnum = exports.ArtworkImageOrderByRelevanceFieldEnum = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -98,6 +98,7 @@ exports.ModelName = {
     AcquisitionProvenance: 'AcquisitionProvenance',
     Inquiry: 'Inquiry',
     InquiryMessage: 'InquiryMessage',
+    PorMessage: 'PorMessage',
     LogisticsShipment: 'LogisticsShipment',
     ShipmentUpdate: 'ShipmentUpdate',
     SecurityRecord: 'SecurityRecord',
@@ -280,6 +281,11 @@ exports.ConsultationScalarFieldEnum = {
     timeSlot: 'timeSlot',
     topic: 'topic',
     notes: 'notes',
+    rejectionReason: 'rejectionReason',
+    clientName: 'clientName',
+    clientEmail: 'clientEmail',
+    currentCollection: 'currentCollection',
+    meetingFormat: 'meetingFormat',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -365,6 +371,7 @@ exports.InquiryScalarFieldEnum = {
     imageUrl: 'imageUrl',
     status: 'status',
     date: 'date',
+    category: 'category',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };
@@ -372,6 +379,15 @@ exports.InquiryMessageScalarFieldEnum = {
     id: 'id',
     inquiryId: 'inquiryId',
     sender: 'sender',
+    text: 'text',
+    timestamp: 'timestamp',
+    createdAt: 'createdAt'
+};
+exports.PorMessageScalarFieldEnum = {
+    id: 'id',
+    porId: 'porId',
+    sender: 'sender',
+    senderId: 'senderId',
     text: 'text',
     timestamp: 'timestamp',
     createdAt: 'createdAt'
@@ -618,7 +634,12 @@ exports.ConsultationOrderByRelevanceFieldEnum = {
     expertAvatar: 'expertAvatar',
     timeSlot: 'timeSlot',
     topic: 'topic',
-    notes: 'notes'
+    notes: 'notes',
+    rejectionReason: 'rejectionReason',
+    clientName: 'clientName',
+    clientEmail: 'clientEmail',
+    currentCollection: 'currentCollection',
+    meetingFormat: 'meetingFormat'
 };
 exports.PriceRequestOrderByRelevanceFieldEnum = {
     message: 'message',
@@ -659,9 +680,15 @@ exports.InquiryOrderByRelevanceFieldEnum = {
     artworkYear: 'artworkYear',
     imageUrl: 'imageUrl',
     status: 'status',
-    date: 'date'
+    date: 'date',
+    category: 'category'
 };
 exports.InquiryMessageOrderByRelevanceFieldEnum = {
+    sender: 'sender',
+    text: 'text',
+    timestamp: 'timestamp'
+};
+exports.PorMessageOrderByRelevanceFieldEnum = {
     sender: 'sender',
     text: 'text',
     timestamp: 'timestamp'

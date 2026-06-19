@@ -35,6 +35,7 @@ const adminUsers_routes_1 = __importDefault(require("./routes/adminUsers.routes"
 const adminCertificates_routes_1 = __importDefault(require("./routes/adminCertificates.routes"));
 const advisor_routes_1 = __importDefault(require("./routes/advisor.routes"));
 const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
+const events_routes_1 = __importDefault(require("./routes/events.routes"));
 const app = (0, express_1.default)();
 app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({
@@ -57,7 +58,7 @@ const generalLimiter = (0, express_rate_limit_1.default)({
     message: { success: false, message: "Too many requests, please try again later" },
     standardHeaders: true,
     legacyHeaders: false,
-    skip: (req) => req.originalUrl.includes("/chat/events"),
+    skip: (req) => req.originalUrl.includes("/chat/events") || req.originalUrl.includes("/events?token"),
 });
 app.use(express_1.default.json({ limit: "10mb" }));
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -98,6 +99,8 @@ app.use("/api/v1/admin/audit-logs", adminAudit_routes_1.default);
 app.use("/api/v1/advisor", advisor_routes_1.default);
 // Chat/Support routes
 app.use("/api/v1/chat", chat_routes_1.default);
+// General SSE events route (consultations, inquiries, POR)
+app.use("/api/v1/events", events_routes_1.default);
 app.get("/api/v1/health", (_req, res) => {
     res.json({ success: true, message: "Africa Art API is running" });
 });

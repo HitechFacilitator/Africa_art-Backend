@@ -7,8 +7,14 @@ export declare function getByUser(userId: number): Promise<{
     date: string;
     timeSlot: string;
     topic: string;
-    status: ConsultationStatus;
+    status: string;
     notes: string;
+    type: ConsultationType;
+    rejectionReason: string;
+    clientName: string;
+    clientEmail: string;
+    currentCollection: string;
+    meetingFormat: string;
 }[]>;
 export declare function getByAdvisor(advisorId: number): Promise<{
     id: string;
@@ -18,11 +24,18 @@ export declare function getByAdvisor(advisorId: number): Promise<{
     date: string;
     timeSlot: string;
     topic: string;
-    status: ConsultationStatus;
+    status: string;
     notes: string;
     clientName: string;
     clientEmail: string;
+    clientPhone: never;
+    clientInstitution: string;
+    clientCountry: string;
+    currentCollection: string;
+    meetingFormat: string;
     type: ConsultationType;
+    rejectionReason: string;
+    createdAt: string;
 }[]>;
 export declare function getAll(page: number, limit: number, skip: number): Promise<{
     data: ({
@@ -46,6 +59,11 @@ export declare function getAll(page: number, limit: number, skip: number): Promi
         date: Date;
         timeSlot: string | null;
         topic: string | null;
+        rejectionReason: string | null;
+        clientName: string | null;
+        clientEmail: string | null;
+        currentCollection: string | null;
+        meetingFormat: string | null;
     })[];
     total: number;
 }>;
@@ -59,6 +77,10 @@ export declare function create(userId: number, data: {
     expertTitle?: string;
     expertAvatar?: string;
     advisorId?: number;
+    clientName?: string;
+    clientEmail?: string;
+    currentCollection?: string;
+    meetingFormat?: string;
 }): Promise<{
     userId: number;
     id: number;
@@ -74,6 +96,11 @@ export declare function create(userId: number, data: {
     date: Date;
     timeSlot: string | null;
     topic: string | null;
+    rejectionReason: string | null;
+    clientName: string | null;
+    clientEmail: string | null;
+    currentCollection: string | null;
+    meetingFormat: string | null;
 }>;
 export declare function confirm(id: number, advisorId: number): Promise<{
     userId: number;
@@ -90,6 +117,32 @@ export declare function confirm(id: number, advisorId: number): Promise<{
     date: Date;
     timeSlot: string | null;
     topic: string | null;
+    rejectionReason: string | null;
+    clientName: string | null;
+    clientEmail: string | null;
+    currentCollection: string | null;
+    meetingFormat: string | null;
+}>;
+export declare function reject(id: number, reason?: string): Promise<{
+    userId: number;
+    id: number;
+    status: ConsultationStatus;
+    createdAt: Date;
+    updatedAt: Date;
+    notes: string | null;
+    advisorId: number | null;
+    expertName: string | null;
+    expertTitle: string | null;
+    expertAvatar: string | null;
+    type: ConsultationType;
+    date: Date;
+    timeSlot: string | null;
+    topic: string | null;
+    rejectionReason: string | null;
+    clientName: string | null;
+    clientEmail: string | null;
+    currentCollection: string | null;
+    meetingFormat: string | null;
 }>;
 export declare function complete(id: number): Promise<{
     userId: number;
@@ -106,6 +159,11 @@ export declare function complete(id: number): Promise<{
     date: Date;
     timeSlot: string | null;
     topic: string | null;
+    rejectionReason: string | null;
+    clientName: string | null;
+    clientEmail: string | null;
+    currentCollection: string | null;
+    meetingFormat: string | null;
 }>;
 export declare function cancel(id: number): Promise<{
     userId: number;
@@ -122,5 +180,10 @@ export declare function cancel(id: number): Promise<{
     date: Date;
     timeSlot: string | null;
     topic: string | null;
+    rejectionReason: string | null;
+    clientName: string | null;
+    clientEmail: string | null;
+    currentCollection: string | null;
+    meetingFormat: string | null;
 }>;
 //# sourceMappingURL=consultation.service.d.ts.map

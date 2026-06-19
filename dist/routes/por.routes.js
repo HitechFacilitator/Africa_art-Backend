@@ -45,5 +45,7 @@ router.get("/artwork/:artworkId", porController.getByArtwork);
 router.post("/:artworkId", auth_1.authenticate, porController.create);
 router.patch("/:id/respond", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), porController.respond);
 router.patch("/:id/close", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), porController.close);
+router.patch("/:id/status", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), porController.changeStatus);
+router.post("/:id/messages", auth_1.authenticate, porController.addMessage);
 exports.default = router;
 //# sourceMappingURL=por.routes.js.map

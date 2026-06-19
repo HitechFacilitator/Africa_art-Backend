@@ -47,9 +47,10 @@ router.get("/", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN),
 router.get("/my", auth_1.authenticate, consultationController.getByUser);
 router.get("/advisor", auth_1.authenticate, consultationController.getByAdvisor);
 router.post("/", auth_1.authenticate, consultationController.create);
-router.patch("/:id/confirm", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN), consultationController.confirm);
-router.patch("/:id/complete", auth_1.authenticate, consultationController.complete);
-router.patch("/:id/cancel", auth_1.authenticate, consultationController.cancel);
+router.patch("/:id/confirm", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN, client_1.Role.ADVISOR), consultationController.confirm);
+router.patch("/:id/reject", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN, client_1.Role.ADVISOR), consultationController.reject);
+router.patch("/:id/complete", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN, client_1.Role.ADVISOR), consultationController.complete);
+router.patch("/:id/cancel", auth_1.authenticate, (0, role_1.authorize)(client_1.Role.ADMIN, client_1.Role.ADVISOR), consultationController.cancel);
 router.get("/advisors", auth_1.authenticate, async (req, res) => {
     const advisors = await db_1.default.user.findMany({
         where: { role: client_1.Role.ADVISOR },

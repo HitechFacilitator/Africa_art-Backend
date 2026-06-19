@@ -8,11 +8,23 @@ exports.getByAdvisor = getByAdvisor;
 exports.getAll = getAll;
 exports.create = create;
 exports.confirm = confirm;
+exports.reject = reject;
 exports.complete = complete;
 exports.cancel = cancel;
 const db_1 = __importDefault(require("../config/db"));
 const AppError_1 = require("../utils/AppError");
 const client_1 = require("../generated/prisma/client");
+const sse_1 = require("../utils/sse");
+function mapStatus(status) {
+    switch (status) {
+        case client_1.ConsultationStatus.PENDING: return "Pending";
+        case client_1.ConsultationStatus.CONFIRMED: return "Confirmed";
+        case client_1.ConsultationStatus.COMPLETED: return "Completed";
+        case client_1.ConsultationStatus.CANCELLED: return "Cancelled";
+        case client_1.ConsultationStatus.REJECTED: return "Rejected";
+        default: return String(status);
+    }
+}
 async function getByUser(userId) {
     const consultations = await db_1.default.consultation.findMany({
         where: { userId },
@@ -26,8 +38,14 @@ async function getByUser(userId) {
         date: c.date.toISOString().split("T")[0],
         timeSlot: c.timeSlot || "",
         topic: c.topic || "",
-        status: c.status,
+        status: mapStatus(c.status),
         notes: c.notes || "",
+        type: c.type,
+        rejectionReason: c.rejectionReason || "",
+        clientName: c.clientName || "",
+        clientEmail: c.clientEmail || "",
+        currentCollection: c.currentCollection || "",
+        meetingFormat: c.meetingFormat || "",
     }));
 }
 async function getByAdvisor(advisorId) {
@@ -41,7 +59,7 @@ async function getByAdvisor(advisorId) {
             ],
         },
         include: {
-            user: { select: { id: true, name: true, email: true } },
+            user: { select: { id: true, name: true, email: true, phone: true, institution: true, country: true } },
         },
         orderBy: { date: "desc" },
     });
@@ -53,11 +71,18 @@ async function getByAdvisor(advisorId) {
         date: c.date.toISOString().split("T")[0],
         timeSlot: c.timeSlot || "",
         topic: c.topic || "",
-        status: c.status,
+        status: mapStatus(c.status),
         notes: c.notes || "",
-        clientName: c.user?.name || "",
-        clientEmail: c.user?.email || "",
+        clientName: c.user?.name || c.clientName || "",
+        clientEmail: c.user?.email || c.clientEmail || "",
+        clientPhone: c.user?.phone || "",
+        clientInstitution: c.user?.institution || "",
+        clientCountry: c.user?.country || "",
+        currentCollection: c.currentCollection || "",
+        meetingFormat: c.meetingFormat || "",
         type: c.type,
+        rejectionReason: c.rejectionReason || "",
+        createdAt: c.createdAt.toISOString(),
     }));
 }
 async function getAll(page, limit, skip) {
@@ -79,6 +104,15 @@ async function create(userId, data) {
     if (isNaN(dateObj.getTime())) {
         throw new AppError_1.AppError("Invalid date", 400);
     }
+    const activeConsultation = await db_1.default.consultation.findFirst({
+        where: {
+            userId,
+            status: { in: [client_1.ConsultationStatus.PENDING, client_1.ConsultationStatus.CONFIRMED] },
+        },
+    });
+    if (activeConsultation) {
+        throw new AppError_1.AppError("You already have an active consultation. Please wait for it to be completed or rejected before scheduling a new one.", 409);
+    }
     let advisorId = data.advisorId;
     if (!advisorId && data.expertName) {
         const advisor = await db_1.default.user.findFirst({
@@ -98,7 +132,7 @@ async function create(userId, data) {
                 advisorId = advisorByInstitution.id;
         }
     }
-    return db_1.default.consultation.create({
+    const consultation = await db_1.default.consultation.create({
         data: {
             userId,
             advisorId,
@@ -110,8 +144,31 @@ async function create(userId, data) {
             expertName: data.expertName,
             expertTitle: data.expertTitle,
             expertAvatar: data.expertAvatar,
+            clientName: data.clientName,
+            clientEmail: data.clientEmail,
+            currentCollection: data.currentCollection,
+            meetingFormat: data.meetingFormat,
         },
     });
+    const payload = {
+        consultationId: consultation.id,
+        action: "created",
+        consultation: {
+            id: `cons-${consultation.id}`,
+            expertName: consultation.expertName,
+            date: consultation.date.toISOString().split("T")[0],
+            timeSlot: consultation.timeSlot,
+            topic: consultation.topic,
+            status: consultation.status,
+            notes: consultation.notes,
+            type: consultation.type,
+        },
+    };
+    if (advisorId) {
+        sse_1.sseManager.sendToUsers([String(advisorId)], "consultation-update", payload);
+    }
+    sse_1.sseManager.sendToUsers([String(userId)], "consultation-update", payload);
+    return consultation;
 }
 async function confirm(id, advisorId) {
     const consultation = await db_1.default.consultation.findUnique({ where: { id } });
@@ -121,29 +178,70 @@ async function confirm(id, advisorId) {
     if (consultation.status !== client_1.ConsultationStatus.PENDING) {
         throw new AppError_1.AppError("Consultation is not pending", 400);
     }
-    return db_1.default.consultation.update({
+    const updated = await db_1.default.consultation.update({
         where: { id },
         data: { status: client_1.ConsultationStatus.CONFIRMED, advisorId },
     });
+    const recipientIds = [String(consultation.userId), String(advisorId)];
+    sse_1.sseManager.sendToUsers(recipientIds, "consultation-update", {
+        consultationId: id,
+        action: "confirmed",
+        consultation: { id: `cons-${updated.id}`, status: updated.status },
+    });
+    return updated;
+}
+async function reject(id, reason) {
+    const consultation = await db_1.default.consultation.findUnique({ where: { id } });
+    if (!consultation) {
+        throw new AppError_1.AppError("Consultation not found", 404);
+    }
+    if (consultation.status !== client_1.ConsultationStatus.PENDING) {
+        throw new AppError_1.AppError("Consultation is not pending", 400);
+    }
+    const updated = await db_1.default.consultation.update({
+        where: { id },
+        data: { status: client_1.ConsultationStatus.REJECTED, rejectionReason: reason || null },
+    });
+    const recipientIds = [String(consultation.userId), String(consultation.advisorId)].filter(Boolean);
+    sse_1.sseManager.sendToUsers(recipientIds, "consultation-update", {
+        consultationId: id,
+        action: "rejected",
+        consultation: { id: `cons-${updated.id}`, status: updated.status, rejectionReason: updated.rejectionReason },
+    });
+    return updated;
 }
 async function complete(id) {
     const consultation = await db_1.default.consultation.findUnique({ where: { id } });
     if (!consultation) {
         throw new AppError_1.AppError("Consultation not found", 404);
     }
-    return db_1.default.consultation.update({
+    const updated = await db_1.default.consultation.update({
         where: { id },
         data: { status: client_1.ConsultationStatus.COMPLETED },
     });
+    const recipientIds = [String(consultation.userId), String(consultation.advisorId)].filter(Boolean);
+    sse_1.sseManager.sendToUsers(recipientIds, "consultation-update", {
+        consultationId: id,
+        action: "completed",
+        consultation: { id: `cons-${updated.id}`, status: updated.status },
+    });
+    return updated;
 }
 async function cancel(id) {
     const consultation = await db_1.default.consultation.findUnique({ where: { id } });
     if (!consultation) {
         throw new AppError_1.AppError("Consultation not found", 404);
     }
-    return db_1.default.consultation.update({
+    const updated = await db_1.default.consultation.update({
         where: { id },
         data: { status: client_1.ConsultationStatus.CANCELLED },
     });
+    const recipientIds = [String(consultation.userId), String(consultation.advisorId)].filter(Boolean);
+    sse_1.sseManager.sendToUsers(recipientIds, "consultation-update", {
+        consultationId: id,
+        action: "cancelled",
+        consultation: { id: `cons-${updated.id}`, status: updated.status },
+    });
+    return updated;
 }
 //# sourceMappingURL=consultation.service.js.map

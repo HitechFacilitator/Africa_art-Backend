@@ -132,6 +132,11 @@ export type Inquiry = Prisma.InquiryModel;
  */
 export type InquiryMessage = Prisma.InquiryMessageModel;
 /**
+ * Model PorMessage
+ *
+ */
+export type PorMessage = Prisma.PorMessageModel;
+/**
  * Model LogisticsShipment
  *
  */
