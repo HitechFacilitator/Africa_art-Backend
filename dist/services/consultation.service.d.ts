@@ -28,7 +28,7 @@ export declare function getByAdvisor(advisorId: number): Promise<{
     notes: string;
     clientName: string;
     clientEmail: string;
-    clientPhone: never;
+    clientPhone: string;
     clientInstitution: string;
     clientCountry: string;
     currentCollection: string;

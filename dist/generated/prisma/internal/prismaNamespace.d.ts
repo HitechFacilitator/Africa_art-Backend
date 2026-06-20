@@ -2701,6 +2701,7 @@ export declare const UserScalarFieldEnum: {
     readonly role: "role";
     readonly status: "status";
     readonly avatar: "avatar";
+    readonly phone: "phone";
     readonly institution: "institution";
     readonly country: "country";
     readonly tier: "tier";
@@ -3176,6 +3177,7 @@ export declare const UserOrderByRelevanceFieldEnum: {
     readonly password: "password";
     readonly name: "name";
     readonly avatar: "avatar";
+    readonly phone: "phone";
     readonly institution: "institution";
     readonly country: "country";
     readonly tier: "tier";

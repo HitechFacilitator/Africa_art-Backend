@@ -130,6 +130,7 @@ exports.UserScalarFieldEnum = {
     role: 'role',
     status: 'status',
     avatar: 'avatar',
+    phone: 'phone',
     institution: 'institution',
     country: 'country',
     tier: 'tier',
@@ -566,6 +567,7 @@ exports.UserOrderByRelevanceFieldEnum = {
     password: 'password',
     name: 'name',
     avatar: 'avatar',
+    phone: 'phone',
     institution: 'institution',
     country: 'country',
     tier: 'tier'

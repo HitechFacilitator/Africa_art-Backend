@@ -27,6 +27,7 @@ export type UserMinAggregateOutputType = {
     role: $Enums.Role | null;
     status: $Enums.UserStatus | null;
     avatar: string | null;
+    phone: string | null;
     institution: string | null;
     country: string | null;
     tier: string | null;
@@ -43,6 +44,7 @@ export type UserMaxAggregateOutputType = {
     role: $Enums.Role | null;
     status: $Enums.UserStatus | null;
     avatar: string | null;
+    phone: string | null;
     institution: string | null;
     country: string | null;
     tier: string | null;
@@ -59,6 +61,7 @@ export type UserCountAggregateOutputType = {
     role: number;
     status: number;
     avatar: number;
+    phone: number;
     institution: number;
     country: number;
     tier: number;
@@ -82,6 +85,7 @@ export type UserMinAggregateInputType = {
     role?: true;
     status?: true;
     avatar?: true;
+    phone?: true;
     institution?: true;
     country?: true;
     tier?: true;
@@ -98,6 +102,7 @@ export type UserMaxAggregateInputType = {
     role?: true;
     status?: true;
     avatar?: true;
+    phone?: true;
     institution?: true;
     country?: true;
     tier?: true;
@@ -114,6 +119,7 @@ export type UserCountAggregateInputType = {
     role?: true;
     status?: true;
     avatar?: true;
+    phone?: true;
     institution?: true;
     country?: true;
     tier?: true;
@@ -207,6 +213,7 @@ export type UserGroupByOutputType = {
     role: $Enums.Role;
     status: $Enums.UserStatus;
     avatar: string | null;
+    phone: string | null;
     institution: string | null;
     country: string | null;
     tier: string | null;
@@ -234,6 +241,7 @@ export type UserWhereInput = {
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
+    phone?: Prisma.StringNullableFilter<"User"> | string | null;
     institution?: Prisma.StringNullableFilter<"User"> | string | null;
     country?: Prisma.StringNullableFilter<"User"> | string | null;
     tier?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -263,6 +271,7 @@ export type UserOrderByWithRelationInput = {
     role?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
+    phone?: Prisma.SortOrderInput | Prisma.SortOrder;
     institution?: Prisma.SortOrderInput | Prisma.SortOrder;
     country?: Prisma.SortOrderInput | Prisma.SortOrder;
     tier?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -296,6 +305,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
     role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role;
     status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableFilter<"User"> | string | null;
+    phone?: Prisma.StringNullableFilter<"User"> | string | null;
     institution?: Prisma.StringNullableFilter<"User"> | string | null;
     country?: Prisma.StringNullableFilter<"User"> | string | null;
     tier?: Prisma.StringNullableFilter<"User"> | string | null;
@@ -325,6 +335,7 @@ export type UserOrderByWithAggregationInput = {
     role?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrderInput | Prisma.SortOrder;
+    phone?: Prisma.SortOrderInput | Prisma.SortOrder;
     institution?: Prisma.SortOrderInput | Prisma.SortOrder;
     country?: Prisma.SortOrderInput | Prisma.SortOrder;
     tier?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -349,6 +360,7 @@ export type UserScalarWhereWithAggregatesInput = {
     role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role;
     status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus;
     avatar?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
+    phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     institution?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     country?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
     tier?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null;
@@ -364,6 +376,7 @@ export type UserCreateInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -393,6 +406,7 @@ export type UserUncheckedCreateInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -421,6 +435,7 @@ export type UserUpdateInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -450,6 +465,7 @@ export type UserUncheckedUpdateInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -479,6 +495,7 @@ export type UserCreateManyInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -494,6 +511,7 @@ export type UserUpdateManyMutationInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -510,6 +528,7 @@ export type UserUncheckedUpdateManyInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -531,6 +550,7 @@ export type UserCountOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
+    phone?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
     tier?: Prisma.SortOrder;
@@ -550,6 +570,7 @@ export type UserMaxOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
+    phone?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
     tier?: Prisma.SortOrder;
@@ -566,6 +587,7 @@ export type UserMinOrderByAggregateInput = {
     role?: Prisma.SortOrder;
     status?: Prisma.SortOrder;
     avatar?: Prisma.SortOrder;
+    phone?: Prisma.SortOrder;
     institution?: Prisma.SortOrder;
     country?: Prisma.SortOrder;
     tier?: Prisma.SortOrder;
@@ -779,6 +801,7 @@ export type UserCreateWithoutCertificatesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -807,6 +830,7 @@ export type UserUncheckedCreateWithoutCertificatesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -847,6 +871,7 @@ export type UserUpdateWithoutCertificatesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -875,6 +900,7 @@ export type UserUncheckedUpdateWithoutCertificatesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -902,6 +928,7 @@ export type UserCreateWithoutFavoritesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -930,6 +957,7 @@ export type UserUncheckedCreateWithoutFavoritesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -970,6 +998,7 @@ export type UserUpdateWithoutFavoritesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -998,6 +1027,7 @@ export type UserUncheckedUpdateWithoutFavoritesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1025,6 +1055,7 @@ export type UserCreateWithoutReservationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1053,6 +1084,7 @@ export type UserUncheckedCreateWithoutReservationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1093,6 +1125,7 @@ export type UserUpdateWithoutReservationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1121,6 +1154,7 @@ export type UserUncheckedUpdateWithoutReservationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1148,6 +1182,7 @@ export type UserCreateWithoutOrdersInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1176,6 +1211,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1216,6 +1252,7 @@ export type UserUpdateWithoutOrdersInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1244,6 +1281,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1271,6 +1309,7 @@ export type UserCreateWithoutConsultationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1299,6 +1338,7 @@ export type UserUncheckedCreateWithoutConsultationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1339,6 +1379,7 @@ export type UserUpdateWithoutConsultationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1367,6 +1408,7 @@ export type UserUncheckedUpdateWithoutConsultationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1394,6 +1436,7 @@ export type UserCreateWithoutPriceRequestsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1422,6 +1465,7 @@ export type UserUncheckedCreateWithoutPriceRequestsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1462,6 +1506,7 @@ export type UserUpdateWithoutPriceRequestsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1490,6 +1535,7 @@ export type UserUncheckedUpdateWithoutPriceRequestsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1517,6 +1563,7 @@ export type UserCreateWithoutAuditLogsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1545,6 +1592,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1585,6 +1633,7 @@ export type UserUpdateWithoutAuditLogsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1613,6 +1662,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1640,6 +1690,7 @@ export type UserCreateWithoutNotificationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1668,6 +1719,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1708,6 +1760,7 @@ export type UserUpdateWithoutNotificationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1736,6 +1789,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1763,6 +1817,7 @@ export type UserCreateWithoutAdvisorClientsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1791,6 +1846,7 @@ export type UserUncheckedCreateWithoutAdvisorClientsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1831,6 +1887,7 @@ export type UserUpdateWithoutAdvisorClientsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1859,6 +1916,7 @@ export type UserUncheckedUpdateWithoutAdvisorClientsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1886,6 +1944,7 @@ export type UserCreateWithoutAdvisorPlacementsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1914,6 +1973,7 @@ export type UserUncheckedCreateWithoutAdvisorPlacementsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -1954,6 +2014,7 @@ export type UserUpdateWithoutAdvisorPlacementsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -1982,6 +2043,7 @@ export type UserUncheckedUpdateWithoutAdvisorPlacementsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2009,6 +2071,7 @@ export type UserCreateWithoutChatMessagesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2037,6 +2100,7 @@ export type UserUncheckedCreateWithoutChatMessagesInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2077,6 +2141,7 @@ export type UserUpdateWithoutChatMessagesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2105,6 +2170,7 @@ export type UserUncheckedUpdateWithoutChatMessagesInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2132,6 +2198,7 @@ export type UserCreateWithoutChatReadStatusInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2160,6 +2227,7 @@ export type UserUncheckedCreateWithoutChatReadStatusInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2200,6 +2268,7 @@ export type UserUpdateWithoutChatReadStatusInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2228,6 +2297,7 @@ export type UserUncheckedUpdateWithoutChatReadStatusInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2255,6 +2325,7 @@ export type UserCreateWithoutSupportTicketsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2283,6 +2354,7 @@ export type UserUncheckedCreateWithoutSupportTicketsInput = {
     role?: $Enums.Role;
     status?: $Enums.UserStatus;
     avatar?: string | null;
+    phone?: string | null;
     institution?: string | null;
     country?: string | null;
     tier?: string | null;
@@ -2323,6 +2395,7 @@ export type UserUpdateWithoutSupportTicketsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2351,6 +2424,7 @@ export type UserUncheckedUpdateWithoutSupportTicketsInput = {
     role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role;
     status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus;
     avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     institution?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     tier?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -2499,6 +2573,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
     role?: boolean;
     status?: boolean;
     avatar?: boolean;
+    phone?: boolean;
     institution?: boolean;
     country?: boolean;
     tier?: boolean;
@@ -2529,6 +2604,7 @@ export type UserSelectScalar = {
     role?: boolean;
     status?: boolean;
     avatar?: boolean;
+    phone?: boolean;
     institution?: boolean;
     country?: boolean;
     tier?: boolean;
@@ -2537,7 +2613,7 @@ export type UserSelectScalar = {
     createdAt?: boolean;
     updatedAt?: boolean;
 };
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "status" | "avatar" | "institution" | "country" | "tier" | "twoFactorEnabled" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "role" | "status" | "avatar" | "phone" | "institution" | "country" | "tier" | "twoFactorEnabled" | "emailVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>;
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     favorites?: boolean | Prisma.User$favoritesArgs<ExtArgs>;
     reservations?: boolean | Prisma.User$reservationsArgs<ExtArgs>;
@@ -2579,6 +2655,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
         role: $Enums.Role;
         status: $Enums.UserStatus;
         avatar: string | null;
+        phone: string | null;
         institution: string | null;
         country: string | null;
         tier: string | null;
@@ -2908,6 +2985,7 @@ export interface UserFieldRefs {
     readonly role: Prisma.FieldRef<"User", 'Role'>;
     readonly status: Prisma.FieldRef<"User", 'UserStatus'>;
     readonly avatar: Prisma.FieldRef<"User", 'String'>;
+    readonly phone: Prisma.FieldRef<"User", 'String'>;
     readonly institution: Prisma.FieldRef<"User", 'String'>;
     readonly country: Prisma.FieldRef<"User", 'String'>;
     readonly tier: Prisma.FieldRef<"User", 'String'>;
