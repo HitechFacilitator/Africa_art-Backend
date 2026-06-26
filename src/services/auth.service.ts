@@ -1,14 +1,21 @@
 import prisma from "../config/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { AppError } from "../utils/AppError";
 import { Role } from "../generated/prisma/client";
 
-const JWT_SECRET = process.env.JWT_SECRET || "africa-art-secret-key";
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // In-memory OTP store: email → { code, expiresAt }
 const otpStore = new Map<string, { code: string; expiresAt: number }>();
 const OTP_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const OTP_MAX_ATTEMPTS = 5;
+const OTP_ATTEMPT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+const otpAttempts = new Map<string, { count: number; windowStart: number }>();
 
 function generateToken(userId: number, role: Role): string {
   return jwt.sign({ userId, role } as object, JWT_SECRET, { expiresIn: "24h" });
@@ -34,10 +41,20 @@ export async function register(data: {
   country?: string;
   institution?: string;
   invitationCode?: string;
+  acceptTerms?: boolean;
+  acceptGdpr?: boolean;
 }) {
   const existing = await prisma.user.findUnique({ where: { email: data.email } });
   if (existing) {
     throw new AppError("Email already registered", 409);
+  }
+
+  // Password strength validation
+  if (data.password.length < 12) {
+    throw new AppError("Password must be at least 12 characters", 400);
+  }
+  if (!/[A-Z]/.test(data.password) || !/[a-z]/.test(data.password) || !/[0-9]/.test(data.password)) {
+    throw new AppError("Password must contain uppercase, lowercase, and numbers", 400);
   }
 
   const hashedPassword = await bcrypt.hash(data.password, 12);
@@ -48,8 +65,11 @@ export async function register(data: {
       password: hashedPassword,
       name: data.name,
       role: Role.COLLECTOR,
+      phone: data.phone || null,
       country: data.country,
       institution: data.institution,
+      acceptTerms: data.acceptTerms ?? false,
+      acceptGdpr: data.acceptGdpr ?? false,
     },
   });
 
@@ -81,18 +101,14 @@ export async function login(email: string, password: string) {
   }
 
   // Generate and store a 6-digit OTP
-  const otpCode = String(Math.floor(100000 + Math.random() * 900000));
+  otpAttempts.delete(email);
+  const otpCode = String(crypto.randomInt(100000, 999999));
   otpStore.set(email, { code: otpCode, expiresAt: Date.now() + OTP_TTL_MS });
-
-  console.log(`\n${"=".repeat(50)}`);
-  console.log(`  OTP CODE for ${email}: ${otpCode}`);
-  console.log(`${"=".repeat(50)}\n`);
 
   return {
     user: session,
     token: "",
     requiresOTP: true,
-    otpCode,
   };
 }
 
@@ -103,6 +119,7 @@ export async function loginAs(role: string) {
     prestige: Role.PRESTIGE,
     advisor: Role.ADVISOR,
     admin: Role.ADMIN,
+    support: Role.SUPPORT,
   };
 
   const prismaRole = roleMap[role.toLowerCase()];
@@ -116,12 +133,6 @@ export async function loginAs(role: string) {
   }
 
   const token = generateToken(user.id, user.role);
-
-  // Generate a 6-digit OTP and print it to the backend terminal for development
-  const otpCode = String(Math.floor(100000 + Math.random() * 900000));
-  console.log(`\n${"=".repeat(50)}`);
-  console.log(`  OTP CODE for ${user.email} (${role}): ${otpCode}`);
-  console.log(`${"=".repeat(50)}\n`);
 
   return {
     user: toUserSession(user),
@@ -145,9 +156,28 @@ export async function verifyOTP(email: string, code: string) {
     throw new AppError("OTP has expired", 401);
   }
 
-  if (stored.code !== code) {
-    throw new AppError("Invalid OTP code", 401);
+  // Check brute-force attempts
+  const attempts = otpAttempts.get(email);
+  if (attempts) {
+    if (Date.now() > attempts.windowStart + OTP_ATTEMPT_WINDOW_MS) {
+      // Window expired, reset
+      otpAttempts.delete(email);
+    } else if (attempts.count >= OTP_MAX_ATTEMPTS) {
+      otpStore.delete(email);
+      otpAttempts.delete(email);
+      throw new AppError("Too many OTP attempts. Please request a new code.", 429);
+    }
   }
+
+  if (stored.code !== code) {
+    // Increment attempt counter
+    const current = otpAttempts.get(email) || { count: 0, windowStart: Date.now() };
+    otpAttempts.set(email, { count: current.count + 1, windowStart: current.windowStart });
+    throw new AppError("Invalid OTP code", 410);
+  }
+
+  // OTP valid — clear attempts
+  otpAttempts.delete(email);
 
   otpStore.delete(email);
   const token = generateToken(user.id, user.role);
@@ -213,10 +243,43 @@ export async function disable2FA(userId: number, password: string) {
   return { success: true, twoFactorEnabled: false };
 }
 
-export async function forgotPassword(_email: string) {
+// Password reset token store: token → { userId, expiresAt }
+const resetTokenStore = new Map<string, { userId: number; expiresAt: number }>();
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+export async function forgotPassword(email: string) {
+  // Always return success to prevent email enumeration
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    return { message: "If the email exists, a reset link has been sent" };
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+  resetTokenStore.set(token, { userId: user.id, expiresAt: Date.now() + RESET_TOKEN_TTL_MS });
+
+  // TODO: Send email with reset link in production
+  console.log(`[DEV] Password reset token for ${email}: ${token}`);
+
   return { message: "If the email exists, a reset link has been sent" };
 }
 
-export async function resetPassword(_token: string, _newPassword: string) {
+export async function resetPassword(token: string, newPassword: string) {
+  const stored = resetTokenStore.get(token);
+  if (!stored) {
+    throw new AppError("Invalid or expired reset token", 400);
+  }
+
+  if (Date.now() > stored.expiresAt) {
+    resetTokenStore.delete(token);
+    throw new AppError("Invalid or expired reset token", 400);
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 12);
+  await prisma.user.update({
+    where: { id: stored.userId },
+    data: { password: hashedPassword },
+  });
+
+  resetTokenStore.delete(token);
   return { message: "Password has been reset successfully" };
 }

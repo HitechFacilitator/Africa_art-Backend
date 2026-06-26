@@ -1,4 +1,5 @@
 import prisma from "../config/db";
+import { AppError } from "../utils/AppError";
 
 export async function getAll(page: number, limit: number, skip: number) {
   const [data, total] = await Promise.all([
@@ -26,6 +27,9 @@ export async function getAll(page: number, limit: number, skip: number) {
 }
 
 export async function release(id: number) {
+  const existing = await prisma.escrowTransaction.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Escrow transaction not found", 404);
+
   const tx = await prisma.escrowTransaction.update({
     where: { id },
     data: { status: "RELEASED", notes: " Funds released." },
@@ -34,6 +38,9 @@ export async function release(id: number) {
 }
 
 export async function dispute(id: number) {
+  const existing = await prisma.escrowTransaction.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Escrow transaction not found", 404);
+
   const tx = await prisma.escrowTransaction.update({
     where: { id },
     data: { status: "DISPUTED", notes: " Dispute initiated." },
@@ -42,6 +49,9 @@ export async function dispute(id: number) {
 }
 
 export async function refund(id: number) {
+  const existing = await prisma.escrowTransaction.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Escrow transaction not found", 404);
+
   const tx = await prisma.escrowTransaction.update({
     where: { id },
     data: { status: "REFUNDED", notes: " Refund processed." },

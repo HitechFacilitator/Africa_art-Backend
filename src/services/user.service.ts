@@ -71,15 +71,24 @@ export async function getById(id: number) {
   return toUserSession(user);
 }
 
-export async function update(id: number, data: { name?: string; avatar?: string; institution?: string; country?: string; tier?: string }) {
+export async function update(id: number, data: Record<string, any>) {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
     throw new AppError("User not found", 404);
   }
 
+  // Only allow known fields to be passed to Prisma
+  const allowedFields = ["name", "avatar", "institution", "country", "tier", "phone", "currency", "regionsOfInterest"];
+  const safeData: Record<string, any> = {};
+  for (const key of allowedFields) {
+    if (data[key] !== undefined) {
+      safeData[key] = data[key];
+    }
+  }
+
   return prisma.user.update({
     where: { id },
-    data,
+    data: safeData,
     select: {
       id: true,
       email: true,
@@ -121,6 +130,14 @@ export async function changePassword(id: number, currentPassword: string, newPas
   const isValid = await bcrypt.compare(currentPassword, user.password);
   if (!isValid) {
     throw new AppError("Current password is incorrect", 401);
+  }
+
+  // Password strength validation
+  if (!newPassword || newPassword.length < 12) {
+    throw new AppError("Password must be at least 12 characters", 400);
+  }
+  if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+    throw new AppError("Password must contain uppercase, lowercase, and a number", 400);
   }
 
   const hashed = await bcrypt.hash(newPassword, 12);

@@ -1,6 +1,6 @@
 import prisma from "../config/db";
 import { AppError } from "../utils/AppError";
-import { PORStatus } from "../generated/prisma/client";
+import { PORStatus, Role } from "../generated/prisma/client";
 import { sseManager } from "../utils/sse";
 
 export async function getByArtwork(artworkId: number) {
@@ -91,7 +91,7 @@ export async function create(userId: number, artworkId: number, message?: string
     data: { userId, artworkId, message },
   });
 
-  const admins = await prisma.user.findMany({ where: { role: "ADMIN" as any }, select: { id: true } });
+  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN }, select: { id: true } });
   if (admins.length > 0) {
     sseManager.sendToUsers(admins.map(a => String(a.id)), "por-update", {
       porId: por.id,
@@ -145,7 +145,7 @@ export async function changeStatus(id: number, newStatus: string) {
   });
 
   const recipientIds: string[] = [String(request.userId)];
-  const admins = await prisma.user.findMany({ where: { role: "ADMIN" as any }, select: { id: true } });
+  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN }, select: { id: true } });
   for (const admin of admins) {
     recipientIds.push(String(admin.id));
   }
@@ -171,7 +171,7 @@ export async function close(id: number) {
   });
 
   const recipientIds: string[] = [String(request.userId)];
-  const admins = await prisma.user.findMany({ where: { role: "ADMIN" as any }, select: { id: true } });
+  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN }, select: { id: true } });
   for (const admin of admins) {
     recipientIds.push(String(admin.id));
   }
@@ -209,7 +209,7 @@ export async function addMessage(porId: number, sender: string, senderId: number
   if (senderId !== request.userId) {
     recipientIds.push(String(request.userId));
   }
-  const admins = await prisma.user.findMany({ where: { role: "ADMIN" as any }, select: { id: true } });
+  const admins = await prisma.user.findMany({ where: { role: Role.ADMIN }, select: { id: true } });
   for (const admin of admins) {
     if (admin.id !== senderId) {
       recipientIds.push(String(admin.id));

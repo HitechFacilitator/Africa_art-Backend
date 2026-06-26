@@ -1,4 +1,5 @@
 import prisma from "../config/db";
+import { AppError } from "../utils/AppError";
 
 export async function getByUser(userId: number) {
   const acquisitions = await prisma.acquisition.findMany({
@@ -65,5 +66,7 @@ export async function create(userId: number, data: {
 }
 
 export async function remove(id: number) {
+  const existing = await prisma.acquisition.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Acquisition not found", 404);
   await prisma.acquisition.delete({ where: { id } });
 }

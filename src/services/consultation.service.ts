@@ -1,6 +1,6 @@
 import prisma from "../config/db";
 import { AppError } from "../utils/AppError";
-import { ConsultationStatus, ConsultationType } from "../generated/prisma/client";
+import { ConsultationStatus, ConsultationType, Role } from "../generated/prisma/client";
 import { sseManager } from "../utils/sse";
 
 function mapStatus(status: ConsultationStatus): string {
@@ -113,14 +113,14 @@ export async function create(userId: number, data: { type: string; date: string;
   let advisorId = data.advisorId;
   if (!advisorId && data.expertName) {
     const advisor = await prisma.user.findFirst({
-      where: { role: "ADVISOR" as any, name: data.expertName },
+      where: { role: Role.ADVISOR, name: data.expertName },
     });
     if (advisor) {
       advisorId = advisor.id;
     } else {
       const advisorByInstitution = await prisma.user.findFirst({
         where: {
-          role: "ADVISOR" as any,
+          role: Role.ADVISOR,
           name: { contains: data.expertName.split(" (")[0] },
         },
       });

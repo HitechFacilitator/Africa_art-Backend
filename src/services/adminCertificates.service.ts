@@ -1,5 +1,7 @@
 import PDFDocument from "pdfkit";
 import prisma from "../config/db";
+import crypto from "crypto";
+import { AppError } from "../utils/AppError";
 
 export async function getAll() {
   const certs = await prisma.certificate.findMany({
@@ -23,26 +25,37 @@ export async function getAll() {
   };
 }
 
-export async function create(data: { artworkTitle: string; artworkId?: number; userId?: number; expiryDate?: string; verifiedBy?: string }) {
+export async function create(data: { artworkTitle: string; artworkId?: number; userId?: number; expiryDate?: string; verifiedBy?: string; filename?: string; filePath?: string }) {
+  // Validate artwork exists if artworkId provided
+  if (data.artworkId) {
+    const artwork = await prisma.artwork.findUnique({ where: { id: data.artworkId } });
+    if (!artwork) {
+      throw new AppError("Artwork not found", 404);
+    }
+  }
+
   const cert = await prisma.certificate.create({
     data: {
-      certificateNumber: `CERT-${Date.now()}`,
+      certificateNumber: `CERT-${Date.now()}-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
       title: data.artworkTitle,
-      filename: `${data.artworkTitle.replace(/\s+/g, "_")}_certificate.pdf`,
-      path: "/certificates",
-      artworkId: data.artworkId || 1,
-      userId: data.userId || 1,
+      filename: data.filename || `${data.artworkTitle.replace(/\s+/g, "_")}_certificate.pdf`,
+      path: data.filePath || "/certificates",
+      artworkId: data.artworkId ?? 1,
+      userId: data.userId ?? 1,
       expiryDate: data.expiryDate ? new Date(data.expiryDate) : null,
       isValid: true,
       status: "VALID",
       certifyingBody: data.verifiedBy || "Aduna Gallery",
-      blockchainHash: `0x${Array.from({ length: 64 }, () => "0123456789abcdef"[Math.floor(Math.random() * 16)]).join("")}`,
+      blockchainHash: `0x${crypto.randomBytes(32).toString('hex')}`,
     },
   });
   return cert;
 }
 
 export async function update(id: number, data: { artworkTitle?: string; expiryDate?: string; verifiedBy?: string }) {
+  const existing = await prisma.certificate.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Certificate not found", 404);
+
   const updateData: Record<string, unknown> = {};
   if (data.artworkTitle) updateData.title = data.artworkTitle;
   if (data.expiryDate) updateData.expiryDate = new Date(data.expiryDate);
@@ -53,6 +66,9 @@ export async function update(id: number, data: { artworkTitle?: string; expiryDa
 }
 
 export async function revoke(id: number) {
+  const existing = await prisma.certificate.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Certificate not found", 404);
+
   await prisma.certificate.update({
     where: { id },
     data: { status: "REVOKED", isValid: false },
@@ -61,6 +77,8 @@ export async function revoke(id: number) {
 }
 
 export async function remove(id: number) {
+  const existing = await prisma.certificate.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Certificate not found", 404);
   await prisma.certificate.delete({ where: { id } });
   return { success: true };
 }
@@ -70,7 +88,7 @@ export async function generatePdf(id: number): Promise<Buffer> {
     where: { id },
     include: { artwork: { include: { artist: true, category: true } }, user: true },
   });
-  if (!cert) throw new Error("Certificate not found");
+  if (!cert) throw new AppError("Certificate not found", 404);
 
   const W = 595.28; // A4 width
   const H = 841.89; // A4 height

@@ -38,13 +38,15 @@ export async function create(userId: number, artworkId: number) {
   const expiresAt = new Date();
   expiresAt.setHours(expiresAt.getHours() + 48);
 
-  const reservation = await prisma.reservation.create({
-    data: { userId, artworkId, expiresAt },
-  });
-
-  await prisma.artwork.update({
-    where: { id: artworkId },
-    data: { availability: "RESERVED" },
+  const reservation = await prisma.$transaction(async (tx) => {
+    const res = await tx.reservation.create({
+      data: { userId, artworkId, expiresAt },
+    });
+    await tx.artwork.update({
+      where: { id: artworkId },
+      data: { availability: "RESERVED" },
+    });
+    return res;
   });
 
   return reservation;
@@ -64,14 +66,16 @@ export async function cancel(id: number, userId: number) {
     throw new AppError("Reservation is not active", 400);
   }
 
-  const updated = await prisma.reservation.update({
-    where: { id },
-    data: { status: ReservationStatus.CANCELLED },
-  });
-
-  await prisma.artwork.update({
-    where: { id: reservation.artworkId },
-    data: { availability: "AVAILABLE" },
+  const [updated] = await prisma.$transaction(async (tx) => {
+    const res = await tx.reservation.update({
+      where: { id },
+      data: { status: ReservationStatus.CANCELLED },
+    });
+    await tx.artwork.update({
+      where: { id: reservation.artworkId },
+      data: { availability: "AVAILABLE" },
+    });
+    return [res];
   });
 
   return updated;
@@ -85,17 +89,18 @@ export async function expire() {
     },
   });
 
-  for (const reservation of expired) {
-    await prisma.reservation.update({
-      where: { id: reservation.id },
-      data: { status: ReservationStatus.EXPIRED },
-    });
-
-    await prisma.artwork.update({
-      where: { id: reservation.artworkId },
-      data: { availability: "AVAILABLE" },
-    });
-  }
+  await prisma.$transaction(async (tx) => {
+    for (const reservation of expired) {
+      await tx.reservation.update({
+        where: { id: reservation.id },
+        data: { status: ReservationStatus.EXPIRED },
+      });
+      await tx.artwork.update({
+        where: { id: reservation.artworkId },
+        data: { availability: "AVAILABLE" },
+      });
+    }
+  });
 
   return expired.length;
 }

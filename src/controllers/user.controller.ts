@@ -19,7 +19,15 @@ export const getById = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const update = catchAsync(async (req: Request, res: Response) => {
-  const user = await userService.update(Number(req.params.id), req.body);
+  const targetId = Number(req.params.id);
+  const requesterId = req.user!.userId;
+  const requesterRole = req.user!.role;
+  // Only admins can update other users; regular users can only update themselves
+  if (requesterId !== targetId && requesterRole.toString().toUpperCase() !== "ADMIN") {
+    res.status(403).json({ success: false, message: "You can only update your own profile" });
+    return;
+  }
+  const user = await userService.update(targetId, req.body);
   res.json({ success: true, data: user });
 });
 

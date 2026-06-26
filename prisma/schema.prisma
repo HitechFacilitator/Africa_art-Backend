@@ -132,6 +132,11 @@ model User {
   institution     String?
   country         String?
   tier            String?   @default("Standard")
+  phone             String?
+  acceptTerms       Boolean   @default(false)
+  acceptGdpr        Boolean   @default(false)
+  currency          String?
+  regionsOfInterest String?
   twoFactorEnabled Boolean  @default(false)
   emailVerified   Boolean   @default(false)
   createdAt       DateTime  @default(now())
@@ -154,7 +159,7 @@ model User {
 
 model Artist {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   biography   String?
   nationality String?
   birthDate   DateTime?
@@ -179,7 +184,7 @@ model Category {
 
 model Artwork {
   id              Int          @id @default(autoincrement())
-  title           String
+  title           String       @unique
   description     String
   origin          String
   region          String?
@@ -229,6 +234,9 @@ model Artwork {
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+
+  @@index([artistId])
+  @@index([categoryId])
 }
 
 model ArtworkImage {
@@ -282,12 +290,15 @@ model Certificate {
   certifyingBody    String?
 
   artworkId         Int
-  artwork           Artwork  @relation(fields: [artworkId], references: [id])
+  artwork           Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
   userId            Int
-  user              User     @relation(fields: [userId], references: [id])
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@index([artworkId])
+  @@index([userId])
 }
 
 model Favorite {
@@ -305,19 +316,22 @@ model Favorite {
 model Reservation {
   id        Int      @id @default(autoincrement())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   artworkId Int
-  artwork   Artwork  @relation(fields: [artworkId], references: [id])
+  artwork   Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
   status    ReservationStatus @default(ACTIVE)
   expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([artworkId])
 }
 
 model Order {
   id          Int         @id @default(autoincrement())
   userId      Int
-  user        User        @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   status      OrderStatus @default(PENDING)
   totalAmount Decimal
   notes       String?
@@ -326,6 +340,8 @@ model Order {
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+
+  @@index([userId])
 }
 
 model OrderItem {
@@ -333,16 +349,19 @@ model OrderItem {
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   artworkId Int
-  artwork   Artwork @relation(fields: [artworkId], references: [id])
+  artwork   Artwork @relation(fields: [artworkId], references: [id], onDelete: Cascade)
   price     Decimal
 
   createdAt DateTime @default(now())
+
+  @@index([orderId])
+  @@index([artworkId])
 }
 
 model Consultation {
   id              Int                @id @default(autoincrement())
   userId          Int
-  user            User               @relation(fields: [userId], references: [id])
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   advisorId       Int?
   expertName      String?
   expertTitle     String?
@@ -360,15 +379,17 @@ model Consultation {
   meetingFormat   String?
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
+
+  @@index([userId])
 }
 
 model PriceRequest {
   id        Int       @id @default(autoincrement())
   userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   artworkId Int
-  artwork   Artwork   @relation(fields: [artworkId], references: [id])
-  message   String?
+  artwork   Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  message   String?   @db.Text
   status    PORStatus @default(PENDING)
   response  String?
 
@@ -376,12 +397,15 @@ model PriceRequest {
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([artworkId])
 }
 
 model AuditLog {
   id         Int      @id @default(autoincrement())
   userId     Int?
-  user       User?    @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   action     String
   resource   String
   resourceId Int?
@@ -389,24 +413,28 @@ model AuditLog {
   txHash     String?
   signed     Boolean  @default(false)
   timestamp  DateTime @default(now())
+
+  @@index([userId])
 }
 
 model Notification {
   id        Int      @id @default(autoincrement())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title     String
   message   String
   isRead    Boolean  @default(false)
   type      String?
 
   createdAt DateTime @default(now())
+
+  @@index([userId])
 }
 
 model AuctionLot {
   id            Int      @id @default(autoincrement())
   artworkId     Int
-  artwork       Artwork  @relation(fields: [artworkId], references: [id])
+  artwork       Artwork  @relation(fields: [artworkId], references: [id], onDelete: Cascade)
   startingPrice Decimal
   currentPrice  Decimal?
   reservePrice  Decimal?
@@ -422,17 +450,22 @@ model AuctionLot {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@index([artworkId])
 }
 
 model Bid {
   id        Int      @id @default(autoincrement())
   lotId     Int
-  lot       AuctionLot @relation(fields: [lotId], references: [id])
+  lot       AuctionLot @relation(fields: [lotId], references: [id], onDelete: Cascade)
   userId    Int
   amount    Decimal
   timestamp DateTime @default(now())
 
   createdAt DateTime @default(now())
+
+  @@index([lotId])
+  @@index([userId])
 }
 
 // ─── Frontend Dashboard Models ────────────────────────────────────────
@@ -453,6 +486,8 @@ model Acquisition {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model AcquisitionProvenance {
@@ -478,6 +513,8 @@ model Inquiry {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model InquiryMessage {
@@ -497,10 +534,12 @@ model PorMessage {
   por       PriceRequest @relation(fields: [porId], references: [id], onDelete: Cascade)
   sender    String
   senderId  Int?
-  text      String
+  text      String    @db.Text
   timestamp String?
 
   createdAt DateTime @default(now())
+
+  @@index([porId])
 }
 
 model LogisticsShipment {
@@ -517,6 +556,8 @@ model LogisticsShipment {
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model ShipmentUpdate {
@@ -544,6 +585,8 @@ model SecurityRecord {
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+
+  @@index([userId])
 }
 
 // ─── Admin Models ─────────────────────────────────────────────────────
@@ -565,7 +608,7 @@ model EscrowTransaction {
 model AdvisorClient {
   id                Int      @id @default(autoincrement())
   advisorId         Int
-  advisor           User     @relation("AdvisorClients", fields: [advisorId], references: [id])
+  advisor           User     @relation("AdvisorClients", fields: [advisorId], references: [id], onDelete: Cascade)
   name              String
   email             String?
   country           String?
@@ -579,12 +622,14 @@ model AdvisorClient {
 
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@index([advisorId])
 }
 
 model AdvisorPlacement {
   id              Int      @id @default(autoincrement())
   userId          Int
-  user            User     @relation(fields: [userId], references: [id])
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   artworkTitle    String?
   artworkCulture  String?
   artworkEra      String?
@@ -598,6 +643,8 @@ model AdvisorPlacement {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model AdvisorActivity {
@@ -631,6 +678,9 @@ model ChatThread {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@index([clientUserId])
+  @@index([advisorUserId])
 }
 
 model ChatMessage {
@@ -639,7 +689,7 @@ model ChatMessage {
   thread      ChatThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   userId      Int?
   user        User?    @relation(fields: [userId], references: [id])
-  senderId    String?
+  senderId    Int?
   senderName  String?
   senderRole  String?
   text        String?
@@ -647,6 +697,9 @@ model ChatMessage {
   read        Boolean  @default(false)
 
   createdAt   DateTime @default(now())
+
+  @@index([threadId])
+  @@index([userId])
 }
 
 model ChatThreadReadStatus {
@@ -666,7 +719,7 @@ model ChatThreadReadStatus {
 model SupportTicket {
   id              Int      @id @default(autoincrement())
   userId          Int?
-  user            User?    @relation(fields: [userId], references: [id])
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   clientName      String?
   clientRole      String?
   subject         String?
@@ -683,6 +736,8 @@ model SupportTicket {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model TicketResponse {
@@ -694,6 +749,8 @@ model TicketResponse {
   timestamp  String?
 
   createdAt  DateTime @default(now())
+
+  @@index([ticketId])
 }
 
 // ─── Member Applications ─────────────────────────────────────────────

@@ -12,7 +12,12 @@ export const getAll = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getById = catchAsync(async (req: Request, res: Response) => {
-  const result = await service.getById(Number(req.params.id));
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ success: false, message: "Invalid user ID" });
+    return;
+  }
+  const result = await service.getById(id);
   res.json({ success: true, data: result });
 });
 
@@ -22,16 +27,31 @@ export const create = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const update = catchAsync(async (req: Request, res: Response) => {
-  const result = await service.update(Number(req.params.id), req.body);
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ success: false, message: "Invalid user ID" });
+    return;
+  }
+  const result = await service.update(id, req.body);
   res.json({ success: true, data: result });
 });
 
 export const updateStatus = catchAsync(async (req: Request, res: Response) => {
-  const result = await service.updateStatus(Number(req.params.id), req.body.status);
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ success: false, message: "Invalid user ID" });
+    return;
+  }
+  const result = await service.updateStatus(id, req.body.status);
   res.json({ success: true, data: result });
 });
 
 export const remove = catchAsync(async (req: Request, res: Response) => {
-  await service.remove(Number(req.params.id));
+  const id = Number(req.params.id);
+  if (isNaN(id)) {
+    res.status(400).json({ success: false, message: "Invalid user ID" });
+    return;
+  }
+  await service.remove(id);
   res.json({ success: true, message: "User deleted" });
 });

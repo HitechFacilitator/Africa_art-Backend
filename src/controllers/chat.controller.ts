@@ -4,14 +4,43 @@ import catchAsync from "../utils/catchAsync";
 import { sseManager } from "../utils/sse";
 import prisma from "../config/db";
 
+export const createThread = catchAsync(async (req: Request, res: Response) => {
+  const dbUser = await prisma.user.findUnique({ where: { id: req.user!.userId } });
+  const thread = await chatService.createThread({
+    ...req.body,
+    clientName: req.body.clientName || dbUser?.name || "",
+    clientRole: req.body.clientRole || dbUser?.role || "collector",
+    clientUserId: req.user!.userId,
+  });
+  res.status(201).json({ success: true, data: thread });
+});
+
 export const getThreads = catchAsync(async (req: Request, res: Response) => {
   const data = await chatService.getThreads(req.user!.userId, req.user!.role);
   res.json({ success: true, data });
 });
 
 export const sendMessage = catchAsync(async (req: Request, res: Response) => {
+  // Convert senderId from string ("usr-7") to number if present
+  const body = { ...req.body };
+  if (typeof body.senderId === "string") {
+    const parsed = Number(body.senderId.replace("usr-", ""));
+    body.senderId = isNaN(parsed) ? undefined : parsed;
+  } else if (typeof body.senderId === "number") {
+    // Already a number, validate it
+    body.senderId = isNaN(body.senderId) ? undefined : body.senderId;
+  } else {
+    // Not a string or number — clear it
+    body.senderId = undefined;
+  }
+
+  // Ensure text is never empty/null for Prisma
+  if (!body.text || typeof body.text !== "string") {
+    body.text = "";
+  }
+
   const message = await chatService.sendMessage(Number(req.params.threadId), {
-    ...req.body,
+    ...body,
     userId: req.user!.userId,
   });
 

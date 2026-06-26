@@ -44,7 +44,7 @@ export async function log(userId: number | null, action: string, resource: strin
       action,
       resource,
       resourceId,
-      metadata: metadata as undefined,
+      metadata: metadata as any,
       txHash,
     },
   });

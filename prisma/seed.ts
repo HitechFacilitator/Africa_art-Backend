@@ -16,6 +16,46 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("Seeding database...");
 
+  // Clear existing seed data (in FK order)
+  await prisma.ticketResponse.deleteMany();
+  await prisma.supportTicket.deleteMany();
+  await prisma.chatMessage.deleteMany();
+  await prisma.chatThreadReadStatus.deleteMany();
+  await prisma.chatThread.deleteMany();
+  await prisma.advisorActivity.deleteMany();
+  await prisma.advisorPlacement.deleteMany();
+  await prisma.advisorClient.deleteMany();
+  await prisma.securityRecord.deleteMany();
+  await prisma.shipmentUpdate.deleteMany();
+  await prisma.logisticsShipment.deleteMany();
+  await prisma.inquiryMessage.deleteMany();
+  await prisma.inquiry.deleteMany();
+  await prisma.auditLog.deleteMany();
+  await prisma.escrowTransaction.deleteMany();
+  await prisma.porMessage.deleteMany();
+  await prisma.priceRequest.deleteMany();
+  await prisma.consultation.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.reservation.deleteMany();
+  await prisma.favorite.deleteMany();
+  await prisma.bid.deleteMany();
+  await prisma.auctionLot.deleteMany();
+  await prisma.acquisitionProvenance.deleteMany();
+  await prisma.acquisition.deleteMany();
+  await prisma.provenanceChain.deleteMany();
+  await prisma.provenanceRecord.deleteMany();
+  await prisma.certificate.deleteMany();
+  await prisma.notification.deleteMany();
+  await prisma.artworkImage.deleteMany();
+  await prisma.artwork.deleteMany();
+  await prisma.artist.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.memberApplication.deleteMany();
+  await prisma.user.deleteMany();
+
+  console.log("Cleared existing seed data.");
+
   const password = await bcrypt.hash("password123", 12);
 
   // Create users matching frontend mock data
@@ -115,20 +155,22 @@ async function main() {
 
   // Create artists
   const artists = await Promise.all([
-    prisma.artist.create({ data: { name: "Unknown Benin Artist", nationality: "Nigerian", biography: "Master bronze caster of the Benin Empire" } }),
-    prisma.artist.create({ data: { name: "Ife Master", nationality: "Nigerian", biography: "Unknown master of the Ife tradition" } }),
-    prisma.artist.create({ data: { name: "Yoruba Artist", nationality: "Nigerian", biography: "Traditional Yoruba craftsman" } }),
-    prisma.artist.create({ data: { name: "Akan Goldsmith", nationality: "Ghanaian", biography: "Master goldsmith of the Akan people" } }),
-    prisma.artist.create({ data: { name: "Kuba Master Carver", nationality: "Congolese", biography: "Royal carver of the Kuba Kingdom" } }),
-    prisma.artist.create({ data: { name: "Dogon Elder", nationality: "Malian", biography: "Senior sculptor of the Dogon people" } }),
-    prisma.artist.create({ data: { name: "Luba Court Artist", nationality: "Congolese", biography: "Artist of the Luba royal court" } }),
-    prisma.artist.create({ data: { name: "Nok Sculptor", nationality: "Nigerian", biography: "Ancient Nok terracotta artist" } }),
+    prisma.artist.upsert({ where: { name: "Unknown Benin Artist" }, update: {}, create: { name: "Unknown Benin Artist", nationality: "Nigerian", biography: "Master bronze caster of the Benin Empire" } }),
+    prisma.artist.upsert({ where: { name: "Ife Master" }, update: {}, create: { name: "Ife Master", nationality: "Nigerian", biography: "Unknown master of the Ife tradition" } }),
+    prisma.artist.upsert({ where: { name: "Yoruba Artist" }, update: {}, create: { name: "Yoruba Artist", nationality: "Nigerian", biography: "Traditional Yoruba craftsman" } }),
+    prisma.artist.upsert({ where: { name: "Akan Goldsmith" }, update: {}, create: { name: "Akan Goldsmith", nationality: "Ghanaian", biography: "Master goldsmith of the Akan people" } }),
+    prisma.artist.upsert({ where: { name: "Kuba Master Carver" }, update: {}, create: { name: "Kuba Master Carver", nationality: "Congolese", biography: "Royal carver of the Kuba Kingdom" } }),
+    prisma.artist.upsert({ where: { name: "Dogon Elder" }, update: {}, create: { name: "Dogon Elder", nationality: "Malian", biography: "Senior sculptor of the Dogon people" } }),
+    prisma.artist.upsert({ where: { name: "Luba Court Artist" }, update: {}, create: { name: "Luba Court Artist", nationality: "Congolese", biography: "Artist of the Luba royal court" } }),
+    prisma.artist.upsert({ where: { name: "Nok Sculptor" }, update: {}, create: { name: "Nok Sculptor", nationality: "Nigerian", biography: "Ancient Nok terracotta artist" } }),
   ]);
 
   // Create artworks matching frontend mock data
   const artworks = await Promise.all([
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Fang Reliquary Guardian" },
+      update: {},
+      create: {
         title: "Fang Reliquary Guardian",
         description: "A stunning Fang reliquary guardian figure from Gabon, carved in dark wood with elongated features. Used in sacred Bwiti ceremonies.",
         origin: "Gabon",
@@ -151,8 +193,10 @@ async function main() {
         categoryId: categories[0].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Ife Terracotta Head" },
+      update: {},
+      create: {
         title: "Ife Terracotta Head",
         description: "A magnificent Ife terracotta head, one of the earliest known naturalistic sculptures from Sub-Saharan Africa.",
         origin: "Nigeria",
@@ -176,8 +220,10 @@ async function main() {
         categoryId: categories[3].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Benin Bronze Relief Plaque" },
+      update: {},
+      create: {
         title: "Benin Bronze Relief Plaque",
         description: "A magnificent Benin bronze relief plaque depicting a warrior chief in ceremonial regalia.",
         origin: "Nigeria",
@@ -200,8 +246,10 @@ async function main() {
         categoryId: categories[1].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Yoruba Ade Beaded Crown" },
+      update: {},
+      create: {
         title: "Yoruba Ade Beaded Crown",
         description: "An exquisite Yoruba beaded crown (ade) traditionally worn by Yoruba kings (Obas).",
         origin: "Nigeria",
@@ -224,8 +272,10 @@ async function main() {
         categoryId: categories[4].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Nok Terracotta Seated Figure" },
+      update: {},
+      create: {
         title: "Nok Terracotta Seated Figure",
         description: "A rare Nok terracotta seated figure, one of the earliest known sculptural traditions in Sub-Saharan Africa.",
         origin: "Nigeria",
@@ -248,8 +298,10 @@ async function main() {
         categoryId: categories[3].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Akan Gold Leaf Ceremonial Weight" },
+      update: {},
+      create: {
         title: "Akan Gold Leaf Ceremonial Weight",
         description: "An exquisite Akan gold leaf ceremonial weight used in traditional gold weight measurement.",
         origin: "Ghana",
@@ -272,8 +324,10 @@ async function main() {
         categoryId: categories[1].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Kuba Ndop Royal Portrait Board" },
+      update: {},
+      create: {
         title: "Kuba Ndop Royal Portrait Board",
         description: "A Kuba Ndop royal portrait board, an abstract representation of a Kuba king.",
         origin: "Democratic Republic of Congo",
@@ -296,8 +350,10 @@ async function main() {
         categoryId: categories[1].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Dogon Tellem Ancestor Figure" },
+      update: {},
+      create: {
         title: "Dogon Tellem Ancestor Figure",
         description: "A Dogon Tellem ancestor figure, carved from ironwood and used in sacred rituals.",
         origin: "Mali",
@@ -320,8 +376,10 @@ async function main() {
         categoryId: categories[1].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Luba Royal Ceremonial Shield" },
+      update: {},
+      create: {
         title: "Luba Royal Ceremonial Shield",
         description: "A Luba royal ceremonial shield made of wood and raffia, used by Luba warriors.",
         origin: "Democratic Republic of Congo",
@@ -344,8 +402,10 @@ async function main() {
         categoryId: categories[1].id,
       },
     }),
-    prisma.artwork.create({
-      data: {
+    prisma.artwork.upsert({
+      where: { title: "Chokwe Ciooko Divination Pendant" },
+      update: {},
+      create: {
         title: "Chokwe Ciooko Divination Pendant",
         description: "A Chokwe Ciooko divination pendant, used by Chokwe diviners (tundaji).",
         origin: "Angola / Democratic Republic of Congo",
@@ -374,13 +434,16 @@ async function main() {
 
   // Create provenance chains
   for (const artwork of artworks) {
-    await prisma.provenanceChain.createMany({
-      data: [
-        { artworkId: artwork.id, entry: `Created in the ${artwork.era || "19th century"}` },
-        { artworkId: artwork.id, entry: "Private collection, Europe" },
-        { artworkId: artwork.id, entry: "Acquired through Aduna Gallery, 2024" },
-      ],
-    });
+    const existing = await prisma.provenanceChain.findFirst({ where: { artworkId: artwork.id } });
+    if (!existing) {
+      await prisma.provenanceChain.createMany({
+        data: [
+          { artworkId: artwork.id, entry: `Created in the ${artwork.era || "19th century"}` },
+          { artworkId: artwork.id, entry: "Private collection, Europe" },
+          { artworkId: artwork.id, entry: "Acquired through Aduna Gallery, 2024" },
+        ],
+      });
+    }
   }
 
   // Create acquisitions for Julian
@@ -642,6 +705,8 @@ async function main() {
   // ─── Additional chat threads ───────────────────────────────────
   const thread2 = await prisma.chatThread.create({
     data: {
+      clientUserId: amara.id,
+      advisorUserId: fatima.id,
       clientName: "Amara Nkosi",
       clientRole: "collector",
       advisorName: "Dr. Fatima Benali",
@@ -654,14 +719,16 @@ async function main() {
   });
   await prisma.chatMessage.createMany({
     data: [
-      { threadId: thread2.id, senderId: "usr-002", senderName: "Amara Nkosi", senderRole: "collector", text: "Dr. Benali, I saw the Royal Beaded Crown in the private catalogue. Is it still available?", timestamp: "2026-06-14 16:00 UTC", read: true },
-      { threadId: thread2.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "Yes, the Yoruba Ade Crown is still available. It is one of our finest pieces with intact glass beadwork.", timestamp: "2026-06-15 09:30 UTC", read: true },
-      { threadId: thread2.id, senderId: "usr-003", senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "The Yoruba Ade Crown is available for private viewing. Would you like to schedule a visit?", timestamp: "2026-06-15 11:00 UTC", read: false },
+      { threadId: thread2.id, senderId: amara.id, senderName: "Amara Nkosi", senderRole: "collector", text: "Dr. Benali, I saw the Royal Beaded Crown in the private catalogue. Is it still available?", timestamp: "2026-06-14 16:00 UTC", read: true },
+      { threadId: thread2.id, senderId: fatima.id, senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "Yes, the Yoruba Ade Crown is still available. It is one of our finest pieces with intact glass beadwork.", timestamp: "2026-06-15 09:30 UTC", read: true },
+      { threadId: thread2.id, senderId: fatima.id, senderName: "Dr. Fatima Benali", senderRole: "advisor", text: "The Yoruba Ade Crown is available for private viewing. Would you like to schedule a visit?", timestamp: "2026-06-15 11:00 UTC", read: false },
     ],
   });
 
   const thread3 = await prisma.chatThread.create({
     data: {
+      clientUserId: visitor.id,
+      advisorUserId: fatima.id,
       clientName: "Guest Visitor",
       clientRole: "visitor",
       advisorName: "Helena Sterling",
@@ -674,8 +741,8 @@ async function main() {
   });
   await prisma.chatMessage.createMany({
     data: [
-      { threadId: thread3.id, senderId: "usr-005", senderName: "Guest Visitor", senderRole: "visitor", text: "Hello, I have a Benin Bronze piece that I would like authenticated. What is the process?", timestamp: "2026-06-15 10:00 UTC", read: true },
-      { threadId: thread3.id, senderId: "usr-003", senderName: "Helena Sterling", senderRole: "advisor", text: "We offer authentication services starting from €500. Would you like to proceed?", timestamp: "2026-06-15 13:00 UTC", read: true },
+      { threadId: thread3.id, senderId: visitor.id, senderName: "Guest Visitor", senderRole: "visitor", text: "Hello, I have a Benin Bronze piece that I would like authenticated. What is the process?", timestamp: "2026-06-15 10:00 UTC", read: true },
+      { threadId: thread3.id, senderId: fatima.id, senderName: "Helena Sterling", senderRole: "advisor", text: "We offer authentication services starting from €500. Would you like to proceed?", timestamp: "2026-06-15 13:00 UTC", read: true },
     ],
   });
 
@@ -704,6 +771,7 @@ async function main() {
 
   const ticket3 = await prisma.supportTicket.create({
     data: {
+      userId: fatima.id,
       clientName: "Dr. Fatima Benali",
       clientRole: "advisor",
       subject: "Consultation Scheduling Conflict",

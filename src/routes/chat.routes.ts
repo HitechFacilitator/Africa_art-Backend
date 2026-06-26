@@ -13,13 +13,14 @@ router.get("/events", (req: Request, res: Response) => {
     return;
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "aduna-secret-key-2026") as { userId: number; role: string };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: number; role: string };
     sseManager.addClient(String(decoded.userId), res);
   } catch {
     res.status(401).json({ error: "Invalid token" });
   }
 });
 
+router.post("/threads", authenticate, chatController.createThread);
 router.get("/threads", authenticate, chatController.getThreads);
 router.post("/threads/:threadId/messages", authenticate, chatController.sendMessage);
 router.patch("/threads/:threadId/read", authenticate, chatController.markThreadRead);

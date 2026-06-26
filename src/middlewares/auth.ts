@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import { AppError } from "../utils/AppError";
 import { TokenPayload } from "../types";
 
-const JWT_SECRET = process.env.JWT_SECRET || "africa-art-secret-key";
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required");
+}
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export const authenticate = (req: Request, _res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;

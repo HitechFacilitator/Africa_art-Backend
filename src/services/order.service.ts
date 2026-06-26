@@ -84,30 +84,34 @@ export async function create(userId: number, artworkIds: number[], notes?: strin
     return sum + (a.price ? Number(a.price) : 0);
   }, 0);
 
-  const order = await prisma.order.create({
-    data: {
-      userId,
-      totalAmount: new Prisma.Decimal(totalAmount),
-      notes,
-      items: {
-        create: artworks.map((a) => ({
-          artworkId: a.id,
-          price: a.price || new Prisma.Decimal(0),
-        })),
-      },
-    },
-    include: {
-      items: {
-        include: {
-          artwork: { select: { id: true, title: true } },
+  const order = await prisma.$transaction(async (tx) => {
+    const newOrder = await tx.order.create({
+      data: {
+        userId,
+        totalAmount: new Prisma.Decimal(totalAmount),
+        notes,
+        items: {
+          create: artworks.map((a) => ({
+            artworkId: a.id,
+            price: a.price ?? new Prisma.Decimal(0),
+          })),
         },
       },
-    },
-  });
+      include: {
+        items: {
+          include: {
+            artwork: { select: { id: true, title: true } },
+          },
+        },
+      },
+    });
 
-  await prisma.artwork.updateMany({
-    where: { id: { in: artworkIds } },
-    data: { availability: "SOLD" },
+    await tx.artwork.updateMany({
+      where: { id: { in: artworkIds } },
+      data: { availability: "SOLD" },
+    });
+
+    return newOrder;
   });
 
   return order;

@@ -1,5 +1,6 @@
 import prisma from "../config/db";
 import { Prisma, Availability } from "../generated/prisma/client";
+import { AppError } from "../utils/AppError";
 
 export async function getAll(page: number, limit: number, skip: number, search?: string) {
   const where: Prisma.ArtworkWhereInput = {};
@@ -60,7 +61,7 @@ export async function getById(id: number) {
       provenance: true,
     },
   });
-  if (!a) throw new Error("Artwork not found");
+  if (!a) throw new AppError("Artwork not found", 404);
   return {
     id: `ART-${a.id}`,
     title: a.title,
@@ -160,7 +161,7 @@ export async function create(data: Record<string, unknown>) {
 
 export async function update(id: number, data: Record<string, unknown>) {
   const existing = await prisma.artwork.findUnique({ where: { id } });
-  if (!existing) throw new Error("Artwork not found");
+  if (!existing) throw new AppError("Artwork not found", 404);
 
   const updateData: Record<string, unknown> = {};
   const allowedFields = [
@@ -189,13 +190,15 @@ export async function update(id: number, data: Record<string, unknown>) {
   const updated = await prisma.artwork.update({ where: { id }, data: updateData });
 
   if (data.provenanceChain && Array.isArray(data.provenanceChain)) {
-    await prisma.provenanceChain.deleteMany({ where: { artworkId: id } });
-    await prisma.provenanceChain.createMany({
-      data: (data.provenanceChain as string[]).map((entry) => ({
-        artworkId: id,
-        entry,
-      })),
-    });
+    await prisma.$transaction([
+      prisma.provenanceChain.deleteMany({ where: { artworkId: id } }),
+      prisma.provenanceChain.createMany({
+        data: (data.provenanceChain as string[]).map((entry) => ({
+          artworkId: id,
+          entry,
+        })),
+      }),
+    ]);
   }
 
   return { id: `ART-${updated.id}`, title: updated.title, artworkStatus: updated.artworkStatus };
@@ -203,7 +206,7 @@ export async function update(id: number, data: Record<string, unknown>) {
 
 export async function updateStatus(id: number, status: string) {
   const artwork = await prisma.artwork.findUnique({ where: { id } });
-  if (!artwork) throw new Error("Artwork not found");
+  if (!artwork) throw new AppError("Artwork not found", 404);
 
   const updated = await prisma.artwork.update({
     where: { id },
@@ -214,7 +217,7 @@ export async function updateStatus(id: number, status: string) {
 
 export async function remove(id: number) {
   const artwork = await prisma.artwork.findUnique({ where: { id } });
-  if (!artwork) throw new Error("Artwork not found");
+  if (!artwork) throw new AppError("Artwork not found", 404);
   await prisma.provenanceChain.deleteMany({ where: { artworkId: id } });
   await prisma.provenanceRecord.deleteMany({ where: { artworkId: id } });
   await prisma.artworkImage.deleteMany({ where: { artworkId: id } });

@@ -36,8 +36,9 @@ export async function deleteOne(imageId: number) {
 
   try {
     await fs.unlink(image.path);
-  } catch {
+  } catch (e) {
     // File may already be deleted
+    console.warn("Failed to delete image file:", e);
   }
 
   await prisma.artworkImage.delete({ where: { id: imageId } });
@@ -66,7 +67,7 @@ export async function reorder(artworkId: number, imageIds: number[]) {
     throw new AppError("Artwork not found", 404);
   }
 
-  await Promise.all(
+  await prisma.$transaction(
     imageIds.map((id, index) =>
       prisma.artworkImage.update({
         where: { id },

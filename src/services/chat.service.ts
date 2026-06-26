@@ -1,4 +1,5 @@
 import prisma from "../config/db";
+import { AppError } from "../utils/AppError";
 
 export async function getThreads(userId: number, role: string) {
   let threadIds: number[];
@@ -57,7 +58,7 @@ export async function getThreads(userId: number, role: string) {
       status: t.status,
       messages: t.messages.map(m => ({
         id: `msg-${m.id}`,
-        senderId: m.senderId || "",
+        senderId: m.senderId != null ? `usr-${m.senderId}` : null,
         senderName: m.senderName || "",
         senderRole: m.senderRole || "",
         text: m.text || "",
@@ -68,8 +69,81 @@ export async function getThreads(userId: number, role: string) {
   });
 }
 
+export async function createThread(data: {
+  subject?: string;
+  clientName?: string;
+  clientRole?: string;
+  advisorName?: string;
+  clientUserId?: number;
+  advisorUserId?: number;
+  initialMessage?: string;
+}) {
+  const thread = await prisma.chatThread.create({
+    data: {
+      subject: data.subject || null,
+      clientName: data.clientName || null,
+      clientRole: data.clientRole || null,
+      advisorName: data.advisorName || null,
+      clientUserId: data.clientUserId || null,
+      advisorUserId: data.advisorUserId || null,
+      status: "active",
+    },
+  });
+
+  // Optionally send an initial message
+  if (data.initialMessage) {
+    const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+    await prisma.chatMessage.create({
+      data: {
+        threadId: thread.id,
+        userId: data.clientUserId || null,
+        senderName: data.clientName || "System",
+        senderRole: data.clientRole || "system",
+        text: data.initialMessage,
+        timestamp,
+        read: false,
+      },
+    });
+    await prisma.chatThread.update({
+      where: { id: thread.id },
+      data: { lastMessage: data.initialMessage, lastMessageTime: timestamp },
+    });
+  }
+
+  // Notify admins about new thread (especially acquisition threads without assigned advisor)
+  const admins = await prisma.user.findMany({
+    where: { role: "ADMIN" as any },
+    select: { id: true },
+  });
+  if (admins.length > 0) {
+    const { sseManager } = await import("../utils/sse");
+    sseManager.sendToUsers(
+      admins.map(a => String(a.id)),
+      "new-message",
+      {
+        threadId: thread.id,
+        message: {
+          id: 0,
+          senderName: thread.clientName || "System",
+          senderRole: thread.clientRole || "system",
+          text: data.initialMessage || `New thread: ${thread.subject || "Untitled"}`,
+          timestamp: new Date().toISOString(),
+        },
+      }
+    );
+  }
+
+  return {
+    id: `thr-${thread.id}`,
+    subject: thread.subject || "",
+    clientName: thread.clientName || "",
+    advisorName: thread.advisorName || "",
+    status: thread.status,
+  };
+}
+
 export async function sendMessage(threadId: number, data: {
-  senderId?: string;
+  senderId?: number;
   senderName?: string;
   senderRole?: string;
   userId?: number;
@@ -124,7 +198,7 @@ export async function sendMessage(threadId: number, data: {
 
   return {
     id: `msg-${message.id}`,
-    senderId: message.senderId || "",
+    senderId: message.senderId != null ? `usr-${message.senderId}` : null,
     senderName: message.senderName || "",
     senderRole: message.senderRole || "",
     text: message.text || "",
@@ -148,8 +222,9 @@ export async function markThreadRead(threadId: number, userId: number) {
       update: { lastReadId: lastMessage.id },
       create: { threadId, userId, lastReadId: lastMessage.id },
     });
-  } catch {
+  } catch (e) {
     // Concurrent upsert race — safe to ignore, read status is approximate
+    console.warn("ChatThreadReadStatus upsert race condition:", e);
   }
 
   await prisma.chatMessage.updateMany({
@@ -246,10 +321,10 @@ export async function updateTicketStatus(id: number, status: string) {
 
 export async function deleteTicket(id: number, userId: number, role: string) {
   const ticket = await prisma.supportTicket.findUnique({ where: { id } });
-  if (!ticket) throw new Error("Ticket not found");
+  if (!ticket) throw new AppError("Ticket not found", 404);
 
   if (role.toLowerCase() !== "support" && role.toLowerCase() !== "admin" && ticket.userId !== userId) {
-    throw new Error("Not authorized to delete this ticket");
+    throw new AppError("Not authorized to delete this ticket", 403);
   }
 
   await prisma.ticketResponse.deleteMany({ where: { ticketId: id } });

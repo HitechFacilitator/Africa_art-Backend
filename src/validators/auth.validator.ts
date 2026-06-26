@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError";
 
 export const validateRegister = (req: Request, _res: Response, next: NextFunction): void => {
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, name } = req.body;
 
-  if (!email || !password || !firstName || !lastName) {
-    return next(new AppError("Email, password, firstName, and lastName are required", 400));
+  if (!email || !password || !name) {
+    return next(new AppError("Email, password, and name are required", 400));
   }
 
-  if (password.length < 8) {
-    return next(new AppError("Password must be at least 8 characters", 400));
+  if (password.length < 12) {
+    return next(new AppError("Password must be at least 12 characters", 400));
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

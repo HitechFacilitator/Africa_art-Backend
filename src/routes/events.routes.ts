@@ -11,7 +11,7 @@ router.get("/", (req: Request, res: Response) => {
     return;
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "aduna-secret-key-2026") as { userId: number; role: string };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: number; role: string };
     sseManager.addClient(String(decoded.userId), res);
   } catch {
     res.status(401).json({ error: "Invalid token" });
