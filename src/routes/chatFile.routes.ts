@@ -48,15 +48,54 @@ router.post("/upload", authenticate, upload.single("file"), (req: Request, res: 
   });
 });
 
-// Serve uploaded chat files
+// Serve uploaded chat files — with proper MIME types and error handling
 router.get("/files/:filename", (req: Request, res: Response) => {
   const filename = req.params.filename as string;
-  const filePath = path.join(__dirname, "../uploads/chat", filename);
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      res.status(404).json({ success: false, message: "File not found" });
+  // Sanitize filename to prevent path traversal
+  const safeFilename = path.basename(filename);
+  const filePath = path.join(__dirname, "../uploads/chat", safeFilename);
+
+  // Check file exists before attempting sendFile
+  if (!fs.existsSync(filePath)) {
+    res.status(404).json({ success: false, message: "File not found" });
+    return;
+  }
+
+  // Set proper Content-Type based on extension
+  const ext = path.extname(safeFilename).toLowerCase();
+  const mimeTypes: Record<string, string> = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".webp": "image/webp",
+    ".svg": "image/svg+xml",
+    ".mp4": "video/mp4",
+    ".webm": "video/webm",
+    ".ogg": "video/ogg",
+    ".mp3": "audio/mpeg",
+    ".wav": "audio/wav",
+    ".weba": "audio/webm",
+    ".pdf": "application/pdf",
+    ".doc": "application/msword",
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".txt": "text/plain",
+    ".zip": "application/zip",
+    ".json": "application/json",
+  };
+
+  const contentType = mimeTypes[ext] || "application/octet-stream";
+  res.setHeader("Content-Type", contentType);
+  res.setHeader("Content-Disposition", `inline; filename="${safeFilename}"`);
+  res.setHeader("Cache-Control", "public, max-age=31536000");
+
+  const readStream = fs.createReadStream(filePath);
+  readStream.on("error", () => {
+    if (!res.headersSent) {
+      res.status(404).json({ success: false, message: "File read error" });
     }
   });
+  readStream.pipe(res);
 });
 
 export default router;
