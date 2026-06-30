@@ -48,23 +48,33 @@ router.post("/upload", authenticate, upload.single("file"), (req: Request, res: 
   });
 });
 
+// Handle CORS preflight for file serving
+router.options("/files/:filename", (_req: Request, res: Response) => {
+  res.writeHead(204, {
+    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+    "Access-Control-Allow-Headers": "Range",
+    "Access-Control-Max-Age": "86400",
+  });
+  res.end();
+});
+
 // Serve uploaded chat files — NO AUTH REQUIRED
 // File URLs use random hashes (timestamp + random) making them unguessable.
 // Auth on this endpoint breaks <audio>, <img>, <video> elements since browsers
 // cannot send custom Authorization headers on media element requests.
 router.get("/files/:filename", (req: Request, res: Response) => {
   const filename = req.params.filename as string;
-  // Sanitize filename to prevent path traversal
   const safeFilename = path.basename(filename);
   const filePath = path.join(__dirname, "../uploads/chat", safeFilename);
 
-  // Check file exists before attempting sendFile
   if (!fs.existsSync(filePath)) {
     res.status(404).json({ success: false, message: "File not found" });
     return;
   }
 
-  // Set proper Content-Type based on extension
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
   const ext = path.extname(safeFilename).toLowerCase();
   const mimeTypes: Record<string, string> = {
     ".png": "image/png",
@@ -74,7 +84,7 @@ router.get("/files/:filename", (req: Request, res: Response) => {
     ".webp": "image/webp",
     ".svg": "image/svg+xml",
     ".mp4": "video/mp4",
-    ".webm": "audio/webm",
+    ".webm": "video/webm",
     ".ogg": "audio/ogg",
     ".mp3": "audio/mpeg",
     ".wav": "audio/wav",
@@ -88,18 +98,48 @@ router.get("/files/:filename", (req: Request, res: Response) => {
   };
 
   const contentType = mimeTypes[ext] || "application/octet-stream";
-  res.setHeader("Content-Type", contentType);
-  const safeDispositionName = safeFilename.replace(/["';\r\n]/g, '_');
-  res.setHeader("Content-Disposition", `inline; filename="${safeDispositionName}"`);
-  res.setHeader("Cache-Control", "public, max-age=31536000");
+  const safeDispositionName = safeFilename.replace(/["';\r\n]/g, "_");
 
-  const readStream = fs.createReadStream(filePath);
-  readStream.on("error", () => {
-    if (!res.headersSent) {
-      res.status(404).json({ success: false, message: "File read error" });
-    }
-  });
-  readStream.pipe(res);
+  // CORS headers — required because res.writeHead() bypasses Express middleware
+  const corsHeaders: Record<string, string> = {
+    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+    "Access-Control-Allow-Headers": "Range",
+    "Access-Control-Expose-Headers": "Content-Range, Content-Length, Accept-Ranges",
+    "Access-Control-Allow-Credentials": "true",
+  };
+
+  // Handle Range requests for video/audio seeking
+  const range = req.headers.range;
+  if (range) {
+    const parts = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = end - start + 1;
+
+    res.writeHead(206, {
+      ...corsHeaders,
+      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunkSize,
+      "Content-Type": contentType,
+      "Content-Disposition": `inline; filename="${safeDispositionName}"`,
+      "Cache-Control": "public, max-age=31536000",
+    });
+
+    fs.createReadStream(filePath, { start, end }).pipe(res);
+  } else {
+    res.writeHead(200, {
+      ...corsHeaders,
+      "Content-Length": fileSize,
+      "Content-Type": contentType,
+      "Content-Disposition": `inline; filename="${safeDispositionName}"`,
+      "Accept-Ranges": "bytes",
+      "Cache-Control": "public, max-age=31536000",
+    });
+
+    fs.createReadStream(filePath).pipe(res);
+  }
 });
 
 export default router;
