@@ -217,10 +217,10 @@ export type ArtistOrderByWithRelationInput = {
 };
 export type ArtistWhereUniqueInput = Prisma.AtLeast<{
     id?: number;
+    name?: string;
     AND?: Prisma.ArtistWhereInput | Prisma.ArtistWhereInput[];
     OR?: Prisma.ArtistWhereInput[];
     NOT?: Prisma.ArtistWhereInput | Prisma.ArtistWhereInput[];
-    name?: Prisma.StringFilter<"Artist"> | string;
     biography?: Prisma.StringNullableFilter<"Artist"> | string | null;
     nationality?: Prisma.StringNullableFilter<"Artist"> | string | null;
     birthDate?: Prisma.DateTimeNullableFilter<"Artist"> | Date | string | null;
@@ -229,7 +229,7 @@ export type ArtistWhereUniqueInput = Prisma.AtLeast<{
     createdAt?: Prisma.DateTimeFilter<"Artist"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Artist"> | Date | string;
     artworks?: Prisma.ArtworkListRelationFilter;
-}, "id">;
+}, "id" | "name">;
 export type ArtistOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     name?: Prisma.SortOrder;

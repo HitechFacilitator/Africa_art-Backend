@@ -54,7 +54,15 @@ exports.getById = (0, catchAsync_1.default)(async (req, res) => {
     res.json({ success: true, data: user });
 });
 exports.update = (0, catchAsync_1.default)(async (req, res) => {
-    const user = await userService.update(Number(req.params.id), req.body);
+    const targetId = Number(req.params.id);
+    const requesterId = req.user.userId;
+    const requesterRole = req.user.role;
+    // Only admins can update other users; regular users can only update themselves
+    if (requesterId !== targetId && requesterRole.toString().toUpperCase() !== "ADMIN") {
+        res.status(403).json({ success: false, message: "You can only update your own profile" });
+        return;
+    }
+    const user = await userService.update(targetId, req.body);
     res.json({ success: true, data: user });
 });
 exports.deleteOne = (0, catchAsync_1.default)(async (req, res) => {

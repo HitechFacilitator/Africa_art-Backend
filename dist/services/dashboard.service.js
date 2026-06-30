@@ -7,6 +7,7 @@ exports.getByUser = getByUser;
 exports.create = create;
 exports.remove = remove;
 const db_1 = __importDefault(require("../config/db"));
+const AppError_1 = require("../utils/AppError");
 async function getByUser(userId) {
     const acquisitions = await db_1.default.acquisition.findMany({
         where: { userId },
@@ -58,6 +59,9 @@ async function create(userId, data) {
     };
 }
 async function remove(id) {
+    const existing = await db_1.default.acquisition.findUnique({ where: { id } });
+    if (!existing)
+        throw new AppError_1.AppError("Acquisition not found", 404);
     await db_1.default.acquisition.delete({ where: { id } });
 }
 //# sourceMappingURL=dashboard.service.js.map

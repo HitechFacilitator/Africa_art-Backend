@@ -1,9 +1,43 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getThreads = getThreads;
+exports.createThread = createThread;
 exports.sendMessage = sendMessage;
 exports.markThreadRead = markThreadRead;
 exports.getTickets = getTickets;
@@ -12,32 +46,25 @@ exports.updateTicketStatus = updateTicketStatus;
 exports.deleteTicket = deleteTicket;
 exports.addTicketResponse = addTicketResponse;
 const db_1 = __importDefault(require("../config/db"));
+const AppError_1 = require("../utils/AppError");
 async function getThreads(userId, role) {
-    let threadIds;
-    if (role.toLowerCase() === "admin") {
-        // Admin sees all threads
-        const allThreads = await db_1.default.chatThread.findMany({ select: { id: true } });
-        threadIds = allThreads.map(t => t.id);
-    }
-    else {
-        // All users: threads where they have messages
-        const messageThreadIds = await db_1.default.chatMessage.findMany({
-            where: { userId },
-            select: { threadId: true },
-            distinct: ["threadId"],
-        }).then(msgs => msgs.map(m => m.threadId));
-        // Also threads where they are listed as participant
-        const participantThreads = await db_1.default.chatThread.findMany({
-            where: {
-                OR: [
-                    { clientUserId: userId },
-                    { advisorUserId: userId },
-                ],
-            },
-            select: { id: true },
-        }).then(threads => threads.map(t => t.id));
-        threadIds = [...new Set([...messageThreadIds, ...participantThreads])];
-    }
+    // All users (including admin) only see threads where they are a direct participant
+    const participantThreadIds = await db_1.default.chatThread.findMany({
+        where: {
+            OR: [
+                { clientUserId: userId },
+                { advisorUserId: userId },
+            ],
+        },
+        select: { id: true },
+    }).then(threads => threads.map(t => t.id));
+    // Also threads where they have sent messages
+    const messageThreadIds = await db_1.default.chatMessage.findMany({
+        where: { userId },
+        select: { threadId: true },
+        distinct: ["threadId"],
+    }).then(msgs => msgs.map(m => m.threadId));
+    const threadIds = [...new Set([...participantThreadIds, ...messageThreadIds])];
     const threads = await db_1.default.chatThread.findMany({
         where: { id: { in: threadIds } },
         include: {
@@ -64,7 +91,7 @@ async function getThreads(userId, role) {
             status: t.status,
             messages: t.messages.map(m => ({
                 id: `msg-${m.id}`,
-                senderId: m.senderId || "",
+                senderId: m.senderId != null ? `usr-${m.senderId}` : null,
                 senderName: m.senderName || "",
                 senderRole: m.senderRole || "",
                 text: m.text || "",
@@ -73,6 +100,74 @@ async function getThreads(userId, role) {
             })),
         };
     });
+}
+async function createThread(data) {
+    const thread = await db_1.default.chatThread.create({
+        data: {
+            subject: data.subject || null,
+            clientName: data.clientName || null,
+            clientRole: data.clientRole || null,
+            advisorName: data.advisorName || null,
+            clientUserId: data.clientUserId || null,
+            advisorUserId: data.advisorUserId || null,
+            status: "active",
+        },
+    });
+    // Optionally send an initial message
+    if (data.initialMessage) {
+        const timestamp = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+        await db_1.default.chatMessage.create({
+            data: {
+                threadId: thread.id,
+                userId: data.clientUserId || null,
+                senderName: data.clientName || "System",
+                senderRole: data.clientRole || "system",
+                text: data.initialMessage,
+                timestamp,
+                read: false,
+            },
+        });
+        await db_1.default.chatThread.update({
+            where: { id: thread.id },
+            data: { lastMessage: data.initialMessage, lastMessageTime: timestamp },
+        });
+    }
+    // Notify admins about new thread (especially acquisition threads without assigned advisor)
+    const admins = await db_1.default.user.findMany({
+        where: { role: "ADMIN" },
+        select: { id: true },
+    });
+    if (admins.length > 0) {
+        const { sseManager } = await Promise.resolve().then(() => __importStar(require("../utils/sse")));
+        sseManager.sendToUsers(admins.map(a => String(a.id)), "new-message", {
+            threadId: thread.id,
+            message: {
+                id: 0,
+                senderName: thread.clientName || "System",
+                senderRole: thread.clientRole || "system",
+                text: data.initialMessage || `New thread: ${thread.subject || "Untitled"}`,
+                timestamp: new Date().toISOString(),
+            },
+        });
+    }
+    // Set up Agora chat group for this thread (fire-and-forget)
+    const { setupThreadGroup } = await Promise.resolve().then(() => __importStar(require("./agora.service")));
+    const groupName = data.subject || `Chat: ${data.clientName || "Unknown"} & ${data.advisorName || "Advisor"}`;
+    setupThreadGroup({
+        threadId: thread.id,
+        groupName,
+        clientUserId: data.clientUserId,
+        clientName: data.clientName,
+        advisorUserId: data.advisorUserId,
+        advisorName: data.advisorName,
+    }).catch((err) => console.error("Agora group setup failed for thread", thread.id, err));
+    return {
+        id: `thr-${thread.id}`,
+        subject: thread.subject || "",
+        clientName: thread.clientName || "",
+        advisorName: thread.advisorName || "",
+        status: thread.status,
+    };
 }
 async function sendMessage(threadId, data) {
     const message = await db_1.default.chatMessage.create({
@@ -121,7 +216,7 @@ async function sendMessage(threadId, data) {
     }
     return {
         id: `msg-${message.id}`,
-        senderId: message.senderId || "",
+        senderId: message.senderId != null ? `usr-${message.senderId}` : null,
         senderName: message.senderName || "",
         senderRole: message.senderRole || "",
         text: message.text || "",
@@ -144,8 +239,9 @@ async function markThreadRead(threadId, userId) {
             create: { threadId, userId, lastReadId: lastMessage.id },
         });
     }
-    catch {
+    catch (e) {
         // Concurrent upsert race — safe to ignore, read status is approximate
+        console.warn("ChatThreadReadStatus upsert race condition:", e);
     }
     await db_1.default.chatMessage.updateMany({
         where: { threadId, userId: { not: userId } },
@@ -227,9 +323,9 @@ async function updateTicketStatus(id, status) {
 async function deleteTicket(id, userId, role) {
     const ticket = await db_1.default.supportTicket.findUnique({ where: { id } });
     if (!ticket)
-        throw new Error("Ticket not found");
+        throw new AppError_1.AppError("Ticket not found", 404);
     if (role.toLowerCase() !== "support" && role.toLowerCase() !== "admin" && ticket.userId !== userId) {
-        throw new Error("Not authorized to delete this ticket");
+        throw new AppError_1.AppError("Not authorized to delete this ticket", 403);
     }
     await db_1.default.ticketResponse.deleteMany({ where: { ticketId: id } });
     await db_1.default.supportTicket.delete({ where: { id } });

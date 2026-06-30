@@ -34,7 +34,9 @@ const adminCollectors_routes_1 = __importDefault(require("./routes/adminCollecto
 const adminUsers_routes_1 = __importDefault(require("./routes/adminUsers.routes"));
 const adminCertificates_routes_1 = __importDefault(require("./routes/adminCertificates.routes"));
 const advisor_routes_1 = __importDefault(require("./routes/advisor.routes"));
+const chatFile_routes_1 = __importDefault(require("./routes/chatFile.routes"));
 const chat_routes_1 = __importDefault(require("./routes/chat.routes"));
+const agora_routes_1 = __importDefault(require("./routes/agora.routes"));
 const events_routes_1 = __importDefault(require("./routes/events.routes"));
 const app = (0, express_1.default)();
 app.use((0, helmet_1.default)());
@@ -97,8 +99,12 @@ app.use("/api/v1/admin/escrow", escrow_routes_1.default);
 app.use("/api/v1/admin/audit-logs", adminAudit_routes_1.default);
 // Advisor routes
 app.use("/api/v1/advisor", advisor_routes_1.default);
+// Chat file upload/download routes
+app.use("/api/v1/chat", chatFile_routes_1.default);
 // Chat/Support routes
 app.use("/api/v1/chat", chat_routes_1.default);
+// Agora Chat routes (token generation, user/group setup)
+app.use("/api/v1/chat", agora_routes_1.default);
 // General SSE events route (consultations, inquiries, POR)
 app.use("/api/v1/events", events_routes_1.default);
 app.get("/api/v1/health", (_req, res) => {

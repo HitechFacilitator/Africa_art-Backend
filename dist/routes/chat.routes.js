@@ -49,13 +49,14 @@ router.get("/events", (req, res) => {
         return;
     }
     try {
-        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "aduna-secret-key-2026");
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         sse_1.sseManager.addClient(String(decoded.userId), res);
     }
     catch {
         res.status(401).json({ error: "Invalid token" });
     }
 });
+router.post("/threads", auth_1.authenticate, chatController.createThread);
 router.get("/threads", auth_1.authenticate, chatController.getThreads);
 router.post("/threads/:threadId/messages", auth_1.authenticate, chatController.sendMessage);
 router.patch("/threads/:threadId/read", auth_1.authenticate, chatController.markThreadRead);

@@ -8,6 +8,7 @@ exports.release = release;
 exports.dispute = dispute;
 exports.refund = refund;
 const db_1 = __importDefault(require("../config/db"));
+const AppError_1 = require("../utils/AppError");
 async function getAll(page, limit, skip) {
     const [data, total] = await Promise.all([
         db_1.default.escrowTransaction.findMany({
@@ -32,6 +33,9 @@ async function getAll(page, limit, skip) {
     };
 }
 async function release(id) {
+    const existing = await db_1.default.escrowTransaction.findUnique({ where: { id } });
+    if (!existing)
+        throw new AppError_1.AppError("Escrow transaction not found", 404);
     const tx = await db_1.default.escrowTransaction.update({
         where: { id },
         data: { status: "RELEASED", notes: " Funds released." },
@@ -39,6 +43,9 @@ async function release(id) {
     return tx;
 }
 async function dispute(id) {
+    const existing = await db_1.default.escrowTransaction.findUnique({ where: { id } });
+    if (!existing)
+        throw new AppError_1.AppError("Escrow transaction not found", 404);
     const tx = await db_1.default.escrowTransaction.update({
         where: { id },
         data: { status: "DISPUTED", notes: " Dispute initiated." },
@@ -46,6 +53,9 @@ async function dispute(id) {
     return tx;
 }
 async function refund(id) {
+    const existing = await db_1.default.escrowTransaction.findUnique({ where: { id } });
+    if (!existing)
+        throw new AppError_1.AppError("Escrow transaction not found", 404);
     const tx = await db_1.default.escrowTransaction.update({
         where: { id },
         data: { status: "REFUNDED", notes: " Refund processed." },

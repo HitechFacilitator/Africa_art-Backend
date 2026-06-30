@@ -116,7 +116,7 @@ async function create(userId, data) {
     let advisorId = data.advisorId;
     if (!advisorId && data.expertName) {
         const advisor = await db_1.default.user.findFirst({
-            where: { role: "ADVISOR", name: data.expertName },
+            where: { role: client_1.Role.ADVISOR, name: data.expertName },
         });
         if (advisor) {
             advisorId = advisor.id;
@@ -124,7 +124,7 @@ async function create(userId, data) {
         else {
             const advisorByInstitution = await db_1.default.user.findFirst({
                 where: {
-                    role: "ADVISOR",
+                    role: client_1.Role.ADVISOR,
                     name: { contains: data.expertName.split(" (")[0] },
                 },
             });

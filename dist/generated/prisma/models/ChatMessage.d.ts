@@ -16,17 +16,19 @@ export type ChatMessageAvgAggregateOutputType = {
     id: number | null;
     threadId: number | null;
     userId: number | null;
+    senderId: number | null;
 };
 export type ChatMessageSumAggregateOutputType = {
     id: number | null;
     threadId: number | null;
     userId: number | null;
+    senderId: number | null;
 };
 export type ChatMessageMinAggregateOutputType = {
     id: number | null;
     threadId: number | null;
     userId: number | null;
-    senderId: string | null;
+    senderId: number | null;
     senderName: string | null;
     senderRole: string | null;
     text: string | null;
@@ -38,7 +40,7 @@ export type ChatMessageMaxAggregateOutputType = {
     id: number | null;
     threadId: number | null;
     userId: number | null;
-    senderId: string | null;
+    senderId: number | null;
     senderName: string | null;
     senderRole: string | null;
     text: string | null;
@@ -63,11 +65,13 @@ export type ChatMessageAvgAggregateInputType = {
     id?: true;
     threadId?: true;
     userId?: true;
+    senderId?: true;
 };
 export type ChatMessageSumAggregateInputType = {
     id?: true;
     threadId?: true;
     userId?: true;
+    senderId?: true;
 };
 export type ChatMessageMinAggregateInputType = {
     id?: true;
@@ -186,7 +190,7 @@ export type ChatMessageGroupByOutputType = {
     id: number;
     threadId: number;
     userId: number | null;
-    senderId: string | null;
+    senderId: number | null;
     senderName: string | null;
     senderRole: string | null;
     text: string | null;
@@ -209,7 +213,7 @@ export type ChatMessageWhereInput = {
     id?: Prisma.IntFilter<"ChatMessage"> | number;
     threadId?: Prisma.IntFilter<"ChatMessage"> | number;
     userId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
-    senderId?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
+    senderId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
     senderName?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     senderRole?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     text?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
@@ -241,7 +245,7 @@ export type ChatMessageWhereUniqueInput = Prisma.AtLeast<{
     NOT?: Prisma.ChatMessageWhereInput | Prisma.ChatMessageWhereInput[];
     threadId?: Prisma.IntFilter<"ChatMessage"> | number;
     userId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
-    senderId?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
+    senderId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
     senderName?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     senderRole?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     text?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
@@ -275,7 +279,7 @@ export type ChatMessageScalarWhereWithAggregatesInput = {
     id?: Prisma.IntWithAggregatesFilter<"ChatMessage"> | number;
     threadId?: Prisma.IntWithAggregatesFilter<"ChatMessage"> | number;
     userId?: Prisma.IntNullableWithAggregatesFilter<"ChatMessage"> | number | null;
-    senderId?: Prisma.StringNullableWithAggregatesFilter<"ChatMessage"> | string | null;
+    senderId?: Prisma.IntNullableWithAggregatesFilter<"ChatMessage"> | number | null;
     senderName?: Prisma.StringNullableWithAggregatesFilter<"ChatMessage"> | string | null;
     senderRole?: Prisma.StringNullableWithAggregatesFilter<"ChatMessage"> | string | null;
     text?: Prisma.StringNullableWithAggregatesFilter<"ChatMessage"> | string | null;
@@ -284,7 +288,7 @@ export type ChatMessageScalarWhereWithAggregatesInput = {
     createdAt?: Prisma.DateTimeWithAggregatesFilter<"ChatMessage"> | Date | string;
 };
 export type ChatMessageCreateInput = {
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -298,7 +302,7 @@ export type ChatMessageUncheckedCreateInput = {
     id?: number;
     threadId: number;
     userId?: number | null;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -307,7 +311,7 @@ export type ChatMessageUncheckedCreateInput = {
     createdAt?: Date | string;
 };
 export type ChatMessageUpdateInput = {
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -321,7 +325,7 @@ export type ChatMessageUncheckedUpdateInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     threadId?: Prisma.IntFieldUpdateOperationsInput | number;
     userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -333,7 +337,7 @@ export type ChatMessageCreateManyInput = {
     id?: number;
     threadId: number;
     userId?: number | null;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -342,7 +346,7 @@ export type ChatMessageCreateManyInput = {
     createdAt?: Date | string;
 };
 export type ChatMessageUpdateManyMutationInput = {
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -354,7 +358,7 @@ export type ChatMessageUncheckedUpdateManyInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     threadId?: Prisma.IntFieldUpdateOperationsInput | number;
     userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -391,6 +395,7 @@ export type ChatMessageAvgOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     threadId?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    senderId?: Prisma.SortOrder;
 };
 export type ChatMessageMaxOrderByAggregateInput = {
     id?: Prisma.SortOrder;
@@ -420,6 +425,7 @@ export type ChatMessageSumOrderByAggregateInput = {
     id?: Prisma.SortOrder;
     threadId?: Prisma.SortOrder;
     userId?: Prisma.SortOrder;
+    senderId?: Prisma.SortOrder;
 };
 export type ChatMessageCreateNestedManyWithoutUserInput = {
     create?: Prisma.XOR<Prisma.ChatMessageCreateWithoutUserInput, Prisma.ChatMessageUncheckedCreateWithoutUserInput> | Prisma.ChatMessageCreateWithoutUserInput[] | Prisma.ChatMessageUncheckedCreateWithoutUserInput[];
@@ -498,7 +504,7 @@ export type ChatMessageUncheckedUpdateManyWithoutThreadNestedInput = {
     deleteMany?: Prisma.ChatMessageScalarWhereInput | Prisma.ChatMessageScalarWhereInput[];
 };
 export type ChatMessageCreateWithoutUserInput = {
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -510,7 +516,7 @@ export type ChatMessageCreateWithoutUserInput = {
 export type ChatMessageUncheckedCreateWithoutUserInput = {
     id?: number;
     threadId: number;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -546,7 +552,7 @@ export type ChatMessageScalarWhereInput = {
     id?: Prisma.IntFilter<"ChatMessage"> | number;
     threadId?: Prisma.IntFilter<"ChatMessage"> | number;
     userId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
-    senderId?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
+    senderId?: Prisma.IntNullableFilter<"ChatMessage"> | number | null;
     senderName?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     senderRole?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
     text?: Prisma.StringNullableFilter<"ChatMessage"> | string | null;
@@ -555,7 +561,7 @@ export type ChatMessageScalarWhereInput = {
     createdAt?: Prisma.DateTimeFilter<"ChatMessage"> | Date | string;
 };
 export type ChatMessageCreateWithoutThreadInput = {
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -567,7 +573,7 @@ export type ChatMessageCreateWithoutThreadInput = {
 export type ChatMessageUncheckedCreateWithoutThreadInput = {
     id?: number;
     userId?: number | null;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -599,7 +605,7 @@ export type ChatMessageUpdateManyWithWhereWithoutThreadInput = {
 export type ChatMessageCreateManyUserInput = {
     id?: number;
     threadId: number;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -608,7 +614,7 @@ export type ChatMessageCreateManyUserInput = {
     createdAt?: Date | string;
 };
 export type ChatMessageUpdateWithoutUserInput = {
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -620,7 +626,7 @@ export type ChatMessageUpdateWithoutUserInput = {
 export type ChatMessageUncheckedUpdateWithoutUserInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     threadId?: Prisma.IntFieldUpdateOperationsInput | number;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -631,7 +637,7 @@ export type ChatMessageUncheckedUpdateWithoutUserInput = {
 export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     threadId?: Prisma.IntFieldUpdateOperationsInput | number;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -642,7 +648,7 @@ export type ChatMessageUncheckedUpdateManyWithoutUserInput = {
 export type ChatMessageCreateManyThreadInput = {
     id?: number;
     userId?: number | null;
-    senderId?: string | null;
+    senderId?: number | null;
     senderName?: string | null;
     senderRole?: string | null;
     text?: string | null;
@@ -651,7 +657,7 @@ export type ChatMessageCreateManyThreadInput = {
     createdAt?: Date | string;
 };
 export type ChatMessageUpdateWithoutThreadInput = {
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -663,7 +669,7 @@ export type ChatMessageUpdateWithoutThreadInput = {
 export type ChatMessageUncheckedUpdateWithoutThreadInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -674,7 +680,7 @@ export type ChatMessageUncheckedUpdateWithoutThreadInput = {
 export type ChatMessageUncheckedUpdateManyWithoutThreadInput = {
     id?: Prisma.IntFieldUpdateOperationsInput | number;
     userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
-    senderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+    senderId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
     senderName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     senderRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
     text?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
@@ -723,7 +729,7 @@ export type $ChatMessagePayload<ExtArgs extends runtime.Types.Extensions.Interna
         id: number;
         threadId: number;
         userId: number | null;
-        senderId: string | null;
+        senderId: number | null;
         senderName: string | null;
         senderRole: string | null;
         text: string | null;
@@ -1037,7 +1043,7 @@ export interface ChatMessageFieldRefs {
     readonly id: Prisma.FieldRef<"ChatMessage", 'Int'>;
     readonly threadId: Prisma.FieldRef<"ChatMessage", 'Int'>;
     readonly userId: Prisma.FieldRef<"ChatMessage", 'Int'>;
-    readonly senderId: Prisma.FieldRef<"ChatMessage", 'String'>;
+    readonly senderId: Prisma.FieldRef<"ChatMessage", 'Int'>;
     readonly senderName: Prisma.FieldRef<"ChatMessage", 'String'>;
     readonly senderRole: Prisma.FieldRef<"ChatMessage", 'String'>;
     readonly text: Prisma.FieldRef<"ChatMessage", 'String'>;

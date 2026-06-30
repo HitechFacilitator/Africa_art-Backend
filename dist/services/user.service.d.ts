@@ -22,13 +22,7 @@ export declare function getById(id: number): Promise<{
     avatar: string | undefined;
     institution: string | undefined;
 }>;
-export declare function update(id: number, data: {
-    name?: string;
-    avatar?: string;
-    institution?: string;
-    country?: string;
-    tier?: string;
-}): Promise<{
+export declare function update(id: number, data: Record<string, any>): Promise<{
     role: Role;
     id: number;
     email: string;

@@ -2701,10 +2701,14 @@ export declare const UserScalarFieldEnum: {
     readonly role: "role";
     readonly status: "status";
     readonly avatar: "avatar";
-    readonly phone: "phone";
     readonly institution: "institution";
     readonly country: "country";
     readonly tier: "tier";
+    readonly phone: "phone";
+    readonly acceptTerms: "acceptTerms";
+    readonly acceptGdpr: "acceptGdpr";
+    readonly currency: "currency";
+    readonly regionsOfInterest: "regionsOfInterest";
     readonly twoFactorEnabled: "twoFactorEnabled";
     readonly emailVerified: "emailVerified";
     readonly createdAt: "createdAt";
@@ -3177,10 +3181,12 @@ export declare const UserOrderByRelevanceFieldEnum: {
     readonly password: "password";
     readonly name: "name";
     readonly avatar: "avatar";
-    readonly phone: "phone";
     readonly institution: "institution";
     readonly country: "country";
     readonly tier: "tier";
+    readonly phone: "phone";
+    readonly currency: "currency";
+    readonly regionsOfInterest: "regionsOfInterest";
 };
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum];
 export declare const ArtistOrderByRelevanceFieldEnum: {
@@ -3397,7 +3403,6 @@ export declare const ChatThreadOrderByRelevanceFieldEnum: {
 };
 export type ChatThreadOrderByRelevanceFieldEnum = (typeof ChatThreadOrderByRelevanceFieldEnum)[keyof typeof ChatThreadOrderByRelevanceFieldEnum];
 export declare const ChatMessageOrderByRelevanceFieldEnum: {
-    readonly senderId: "senderId";
     readonly senderName: "senderName";
     readonly senderRole: "senderRole";
     readonly text: "text";

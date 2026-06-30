@@ -36,25 +36,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteTicket = exports.addTicketResponse = exports.updateTicketStatus = exports.createTicket = exports.getTickets = exports.markThreadRead = exports.sendMessage = exports.getThreads = void 0;
+exports.deleteTicket = exports.addTicketResponse = exports.updateTicketStatus = exports.createTicket = exports.getTickets = exports.markThreadRead = exports.sendMessage = exports.getThreads = exports.createThread = void 0;
 const chatService = __importStar(require("../services/chat.service"));
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const sse_1 = require("../utils/sse");
 const db_1 = __importDefault(require("../config/db"));
+exports.createThread = (0, catchAsync_1.default)(async (req, res) => {
+    const dbUser = await db_1.default.user.findUnique({ where: { id: req.user.userId } });
+    const thread = await chatService.createThread({
+        ...req.body,
+        clientName: req.body.clientName || dbUser?.name || "",
+        clientRole: req.body.clientRole || dbUser?.role || "collector",
+        clientUserId: req.user.userId,
+    });
+    res.status(201).json({ success: true, data: thread });
+});
 exports.getThreads = (0, catchAsync_1.default)(async (req, res) => {
     const data = await chatService.getThreads(req.user.userId, req.user.role);
     res.json({ success: true, data });
 });
 exports.sendMessage = (0, catchAsync_1.default)(async (req, res) => {
-    const message = await chatService.sendMessage(Number(req.params.threadId), {
-        ...req.body,
+    // Convert senderId from string ("usr-7") to number if present
+    const body = { ...req.body };
+    if (typeof body.senderId === "string") {
+        const parsed = Number(body.senderId.replace("usr-", ""));
+        body.senderId = isNaN(parsed) ? undefined : parsed;
+    }
+    else if (typeof body.senderId === "number") {
+        // Already a number, validate it
+        body.senderId = isNaN(body.senderId) ? undefined : body.senderId;
+    }
+    else {
+        // Not a string or number — clear it
+        body.senderId = undefined;
+    }
+    // Ensure text is never empty/null for Prisma
+    if (!body.text || typeof body.text !== "string") {
+        body.text = "";
+    }
+    const threadId = Number(String(req.params.threadId).replace("thr-", ""));
+    const message = await chatService.sendMessage(threadId, {
+        ...body,
         userId: req.user.userId,
     });
     // Use recipientIds from service (based on thread participant fields)
     const recipientIds = message.recipientIds || [];
     if (recipientIds.length > 0) {
         sse_1.sseManager.sendToUsers(recipientIds, "new-message", {
-            threadId: Number(req.params.threadId),
+            threadId,
             message,
         });
     }

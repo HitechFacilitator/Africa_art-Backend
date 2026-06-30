@@ -51,7 +51,12 @@ async function getClients(advisorId) {
         acquisitionsCount: c.acquisitionsCount,
         satisfactionScore: c.satisfactionScore ? Number(c.satisfactionScore) : 0,
         lastContact: c.lastContact || "",
-        interests: c.interests ? JSON.parse(c.interests) : [],
+        interests: (() => { try {
+            return c.interests ? JSON.parse(c.interests) : [];
+        }
+        catch {
+            return [];
+        } })(),
     }));
 }
 async function getPlacements(userId) {

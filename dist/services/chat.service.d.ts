@@ -12,7 +12,7 @@ export declare function getThreads(userId: number, role: string): Promise<{
     status: string;
     messages: {
         id: string;
-        senderId: string;
+        senderId: string | null;
         senderName: string;
         senderRole: string;
         text: string;
@@ -20,15 +20,30 @@ export declare function getThreads(userId: number, role: string): Promise<{
         read: boolean;
     }[];
 }[]>;
+export declare function createThread(data: {
+    subject?: string;
+    clientName?: string;
+    clientRole?: string;
+    advisorName?: string;
+    clientUserId?: number;
+    advisorUserId?: number;
+    initialMessage?: string;
+}): Promise<{
+    id: string;
+    subject: string;
+    clientName: string;
+    advisorName: string;
+    status: string;
+}>;
 export declare function sendMessage(threadId: number, data: {
-    senderId?: string;
+    senderId?: number;
     senderName?: string;
     senderRole?: string;
     userId?: number;
     text: string;
 }): Promise<{
     id: string;
-    senderId: string;
+    senderId: string | null;
     senderName: string;
     senderRole: string;
     text: string;

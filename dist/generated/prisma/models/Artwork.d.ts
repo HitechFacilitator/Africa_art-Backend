@@ -504,10 +504,10 @@ export type ArtworkOrderByWithRelationInput = {
 };
 export type ArtworkWhereUniqueInput = Prisma.AtLeast<{
     id?: number;
+    title?: string;
     AND?: Prisma.ArtworkWhereInput | Prisma.ArtworkWhereInput[];
     OR?: Prisma.ArtworkWhereInput[];
     NOT?: Prisma.ArtworkWhereInput | Prisma.ArtworkWhereInput[];
-    title?: Prisma.StringFilter<"Artwork"> | string;
     description?: Prisma.StringFilter<"Artwork"> | string;
     origin?: Prisma.StringFilter<"Artwork"> | string;
     region?: Prisma.StringNullableFilter<"Artwork"> | string | null;
@@ -552,7 +552,7 @@ export type ArtworkWhereUniqueInput = Prisma.AtLeast<{
     orderItems?: Prisma.OrderItemListRelationFilter;
     auctionLots?: Prisma.AuctionLotListRelationFilter;
     priceRequests?: Prisma.PriceRequestListRelationFilter;
-}, "id">;
+}, "id" | "title">;
 export type ArtworkOrderByWithAggregationInput = {
     id?: Prisma.SortOrder;
     title?: Prisma.SortOrder;

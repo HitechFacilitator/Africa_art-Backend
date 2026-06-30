@@ -39,7 +39,8 @@ export const sendMessage = catchAsync(async (req: Request, res: Response) => {
     body.text = "";
   }
 
-  const message = await chatService.sendMessage(Number(req.params.threadId), {
+  const threadId = Number(String(req.params.threadId).replace("thr-", ""));
+  const message = await chatService.sendMessage(threadId, {
     ...body,
     userId: req.user!.userId,
   });
@@ -49,7 +50,7 @@ export const sendMessage = catchAsync(async (req: Request, res: Response) => {
 
   if (recipientIds.length > 0) {
     sseManager.sendToUsers(recipientIds, "new-message", {
-      threadId: Number(req.params.threadId),
+      threadId,
       message,
     });
   }

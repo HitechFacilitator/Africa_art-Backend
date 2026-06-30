@@ -158,10 +158,14 @@ exports.UserScalarFieldEnum = {
     role: 'role',
     status: 'status',
     avatar: 'avatar',
-    phone: 'phone',
     institution: 'institution',
     country: 'country',
     tier: 'tier',
+    phone: 'phone',
+    acceptTerms: 'acceptTerms',
+    acceptGdpr: 'acceptGdpr',
+    currency: 'currency',
+    regionsOfInterest: 'regionsOfInterest',
     twoFactorEnabled: 'twoFactorEnabled',
     emailVerified: 'emailVerified',
     createdAt: 'createdAt',
@@ -595,10 +599,12 @@ exports.UserOrderByRelevanceFieldEnum = {
     password: 'password',
     name: 'name',
     avatar: 'avatar',
-    phone: 'phone',
     institution: 'institution',
     country: 'country',
-    tier: 'tier'
+    tier: 'tier',
+    phone: 'phone',
+    currency: 'currency',
+    regionsOfInterest: 'regionsOfInterest'
 };
 exports.ArtistOrderByRelevanceFieldEnum = {
     name: 'name',
@@ -787,7 +793,6 @@ exports.ChatThreadOrderByRelevanceFieldEnum = {
     lastMessageTime: 'lastMessageTime'
 };
 exports.ChatMessageOrderByRelevanceFieldEnum = {
-    senderId: 'senderId',
     senderName: 'senderName',
     senderRole: 'senderRole',
     text: 'text',

@@ -2,33 +2,25 @@ import prisma from "../config/db";
 import { AppError } from "../utils/AppError";
 
 export async function getThreads(userId: number, role: string) {
-  let threadIds: number[];
+  // All users (including admin) only see threads where they are a direct participant
+  const participantThreadIds = await prisma.chatThread.findMany({
+    where: {
+      OR: [
+        { clientUserId: userId },
+        { advisorUserId: userId },
+      ],
+    },
+    select: { id: true },
+  }).then(threads => threads.map(t => t.id));
 
-  if (role.toLowerCase() === "admin") {
-    // Admin sees all threads
-    const allThreads = await prisma.chatThread.findMany({ select: { id: true } });
-    threadIds = allThreads.map(t => t.id);
-  } else {
-    // All users: threads where they have messages
-    const messageThreadIds = await prisma.chatMessage.findMany({
-      where: { userId },
-      select: { threadId: true },
-      distinct: ["threadId"],
-    }).then(msgs => msgs.map(m => m.threadId));
+  // Also threads where they have sent messages
+  const messageThreadIds = await prisma.chatMessage.findMany({
+    where: { userId },
+    select: { threadId: true },
+    distinct: ["threadId"],
+  }).then(msgs => msgs.map(m => m.threadId));
 
-    // Also threads where they are listed as participant
-    const participantThreads = await prisma.chatThread.findMany({
-      where: {
-        OR: [
-          { clientUserId: userId },
-          { advisorUserId: userId },
-        ],
-      },
-      select: { id: true },
-    }).then(threads => threads.map(t => t.id));
-
-    threadIds = [...new Set([...messageThreadIds, ...participantThreads])];
-  }
+  const threadIds = [...new Set([...participantThreadIds, ...messageThreadIds])];
 
   const threads = await prisma.chatThread.findMany({
     where: { id: { in: threadIds } },
@@ -132,6 +124,18 @@ export async function createThread(data: {
       }
     );
   }
+
+  // Set up Agora chat group for this thread (fire-and-forget)
+  const { setupThreadGroup } = await import("./agora.service");
+  const groupName = data.subject || `Chat: ${data.clientName || "Unknown"} & ${data.advisorName || "Advisor"}`;
+  setupThreadGroup({
+    threadId: thread.id,
+    groupName,
+    clientUserId: data.clientUserId,
+    clientName: data.clientName,
+    advisorUserId: data.advisorUserId,
+    advisorName: data.advisorName,
+  }).catch((err) => console.error("Agora group setup failed for thread", thread.id, err));
 
   return {
     id: `thr-${thread.id}`,

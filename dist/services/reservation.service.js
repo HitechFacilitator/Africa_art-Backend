@@ -40,12 +40,15 @@ async function create(userId, artworkId) {
     }
     const expiresAt = new Date();
     expiresAt.setHours(expiresAt.getHours() + 48);
-    const reservation = await db_1.default.reservation.create({
-        data: { userId, artworkId, expiresAt },
-    });
-    await db_1.default.artwork.update({
-        where: { id: artworkId },
-        data: { availability: "RESERVED" },
+    const reservation = await db_1.default.$transaction(async (tx) => {
+        const res = await tx.reservation.create({
+            data: { userId, artworkId, expiresAt },
+        });
+        await tx.artwork.update({
+            where: { id: artworkId },
+            data: { availability: "RESERVED" },
+        });
+        return res;
     });
     return reservation;
 }
@@ -60,13 +63,16 @@ async function cancel(id, userId) {
     if (reservation.status !== client_1.ReservationStatus.ACTIVE) {
         throw new AppError_1.AppError("Reservation is not active", 400);
     }
-    const updated = await db_1.default.reservation.update({
-        where: { id },
-        data: { status: client_1.ReservationStatus.CANCELLED },
-    });
-    await db_1.default.artwork.update({
-        where: { id: reservation.artworkId },
-        data: { availability: "AVAILABLE" },
+    const [updated] = await db_1.default.$transaction(async (tx) => {
+        const res = await tx.reservation.update({
+            where: { id },
+            data: { status: client_1.ReservationStatus.CANCELLED },
+        });
+        await tx.artwork.update({
+            where: { id: reservation.artworkId },
+            data: { availability: "AVAILABLE" },
+        });
+        return [res];
     });
     return updated;
 }
@@ -77,16 +83,18 @@ async function expire() {
             expiresAt: { lt: new Date() },
         },
     });
-    for (const reservation of expired) {
-        await db_1.default.reservation.update({
-            where: { id: reservation.id },
-            data: { status: client_1.ReservationStatus.EXPIRED },
-        });
-        await db_1.default.artwork.update({
-            where: { id: reservation.artworkId },
-            data: { availability: "AVAILABLE" },
-        });
-    }
+    await db_1.default.$transaction(async (tx) => {
+        for (const reservation of expired) {
+            await tx.reservation.update({
+                where: { id: reservation.id },
+                data: { status: client_1.ReservationStatus.EXPIRED },
+            });
+            await tx.artwork.update({
+                where: { id: reservation.artworkId },
+                data: { availability: "AVAILABLE" },
+            });
+        }
+    });
     return expired.length;
 }
 //# sourceMappingURL=reservation.service.js.map

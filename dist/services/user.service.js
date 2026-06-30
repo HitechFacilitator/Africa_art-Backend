@@ -79,9 +79,17 @@ async function update(id, data) {
     if (!user) {
         throw new AppError_1.AppError("User not found", 404);
     }
+    // Only allow known fields to be passed to Prisma
+    const allowedFields = ["name", "avatar", "institution", "country", "tier", "phone", "currency", "regionsOfInterest"];
+    const safeData = {};
+    for (const key of allowedFields) {
+        if (data[key] !== undefined) {
+            safeData[key] = data[key];
+        }
+    }
     return db_1.default.user.update({
         where: { id },
-        data,
+        data: safeData,
         select: {
             id: true,
             email: true,
@@ -118,6 +126,13 @@ async function changePassword(id, currentPassword, newPassword) {
     const isValid = await bcrypt_1.default.compare(currentPassword, user.password);
     if (!isValid) {
         throw new AppError_1.AppError("Current password is incorrect", 401);
+    }
+    // Password strength validation
+    if (!newPassword || newPassword.length < 12) {
+        throw new AppError_1.AppError("Password must be at least 12 characters", 400);
+    }
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+        throw new AppError_1.AppError("Password must contain uppercase, lowercase, and a number", 400);
     }
     const hashed = await bcrypt_1.default.hash(newPassword, 12);
     await db_1.default.user.update({

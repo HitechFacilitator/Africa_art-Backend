@@ -83,29 +83,32 @@ async function create(userId, artworkIds, notes) {
     const totalAmount = artworks.reduce((sum, a) => {
         return sum + (a.price ? Number(a.price) : 0);
     }, 0);
-    const order = await db_1.default.order.create({
-        data: {
-            userId,
-            totalAmount: new client_1.Prisma.Decimal(totalAmount),
-            notes,
-            items: {
-                create: artworks.map((a) => ({
-                    artworkId: a.id,
-                    price: a.price || new client_1.Prisma.Decimal(0),
-                })),
-            },
-        },
-        include: {
-            items: {
-                include: {
-                    artwork: { select: { id: true, title: true } },
+    const order = await db_1.default.$transaction(async (tx) => {
+        const newOrder = await tx.order.create({
+            data: {
+                userId,
+                totalAmount: new client_1.Prisma.Decimal(totalAmount),
+                notes,
+                items: {
+                    create: artworks.map((a) => ({
+                        artworkId: a.id,
+                        price: a.price ?? new client_1.Prisma.Decimal(0),
+                    })),
                 },
             },
-        },
-    });
-    await db_1.default.artwork.updateMany({
-        where: { id: { in: artworkIds } },
-        data: { availability: "SOLD" },
+            include: {
+                items: {
+                    include: {
+                        artwork: { select: { id: true, title: true } },
+                    },
+                },
+            },
+        });
+        await tx.artwork.updateMany({
+            where: { id: { in: artworkIds } },
+            data: { availability: "SOLD" },
+        });
+        return newOrder;
     });
     return order;
 }

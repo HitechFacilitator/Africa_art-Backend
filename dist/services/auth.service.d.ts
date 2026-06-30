@@ -6,6 +6,8 @@ export declare function register(data: {
     country?: string;
     institution?: string;
     invitationCode?: string;
+    acceptTerms?: boolean;
+    acceptGdpr?: boolean;
 }): Promise<{
     user: {
         id: string;
@@ -30,20 +32,6 @@ export declare function login(email: string, password: string): Promise<{
     };
     token: string;
     requiresOTP: boolean;
-    otpCode?: undefined;
-} | {
-    user: {
-        id: string;
-        email: string;
-        name: string;
-        role: string;
-        avatar: string | undefined;
-        institution: string | undefined;
-        twoFactorEnabled: boolean;
-    };
-    token: string;
-    requiresOTP: boolean;
-    otpCode: string;
 }>;
 export declare function loginAs(role: string): Promise<{
     user: {
@@ -87,10 +75,10 @@ export declare function disable2FA(userId: number, password: string): Promise<{
     success: boolean;
     twoFactorEnabled: boolean;
 }>;
-export declare function forgotPassword(_email: string): Promise<{
+export declare function forgotPassword(email: string): Promise<{
     message: string;
 }>;
-export declare function resetPassword(_token: string, _newPassword: string): Promise<{
+export declare function resetPassword(token: string, newPassword: string): Promise<{
     message: string;
 }>;
 //# sourceMappingURL=auth.service.d.ts.map

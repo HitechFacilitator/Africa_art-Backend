@@ -94,7 +94,7 @@ async function create(userId, artworkId, message) {
     const por = await db_1.default.priceRequest.create({
         data: { userId, artworkId, message },
     });
-    const admins = await db_1.default.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+    const admins = await db_1.default.user.findMany({ where: { role: client_1.Role.ADMIN }, select: { id: true } });
     if (admins.length > 0) {
         sse_1.sseManager.sendToUsers(admins.map(a => String(a.id)), "por-update", {
             porId: por.id,
@@ -138,7 +138,7 @@ async function changeStatus(id, newStatus) {
         data: { status: newStatus },
     });
     const recipientIds = [String(request.userId)];
-    const admins = await db_1.default.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+    const admins = await db_1.default.user.findMany({ where: { role: client_1.Role.ADMIN }, select: { id: true } });
     for (const admin of admins) {
         recipientIds.push(String(admin.id));
     }
@@ -159,7 +159,7 @@ async function close(id) {
         data: { status: client_1.PORStatus.CLOSED },
     });
     const recipientIds = [String(request.userId)];
-    const admins = await db_1.default.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+    const admins = await db_1.default.user.findMany({ where: { role: client_1.Role.ADMIN }, select: { id: true } });
     for (const admin of admins) {
         recipientIds.push(String(admin.id));
     }
@@ -191,7 +191,7 @@ async function addMessage(porId, sender, senderId, text) {
     if (senderId !== request.userId) {
         recipientIds.push(String(request.userId));
     }
-    const admins = await db_1.default.user.findMany({ where: { role: "ADMIN" }, select: { id: true } });
+    const admins = await db_1.default.user.findMany({ where: { role: client_1.Role.ADMIN }, select: { id: true } });
     for (const admin of admins) {
         if (admin.id !== senderId) {
             recipientIds.push(String(admin.id));

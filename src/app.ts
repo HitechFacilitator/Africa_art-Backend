@@ -30,7 +30,9 @@ import adminCollectorsRoutes from "./routes/adminCollectors.routes";
 import adminUsersRoutes from "./routes/adminUsers.routes";
 import adminCertificatesRoutes from "./routes/adminCertificates.routes";
 import advisorRoutes from "./routes/advisor.routes";
+import chatFileRoutes from "./routes/chatFile.routes";
 import chatRoutes from "./routes/chat.routes";
+import agoraRoutes from "./routes/agora.routes";
 import eventsRoutes from "./routes/events.routes";
 
 const app = express();
@@ -107,8 +109,14 @@ app.use("/api/v1/admin/audit-logs", adminAuditRoutes);
 // Advisor routes
 app.use("/api/v1/advisor", advisorRoutes);
 
+// Chat file upload/download routes
+app.use("/api/v1/chat", chatFileRoutes);
+
 // Chat/Support routes
 app.use("/api/v1/chat", chatRoutes);
+
+// Agora Chat routes (token generation, user/group setup)
+app.use("/api/v1/chat", agoraRoutes);
 
 // General SSE events route (consultations, inquiries, POR)
 app.use("/api/v1/events", eventsRoutes);

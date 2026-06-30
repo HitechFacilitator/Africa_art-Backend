@@ -35,8 +35,9 @@ async function deleteOne(imageId) {
     try {
         await promises_1.default.unlink(image.path);
     }
-    catch {
+    catch (e) {
         // File may already be deleted
+        console.warn("Failed to delete image file:", e);
     }
     await db_1.default.artworkImage.delete({ where: { id: imageId } });
 }
@@ -59,7 +60,7 @@ async function reorder(artworkId, imageIds) {
     if (!artwork) {
         throw new AppError_1.AppError("Artwork not found", 404);
     }
-    await Promise.all(imageIds.map((id, index) => db_1.default.artworkImage.update({
+    await db_1.default.$transaction(imageIds.map((id, index) => db_1.default.artworkImage.update({
         where: { id },
         data: { order: index },
     })));
