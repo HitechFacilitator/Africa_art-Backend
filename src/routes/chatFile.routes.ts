@@ -28,7 +28,7 @@ const upload = multer({
 
 const router = Router();
 
-// Upload a file for chat
+// Upload a file for chat (requires auth)
 router.post("/upload", authenticate, upload.single("file"), (req: Request, res: Response) => {
   if (!req.file) {
     res.status(400).json({ success: false, message: "No file uploaded" });
@@ -48,7 +48,10 @@ router.post("/upload", authenticate, upload.single("file"), (req: Request, res: 
   });
 });
 
-// Serve uploaded chat files — with proper MIME types and error handling
+// Serve uploaded chat files — NO AUTH REQUIRED
+// File URLs use random hashes (timestamp + random) making them unguessable.
+// Auth on this endpoint breaks <audio>, <img>, <video> elements since browsers
+// cannot send custom Authorization headers on media element requests.
 router.get("/files/:filename", (req: Request, res: Response) => {
   const filename = req.params.filename as string;
   // Sanitize filename to prevent path traversal
@@ -71,8 +74,8 @@ router.get("/files/:filename", (req: Request, res: Response) => {
     ".webp": "image/webp",
     ".svg": "image/svg+xml",
     ".mp4": "video/mp4",
-    ".webm": "video/webm",
-    ".ogg": "video/ogg",
+    ".webm": "audio/webm",
+    ".ogg": "audio/ogg",
     ".mp3": "audio/mpeg",
     ".wav": "audio/wav",
     ".weba": "audio/webm",
@@ -86,7 +89,8 @@ router.get("/files/:filename", (req: Request, res: Response) => {
 
   const contentType = mimeTypes[ext] || "application/octet-stream";
   res.setHeader("Content-Type", contentType);
-  res.setHeader("Content-Disposition", `inline; filename="${safeFilename}"`);
+  const safeDispositionName = safeFilename.replace(/["';\r\n]/g, '_');
+  res.setHeader("Content-Disposition", `inline; filename="${safeDispositionName}"`);
   res.setHeader("Cache-Control", "public, max-age=31536000");
 
   const readStream = fs.createReadStream(filePath);
